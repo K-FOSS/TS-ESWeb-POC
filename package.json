@@ -1,0 +1,81 @@
+{
+  "name": "ts-core",
+  "version": "0.0.1",
+  "description": "TS-Core is a github repo template for TypeScript Projects",
+  "main": "src/index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "test": "jest",
+    "start:debug": "node --nolazy --inspect-brk=0.0.0.0 --loader @k-foss/ts-esnode --experimental-modules --harmony-optional-chaining --experimental-specifier-resolution=node --harmony-top-level-await ./src/index.ts"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@k-foss/ts-esnode": "^1.1.0",
+    "@types/node": "^13.9.0",
+    "@typescript-eslint/eslint-plugin": "^2.23.0",
+    "@typescript-eslint/parser": "^2.23.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-jest": "^23.8.2",
+    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "nodemon": "^2.0.2",
+    "prettier": "^1.19.1",
+    "typescript": "^3.8.3"
+  },
+  "author": "",
+  "license": "ISC",
+  "eslintConfig": {
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+      "project": "./tsconfig.json",
+      "tsconfigRootDir": "."
+    },
+    "env": {
+      "jest/globals": true
+    },
+    "plugins": [
+      "@typescript-eslint",
+      "prettier",
+      "jest"
+    ],
+    "extends": [
+      "standard",
+      "plugin:@typescript-eslint/recommended",
+      "prettier",
+      "prettier/standard",
+      "prettier/@typescript-eslint"
+    ],
+    "rules": {
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          "args": "none",
+          "varsIgnorePattern": "_.+"
+        }
+      ],
+      "@typescript-eslint/camelcase": "warn",
+      "@typescript-eslint/no-var-requires": "warn",
+      "@typescript-eslint/no-object-literal-type-assertion": "off",
+      "@typescript-eslint/explicit-function-return-type": "off",
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-non-null-assertion": "off",
+      "@typescript-eslint/explicit-member-accessibility": "off",
+      "no-unused-vars": "off",
+      "comma-dangle": [
+        "error",
+        "always-multiline"
+      ],
+      "semi": "off",
+      "@typescript-eslint/semi": [
+        "error"
+      ],
+      "prettier/prettier": "error"
+    }
+  }
+}
