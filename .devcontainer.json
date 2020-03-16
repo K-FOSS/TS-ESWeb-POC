@@ -1,5 +1,5 @@
 {
-  "name": "TS-Core Container",
+  "name": "TS-ESWeb Container",
   "dockerFile": "./Dockerfile.dev",
   "settings": {
     // This dev container does include /bin/bash if you prefer to use it instead of ash.

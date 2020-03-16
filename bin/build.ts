@@ -12,7 +12,13 @@ async function cpFile(srcPath: string, destPath: string): Promise<void> {
 
 console.log('Building Project');
 
-await cpFile(
-  'extras/index.js',
-  'node_modules/@k-foss/ts-esnode/out/dist/index.js',
-);
+await Promise.all([
+  cpFile(
+    'extras/ReactPKG.json',
+    'Web/node_modules/@pika/react-dom/package.json',
+  ),
+  cpFile(
+    'extras/ReactDOMPkg.json',
+    'Web/node_modules/@pika/react-dom/package.json',
+  ),
+]);
