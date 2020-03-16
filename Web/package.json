@@ -1,0 +1,21 @@
+{
+  "name": "ts-esweb-poc-web",
+  "version": "0.0.0",
+  "description": "Web",
+  "main": "src/Client.tsx",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@pika/react": "^16.13.1",
+    "@pika/react-dom": "^16.13.1",
+    "react": "^16.13.0",
+    "react-dom": "^16.13.0"
+  },
+  "devDependencies": {
+    "@types/react": "^16.9.23",
+    "@types/react-dom": "^16.9.5"
+  }
+}

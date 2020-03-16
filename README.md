@@ -1,12 +1,8 @@
-# K-FOSS/TS-Core Repository Template
+# K-FOSS/TS-ESWeb-POC
 
-This is a TypeScript project template.
+## VERY WORK IN PROGRESS
 
-## Usage
-
-On the GitHub Website click "Use this template"
-
-Once you have cloned the template locally search and replace and usage of TS-Core with the name of your new project
+This is a WIP proof of concept of using the TypeScript compiler API, my @K-FOSS/TS-ESNode module, and new Import maps for using ESModules and TypeScript in the browser with live transpile of TypeScript code.
 
 ## Development
 

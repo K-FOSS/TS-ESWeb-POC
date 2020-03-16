@@ -3,6 +3,7 @@
     "target": "ESNext",
     "module": "ESNext",
     "moduleResolution": "Node",
+    "allowSyntheticDefaultImports": true,
 
     // Strict Rules
     "strict": true,
@@ -11,12 +12,16 @@
     "allowUnusedLabels": false,
     "strictPropertyInitialization": false,
 
+    "allowJs": true,
+    "checkJs": true,
+
     // Source Maps
     "inlineSourceMap": true,
 
     // Features
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "emitDecoratorMetadata": true,
+    "jsx": "react"
   },
   "include": ["src/**/*.ts"]
 }
