@@ -11,7 +11,7 @@
     "start:debug": "node --nolazy --inspect-brk=0.0.0.0 --loader @k-foss/ts-esnode --experimental-modules --harmony-optional-chaining --experimental-specifier-resolution=node --harmony-top-level-await ./src/index.ts"
   },
   "dependencies": {
-    "@k-foss/ts-esnode": "1.2.1",
+    "@k-foss/ts-esnode": "1.3.1",
     "fastify": "2.13.0"
   },
   "devDependencies": {
