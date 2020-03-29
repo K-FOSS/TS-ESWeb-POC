@@ -2,10 +2,17 @@
 import React from '@pika/react';
 import { renderToString } from 'react-dom/server';
 
+let count = 0;
+
 export async function renderWeb(importMap: {
   [key: string]: string;
 }): Promise<string> {
-  const { App } = await import('./App');
+  const importURLString = await import.meta.resolve('./App.tsx');
+
+  const importURL = new URL(importURLString);
+  importURL.searchParams.set('count', `${count++}`);
+
+  const { App } = await import(importURL.href);
 
   const html = `<html>
   <head>

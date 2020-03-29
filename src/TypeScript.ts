@@ -1,7 +1,7 @@
 // src/TypeScript.ts
 import ts from 'typescript';
 import { dirname } from 'path';
-import { addModule } from './Modules';
+import { addModule } from './ModulesOld';
 
 const defaultTSOptions: ts.CompilerOptions = {
   target: ts.ScriptTarget.ESNext,
@@ -73,7 +73,7 @@ export async function compileWeb(
   ) => {
     if (sourceFiles) {
       // Using full function() for a (TODO: INVESTIGATE) perf benefit.
-      sourceFiles.map(async function(sourceFile: SourceFile) {
+      sourceFiles.map(async function (sourceFile: SourceFile) {
         const deps = await compileDependencies(sourceFile);
 
         addModule(entryPath, {

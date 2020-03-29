@@ -1,22 +1,17 @@
 // src/index.ts
 import fastify from 'fastify';
-import { compileWeb } from './TypeScript';
-import { getFullModule, getImportMap } from './Modules';
+import { getFullModule } from './ModulesOld';
+import { Modules } from './Library/Modules';
 
-await compileWeb('Web/src/Client.tsx');
+const modules = await Modules.loadModules();
+
+// await compileWeb('Web/src/Client.tsx');
 
 const webServer = fastify();
 
-webServer.get('/', async function(request, reply) {
-  console.debug('Core request');
-  const { renderWeb } = await import('../Web/src/Server');
+await modules.createRoutes(webServer);
 
-  reply.type('text/html');
-
-  return renderWeb(await getImportMap());
-});
-
-webServer.get('/Static/*', async function(request, reply) {
+webServer.get('/Static/*', async function (request, reply) {
   const filePath = request.params['*'];
   if (!filePath) {
     const err = (new Error() as unknown) as {
@@ -27,8 +22,6 @@ webServer.get('/Static/*', async function(request, reply) {
     err.message = 'Invalid file path';
     throw err;
   }
-
-  console.log(`Getting ${filePath}`);
 
   const fullModule = await getFullModule(filePath);
   reply.type('text/javascript');
