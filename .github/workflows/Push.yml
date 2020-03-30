@@ -9,7 +9,7 @@ jobs:
       - name: Publish to Registry
         uses: elgohr/Publish-Docker-Github-Action@master
         with:
-          name: docker.pkg.github.com/${{ github.repository }}/web-ui
+          name: k-foss/ts-esweb-poc/web-ui
           username: ${{ github.actor }}
           password: ${{ github.token }}
           registry: docker.pkg.github.com
