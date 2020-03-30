@@ -7,11 +7,13 @@
   "private": true,
   "scripts": {
     "test": "jest",
+    "start": "node --experimental-import-meta-resolve --loader @k-foss/ts-esnode --experimental-modules --harmony-optional-chaining --experimental-specifier-resolution=node --harmony-top-level-await ./src/index.ts",
     "prestart:debug": "node --loader @k-foss/ts-esnode --experimental-specifier-resolution=node --harmony-top-level-await ./bin/build.ts",
     "start:debug": "node --nolazy --inspect-brk=0.0.0.0 --experimental-import-meta-resolve --loader @k-foss/ts-esnode --experimental-modules --harmony-optional-chaining --experimental-specifier-resolution=node --harmony-top-level-await ./src/index.ts"
   },
   "dependencies": {
-    "fastify": "2.13.0"
+    "fastify": "2.13.0",
+    "nanoid": "^3.0.2"
   },
   "devDependencies": {
     "@k-foss/ts-esnode": "^1.3.1",

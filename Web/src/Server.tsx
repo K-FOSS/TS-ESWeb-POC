@@ -25,7 +25,9 @@ export async function renderWeb(importMap: {
       "imports": ${JSON.stringify(importMap)}
     }
     </script>
-    <script src="/Static/Web/src/Client.tsx" type="module">
+    <script src="${
+      importMap['/Static//workspace/Web/src/Client']
+    }" type="module">
     </script>
   </body>
   </html>`;

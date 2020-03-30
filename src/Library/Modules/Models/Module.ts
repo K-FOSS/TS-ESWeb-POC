@@ -12,7 +12,7 @@ const modulesPath = resolvePath(
 );
 
 export class Modules {
-  routes: Promise<Route>[] = [];
+  routes: Route[] = [];
 
   static async loadModules(): Promise<Modules> {
     const modules = new Modules();
@@ -29,26 +29,31 @@ export class Modules {
           withFileTypes: true,
         });
 
-        moduleContents.map((moduleContent) => {
-          const moduleContentPath = resolvePath(modulePath, moduleContent.name);
+        return Promise.all(
+          moduleContents.map(async (moduleContent) => {
+            const moduleContentPath = resolvePath(
+              modulePath,
+              moduleContent.name,
+            );
 
-          for (const moduleHandlerKey in moduleHandlers) {
-            // Needed because TypeScript is typing moduleHandlerKey as string instead of ModuleTypes
-            const handlerKey = moduleHandlerKey as ModuleTypes;
+            for (const moduleHandlerKey in moduleHandlers) {
+              // Needed because TypeScript is typing moduleHandlerKey as string instead of ModuleTypes
+              const handlerKey = moduleHandlerKey as ModuleTypes;
 
-            const handler = moduleHandlers[handlerKey];
+              const handler = moduleHandlers[handlerKey];
 
-            if (handler.regex.test(moduleContent.name)) {
-              const handlerResult = handler.importHandler(() =>
-                import(moduleContentPath),
-              );
+              if (handler.regex.test(moduleContent.name)) {
+                const handlerResult = await handler.importHandler(() =>
+                  import(moduleContentPath),
+                );
 
-              modules[handlerKey].push(handlerResult);
+                modules[handlerKey].push(handlerResult);
 
-              break;
+                break;
+              }
             }
-          }
-        });
+          }),
+        );
       }),
     );
 
@@ -56,7 +61,7 @@ export class Modules {
   }
 
   async createRoutes(webServer: FastifyInstance): Promise<void> {
-    const routes = await Promise.all(this.routes);
+    const routes = this.routes;
 
     routes.map(({ options, handler }) =>
       webServer.route({

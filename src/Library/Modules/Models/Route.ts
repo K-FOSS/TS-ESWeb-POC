@@ -2,12 +2,16 @@
 import { RequestHandler, RouteOptions } from 'fastify';
 import { ModuleHandler } from './Handler';
 
-export const handler: ModuleHandler<{ default: Route }, Route> = {
+export const handler: ModuleHandler<
+  { default: typeof import('../../../Modules/SSR/SSRRoute').default },
+  Route
+> = {
   regex: /.*Route\.(ts|js)/g,
   importHandler: async function (importFn) {
-    const { default: RouteClass } = await importFn();
+    const test = await importFn();
+    const NewClass = test.default;
 
-    return new RouteClass();
+    return new NewClass();
   },
 };
 

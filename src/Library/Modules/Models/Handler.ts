@@ -1,7 +1,6 @@
 // src/Library/Modules/Handler.ts
 import { handler } from './Route';
 import { Modules } from './Module';
-import { Module } from 'module';
 
 export type ModuleImport<T> = () => Promise<T>;
 

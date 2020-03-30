@@ -11,11 +11,13 @@
   "dependencies": {
     "@pika/react": "^16.13.1",
     "@pika/react-dom": "^16.13.1",
-    "react": "^16.13.0",
-    "react-dom": "^16.13.0"
+    "react": "0.0.0-experimental-aae83a4b9",
+    "react-dom": "0.0.0-experimental-aae83a4b9",
+    "react-reconciler": "0.0.0-experimental-aae83a4b9"
   },
   "devDependencies": {
     "@types/react": "16.9.26",
-    "@types/react-dom": "16.9.5"
+    "@types/react-dom": "16.9.5",
+    "@types/react-reconciler": "^0.18.0"
   }
 }
