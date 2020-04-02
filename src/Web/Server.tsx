@@ -10,7 +10,7 @@ export async function renderWeb(importMap: {
 }): Promise<string> {
   // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
   // @ts-ignore
-  const importURLString = await import.meta.resolve('./App.tsx');
+  const importURLString = await import.meta.resolve('./App');
 
   const importURL = new URL(importURLString);
   importURL.searchParams.set('count', `${count++}`);
