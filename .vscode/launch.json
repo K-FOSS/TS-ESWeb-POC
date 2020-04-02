@@ -6,12 +6,16 @@
       "request": "launch",
       "type": "node",
       "protocol": "inspector",
-      "port": 9229,
-      "restart": true,
 
       "cwd": "${workspaceFolder}",
-      "runtimeExecutable": "npx",
-      "runtimeArgs": ["nodemon"]
+      "runtimeArgs": [
+        "--loader=@k-foss/ts-esnode",
+        "--experimental-specifier-resolution=node",
+        "--experimental-import-meta-resolve",
+        "--harmony-optional-chaining",
+        "--harmony-top-level-await",
+        "./src/Server/index.ts"
+      ]
     }
   ]
 }
