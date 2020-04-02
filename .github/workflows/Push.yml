@@ -13,7 +13,7 @@ jobs:
           BUILD_FILES: './tsconfig.build.json'
         with:
           name: k-foss/ts-esweb-poc/web-ui
-          cache: true
+          cache: ${{ github.event_name != 'schedule' }}
           username: ${{ github.actor }}
           password: ${{ github.token }}
           registry: docker.pkg.github.com
