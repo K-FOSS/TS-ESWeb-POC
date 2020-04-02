@@ -1,4 +1,3 @@
-
 FROM kristianfoss/builders-node:build as builder
 
 FROM kristianfoss/builders-node:fetcher as fetcher
