@@ -24,13 +24,18 @@ export function spawnWorker(path: string, workerData: SubWorkerData): Worker {
   return transpileWorker;
 }
 
-export function getWorkerData(importUrlString: string): SubWorkerData {
+export function getWorkerData<T extends SubWorkerData>(
+  importUrlString: string,
+): T {
   const importUrl = new URL(importUrlString);
 
-  let workerData: SubWorkerData = {};
+  // eslint-disable-next-line prefer-const
+  let workerData: T = {} as T;
   for (const [searchKey, searchData] of importUrl.searchParams.entries()) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    // @ts-ignore
     workerData[searchKey] = searchData;
   }
 
-  return workerData;
+  return workerData as T;
 }

@@ -1,13 +1,16 @@
 // Web/src/Server.tsx
 import React from '@pika/react';
 import { renderToString } from 'react-dom/server';
+import { entrypoint } from '../Server/Modules/WebModule/Entrypoint';
 
 let count = 0;
 
 export async function renderWeb(importMap: {
   [key: string]: string;
 }): Promise<string> {
-  const importURLString = await import.meta.resolve('./App.tsx');
+  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+  // @ts-ignore
+  const importURLString = await import.meta.resolve('./App');
 
   const importURL = new URL(importURLString);
   importURL.searchParams.set('count', `${count++}`);
@@ -25,9 +28,7 @@ export async function renderWeb(importMap: {
       "imports": ${JSON.stringify(importMap)}
     }
     </script>
-    <script src="${
-      importMap['/Static//workspace/Web/src/Client']
-    }" type="module">
+    <script src="${importMap[entrypoint]}" type="module">
     </script>
   </body>
   </html>`;

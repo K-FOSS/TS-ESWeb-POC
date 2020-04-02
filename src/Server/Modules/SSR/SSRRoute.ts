@@ -2,7 +2,8 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import { ServerResponse } from 'http';
 import { Route } from '../../Library/Modules/Models/Route';
-import { moduleMap } from '../../Library/Modules';
+import { moduleMap } from '../WebModule';
+import { entrypoint } from '../WebModule/Entrypoint';
 
 const relativePathRegex = /^\.{0,2}[/]/;
 
@@ -18,34 +19,40 @@ export default class SSRRoute implements Route {
     reply: FastifyReply<ServerResponse>,
   ) {
     const clientImportMap = new Map<string, string>();
-    const { renderWeb } = await import('../../../Web/src/Server');
+    const { renderWeb } = await import('../../../Web/Server');
+    const specifierMap = new Map(
+      Array.from(moduleMap).map(([, webModule]) => [
+        webModule.specifier,
+        webModule,
+      ]),
+    );
 
     reply.type('text/html');
 
     function getDeps(key: string): void {
-      const scriptModule = moduleMap.get(key);
+      const scriptModule = specifierMap.get(key);
       if (!scriptModule) {
         return;
       }
 
       if (relativePathRegex.test(scriptModule.specifier)) {
         clientImportMap.set(
-          `/Static/${scriptModule.path
+          `/Static/${scriptModule.filePath
             .replace(/\.tsx?$/, '')
             .replace('.js', '')}`,
-          `/Static/${scriptModule.path}`,
+          `/Static/${scriptModule.filePath}`,
         );
       } else {
         clientImportMap.set(
           scriptModule.specifier,
-          `/Static/${scriptModule.specifier}`,
+          `/Static/${scriptModule.filePath}`,
         );
       }
 
-      scriptModule.dependencies.map((depKey) => getDeps(depKey));
+      Array.from(scriptModule.dependencies).map((depKey) => getDeps(depKey));
     }
 
-    getDeps('/workspace/Web/src/Client.tsx');
+    getDeps(entrypoint);
 
     const clientMap = Object.fromEntries(clientImportMap);
 
