@@ -7,6 +7,8 @@
   "private": true,
   "scripts": {
     "build": "tsc -p ./tsconfig.build.json",
+    "prettier": "prettier --config .prettierrc --check 'src/**/*ts' 'bin/**/*.ts'",
+    "lint": "eslint --ext tsx,ts src",
     "test": "jest",
     "prestart": "node --loader @k-foss/ts-esnode --experimental-specifier-resolution=node --harmony-top-level-await ./bin/build.ts",
     "start": "node --loader @k-foss/ts-esnode --experimental-specifier-resolution=node --experimental-import-meta-resolve --harmony-optional-chaining --harmony-top-level-await ./src/Server/index.ts"
@@ -31,10 +33,10 @@
     "eslint-config-prettier": "6.10.1",
     "eslint-config-standard": "14.1.1",
     "eslint-plugin-import": "2.20.2",
-    "eslint-plugin-jest": "23.8.2",
     "eslint-plugin-node": "11.1.0",
     "eslint-plugin-prettier": "3.1.2",
     "eslint-plugin-promise": "4.2.1",
+    "eslint-plugin-react": "^7.19.0",
     "eslint-plugin-standard": "4.0.1",
     "nodemon": "2.0.2",
     "prettier": "2.0.2"
@@ -44,23 +46,31 @@
   "eslintConfig": {
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
-      "project": "./tsconfig.json",
-      "tsconfigRootDir": "."
+      "ecmaFeatures": {
+        "jsx": true
+      },
+      "project": [
+        "./tsconfig.json",
+        "*/tsconfig.json"
+      ]
     },
     "env": {
-      "jest/globals": true
+      "browser": true,
+      "node": true
     },
     "plugins": [
+      "react",
       "@typescript-eslint",
-      "prettier",
-      "jest"
+      "prettier"
     ],
     "extends": [
       "standard",
+      "plugin:react/recommended",
       "plugin:@typescript-eslint/recommended",
       "prettier",
       "prettier/standard",
-      "prettier/@typescript-eslint"
+      "prettier/@typescript-eslint",
+      "prettier/react"
     ],
     "rules": {
       "@typescript-eslint/no-unused-vars": [
