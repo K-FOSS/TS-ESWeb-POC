@@ -1,6 +1,6 @@
 name: Code Quality
 
-on: [push, pr]
+on: [push, pull_request]
 
 jobs:
   Prettier:
