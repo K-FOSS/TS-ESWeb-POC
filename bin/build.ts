@@ -17,5 +17,5 @@ await Promise.all([
   cpFile(
     'extras/ReactDOMPkg.json',
     'node_modules/@pika/react-dom/package.json',
-  )
+  ),
 ]);
