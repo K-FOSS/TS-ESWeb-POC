@@ -1,6 +1,7 @@
 // Web/src/Server.tsx
 import React from '@pika/react';
 import { renderToString } from 'react-dom/server';
+import { entrypoint } from '../Server/Modules/WebModule/Entrypoint';
 
 let count = 0;
 
@@ -27,9 +28,7 @@ export async function renderWeb(importMap: {
       "imports": ${JSON.stringify(importMap)}
     }
     </script>
-    <script src="${
-      importMap['/Static//workspace/src/Web/Client']
-    }" type="module">
+    <script src="${importMap[entrypoint]}" type="module">
     </script>
   </body>
   </html>`;

@@ -3,9 +3,11 @@ import fastify from 'fastify';
 import { Modules } from './Library/Modules';
 import { startWebTranspiler } from './Modules/TypeScript';
 import { moduleMap } from './Modules/WebModule';
+import { entrypoint } from './Modules/WebModule/Entrypoint';
 
 const modules = await Modules.loadModules();
-await startWebTranspiler('/workspace/src/Web/Client.tsx');
+
+await startWebTranspiler(entrypoint);
 
 const webServer = fastify();
 

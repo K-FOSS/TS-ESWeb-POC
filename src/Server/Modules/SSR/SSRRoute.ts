@@ -3,6 +3,7 @@ import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import { ServerResponse } from 'http';
 import { Route } from '../../Library/Modules/Models/Route';
 import { moduleMap } from '../WebModule';
+import { entrypoint } from '../WebModule/Entrypoint';
 
 const relativePathRegex = /^\.{0,2}[/]/;
 
@@ -51,7 +52,7 @@ export default class SSRRoute implements Route {
       Array.from(scriptModule.dependencies).map((depKey) => getDeps(depKey));
     }
 
-    getDeps('/workspace/src/Web/Client.tsx');
+    getDeps(entrypoint);
 
     const clientMap = Object.fromEntries(clientImportMap);
 
