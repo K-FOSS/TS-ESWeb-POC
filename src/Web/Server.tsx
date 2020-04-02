@@ -28,7 +28,9 @@ export async function renderWeb(importMap: {
       "imports": ${JSON.stringify(importMap)}
     }
     </script>
-    <script src="${importMap[entrypoint]}" type="module">
+    <script src="${
+      importMap[`/Static/${entrypoint.split('.')[0]}`]
+    }" type="module">
     </script>
   </body>
   </html>`;
