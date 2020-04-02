@@ -8,6 +8,9 @@ WORKDIR /app
 ENV NODE_ENV=production
 
 COPY --from=fetcher /src/app/node_modules /app/node_modules
+COPY ./extras/TS-ESNode/findFiles.js /app/node_modules/@k-foss/ts-esnode/out/dist/findFiles.js
+COPY ./extras/ReactDOMPkg.json /app/node_modules/@pika/react-dom/package.json
+COPY ./extras/ReactPkg.json /app/node_modules/@pika/react/package.json
 COPY --from=builder /src/app/dist /app/dist
 COPY --from=builder /src/app/package.json /app/
 

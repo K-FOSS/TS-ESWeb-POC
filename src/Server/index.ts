@@ -7,6 +7,7 @@ import { entrypoint } from './Modules/WebModule/Entrypoint';
 
 const modules = await Modules.loadModules();
 
+console.log(entrypoint);
 await startWebTranspiler(entrypoint);
 
 const webServer = fastify();
