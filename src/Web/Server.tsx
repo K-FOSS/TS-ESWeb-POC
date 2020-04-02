@@ -7,6 +7,8 @@ let count = 0;
 export async function renderWeb(importMap: {
   [key: string]: string;
 }): Promise<string> {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+  // @ts-ignore
   const importURLString = await import.meta.resolve('./App.tsx');
 
   const importURL = new URL(importURLString);
@@ -26,7 +28,7 @@ export async function renderWeb(importMap: {
     }
     </script>
     <script src="${
-      importMap['/Static//workspace/Web/src/Client']
+      importMap['/Static//workspace/src/Web/Client']
     }" type="module">
     </script>
   </body>

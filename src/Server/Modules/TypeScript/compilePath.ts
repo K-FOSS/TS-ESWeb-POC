@@ -1,58 +1,7 @@
 // src/Modules/TypeScript/compileScript.ts
-import { resolvePath } from '../../Utils/resolvePath';
 import { spawnWorker } from '../../Utils/Worker';
 import { createModuleKey } from '../../Library/Modules';
-
-export enum ModuleState {
-  COMPILING,
-  COMPILED,
-}
-
-interface BaseModule {
-  specifier: string;
-  path: string;
-
-  dependencies: string[];
-}
-
-interface CompilingModule extends BaseModule {
-  state: ModuleState.COMPILING;
-
-  compilePromise: Promise<CompiledModule>;
-}
-
-export interface CompiledModule extends BaseModule {
-  id: string;
-
-  state: ModuleState.COMPILED;
-
-  code: string;
-}
-
-export type ScriptModule = CompiledModule | CompilingModule;
-
-export enum MessageType {
-  'addModule',
-  'done',
-}
-
-export interface WorkerModuleAddModuleMessage {
-  type: MessageType.addModule;
-
-  data: {
-    key: string;
-
-    module: ScriptModule;
-  };
-}
-
-export interface WorkerModuleDoneMessage {
-  type: MessageType.done;
-
-  data: CompiledModule;
-}
-
-type WorkerMessage = WorkerModuleAddModuleMessage | WorkerModuleDoneMessage;
+import { fileURLToPath } from 'url';
 
 /**
  * Compiles the path
@@ -64,7 +13,7 @@ export async function compilePath(
 ): Promise<CompiledModule> {
   specifier = createModuleKey(entryPath, specifier);
 
-  if (compilerCache.has(entryPath)) {
+  if (compilerCache.has(specifier)) {
     const scriptModule = compilerCache.get(specifier);
     if (scriptModule) {
       if ('code' in scriptModule) return scriptModule;
@@ -75,14 +24,18 @@ export async function compilePath(
 
   console.log(`Spawning Transpile Worker for ${entryPath}`);
 
-  const transpileWorker = spawnWorker(
-    resolvePath('./transpileWorker.ts', import.meta.url),
-    {
-      entryPath,
-      specifier,
-      compilerCacheEntries: JSON.stringify(Array.from(compilerCache)),
-    },
+  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+  // @ts-ignore
+  const workerModulePath = await import.meta.resolve(
+    './transpileWorker',
+    import.meta.url,
   );
+
+  const transpileWorker = spawnWorker(fileURLToPath(workerModulePath), {
+    entryPath,
+    specifier,
+    compilerCacheEntries: JSON.stringify(Array.from(compilerCache)),
+  });
 
   const compilePromise = new Promise<CompiledModule>((resolve, reject) => {
     transpileWorker.on('message', (msg: WorkerMessage) => {

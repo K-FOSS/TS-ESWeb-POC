@@ -2,7 +2,7 @@
 import { promises as fs } from 'fs';
 import { resolve as resolvePath } from 'path';
 
-async function cpFile(srcPath: string, destPath: string): Promise<void> {
+export async function cpFile(srcPath: string, destPath: string): Promise<void> {
   console.debug(`Copying ${srcPath} to ${destPath}`);
 
   await fs.copyFile(resolvePath(srcPath), resolvePath(destPath));
@@ -13,12 +13,9 @@ async function cpFile(srcPath: string, destPath: string): Promise<void> {
 console.log('Building Project');
 
 await Promise.all([
-  cpFile(
-    'extras/ReactPKG.json',
-    'Web/node_modules/@pika/react-dom/package.json',
-  ),
+  cpFile('extras/ReactPKG.json', 'node_modules/@pika/react-dom/package.json'),
   cpFile(
     'extras/ReactDOMPkg.json',
-    'Web/node_modules/@pika/react-dom/package.json',
-  ),
+    'node_modules/@pika/react-dom/package.json',
+  )
 ]);

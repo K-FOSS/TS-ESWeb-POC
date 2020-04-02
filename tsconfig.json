@@ -23,5 +23,5 @@
     "emitDecoratorMetadata": true,
     "jsx": "react"
   },
-  "include": ["src/**/*.ts"]
+  "include": ["src/**/*", "bin/**/*"]
 }

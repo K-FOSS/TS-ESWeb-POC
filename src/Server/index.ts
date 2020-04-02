@@ -1,14 +1,11 @@
 // src/index.ts
 import fastify from 'fastify';
-import { Modules, moduleMap } from './Library/Modules';
-import { compilePath } from './Modules/TypeScript';
+import { Modules } from './Library/Modules';
+import { startWebTranspiler } from './Modules/TypeScript';
+import { moduleMap } from './Modules/WebModule';
 
 const modules = await Modules.loadModules();
-await compilePath(
-  '/workspace/Web/src/Client.tsx',
-  '/workspace/Web/src/Client.tsx',
-  moduleMap,
-);
+await startWebTranspiler('/workspace/src/Web/Client.tsx');
 
 const webServer = fastify();
 

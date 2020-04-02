@@ -8,8 +8,11 @@ jobs:
     steps:
       - name: Publish to Registry
         uses: elgohr/Publish-Docker-Github-Action@master
+        env:
+          BUILD_FILES: './tsconfig.build.json'
         with:
           name: k-foss/ts-esweb-poc/web-ui
           username: ${{ github.actor }}
           password: ${{ github.token }}
           registry: docker.pkg.github.com
+          buildargs: 'BUILD_FILES'
