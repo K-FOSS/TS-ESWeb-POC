@@ -100,7 +100,7 @@ parentPort.on(
         process.exit(0);
       }
 
-      await sleep(2500);
+      await sleep(3000);
       sendReady();
       return;
     } else emptyCount = 0;

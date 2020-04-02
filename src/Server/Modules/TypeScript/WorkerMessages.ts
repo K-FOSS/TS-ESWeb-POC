@@ -1,5 +1,4 @@
 // src/Server/Modules/TypeScript/WorkerMessages.ts
-
 import { WebModule, WebModuleDepedency } from '../WebModule';
 
 export enum TranspileWorkerMessageType {
