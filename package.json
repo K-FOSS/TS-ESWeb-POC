@@ -14,7 +14,7 @@
     "start": "node --loader @k-foss/ts-esnode --experimental-specifier-resolution=node --experimental-import-meta-resolve --harmony-optional-chaining --harmony-top-level-await ./src/Server/index.ts"
   },
   "dependencies": {
-    "@k-foss/ts-esnode": "^1.3.3",
+    "@k-foss/ts-esnode": "^1.3.5",
     "@pika/react": "^16.13.1",
     "@pika/react-dom": "^16.13.1",
     "fastify": "2.13.0",
