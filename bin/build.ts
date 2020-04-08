@@ -11,11 +11,3 @@ export async function cpFile(srcPath: string, destPath: string): Promise<void> {
 }
 
 console.log('Building Project');
-
-await Promise.all([
-  cpFile('extras/ReactPKG.json', 'node_modules/@pika/react-dom/package.json'),
-  cpFile(
-    'extras/ReactDOMPkg.json',
-    'node_modules/@pika/react-dom/package.json',
-  ),
-]);

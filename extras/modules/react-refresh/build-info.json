@@ -1,0 +1,8 @@
+{
+  "branch": "master",
+  "buildNumber": "119897",
+  "checksum": "a2f9c2d",
+  "commit": "2ff27ec11",
+  "environment": "ci",
+  "reactVersion": "16.13.1-experimental-2ff27ec11"
+}

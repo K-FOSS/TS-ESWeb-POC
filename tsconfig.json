@@ -8,12 +8,12 @@
     // Strict Rules
     "strict": true,
     "alwaysStrict": true,
-    "allowUnreachableCode": false,
-    "allowUnusedLabels": false,
+    "allowUnreachableCode": true,
+    "allowUnusedLabels": true,
     "strictPropertyInitialization": false,
 
     "allowJs": true,
-    "checkJs": true,
+    "outDir": "dist",
 
     // Source Maps
     "inlineSourceMap": true,
@@ -21,7 +21,8 @@
     // Features
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "jsx": "react"
+    "jsx": "react",
+    "reactNamespace": ""
   },
   "include": ["src/**/*", "bin/**/*"]
 }

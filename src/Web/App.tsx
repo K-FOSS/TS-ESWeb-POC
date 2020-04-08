@@ -1,12 +1,19 @@
 // Web/src/App.tsx
 import React from 'react';
-import HomeRoute from './Routes/HomeRoute';
+import { Routes, Route } from 'react-router-dom';
+import { Nav } from './Components/Nav';
 
-export function App(): React.ReactElement {
+const HomeRoute = React.lazy(() => import('./Routes/HomeRoute'));
+const AboutRoute = React.lazy(() => import('./Routes/AboutRoute'));
+
+export function App() {
   return (
-    <>
-      <h1 onClick={() => console.log('HelloWorld')}>App V3</h1>
-      <HomeRoute />
-    </>
+    <React.Suspense fallback={<div>Loading...</div>}>
+      <Nav />
+      <Routes>
+        <Route path='/' element={<HomeRoute />} />
+        <Route path='/About' element={<AboutRoute />} />
+      </Routes>
+    </React.Suspense>
   );
 }

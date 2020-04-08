@@ -6,25 +6,77 @@ import {
   TranspileWorkerMessage,
   TranspileWorkerMessageType,
 } from './WorkerMessages';
-import { cpus } from 'os';
 import { moduleMap } from '../WebModule';
+import { cpus } from 'os';
 
-const numCPUs = cpus().length;
+const numCPUs = cpus().length - 1;
 
-const moduleQue = new Set<TranspileQueItem>();
+const queDB = new Map<string, TranspileQueItem>();
+
+const moduleQue = new Set<string>();
+const queHistory = new Map<string, boolean>();
 
 function addModuleQue(queItem: TranspileQueItem): void {
-  if (moduleMap.has(queItem.filePath) || moduleQue.has(queItem)) return;
+  const filePath = queItem.filePath;
 
-  moduleQue.add(queItem);
+  if (
+    queDB.has(filePath) ||
+    queHistory.has(filePath) ||
+    moduleMap.has(queItem.filePath)
+  ) {
+    return;
+  }
+
+  queDB.set(filePath, queItem);
+  moduleQue.add(filePath);
 }
 
-function getLatestQue(): TranspileQueItem {
+function getLatestQueEntry(): TranspileQueItem | undefined {
   const queArray = Array.from(moduleQue);
-  const firstItem = queArray[0];
+  return queDB.get(queArray[0]);
+}
 
-  moduleQue.delete(firstItem);
-  return firstItem;
+let idleWorkers = 0;
+function postQueEntry(
+  queEntry: TranspileQueItem,
+  worker: import('worker_threads').Worker,
+): void {
+  queHistory.set(queEntry.filePath, true);
+
+  moduleQue.delete(queEntry.filePath);
+
+  idleWorkers--;
+  return worker.postMessage(queEntry);
+}
+
+let firstItem = true;
+
+function sendLatestQueEntry(
+  worker: import('worker_threads').Worker,
+): void | Promise<number | void> {
+  const queEntry = getLatestQueEntry();
+  if (queEntry) {
+    return postQueEntry(queEntry, worker);
+  }
+
+  return new Promise((resolve) => {
+    const checkInterval = setInterval(() => {
+      if (idleWorkers === numCPUs) {
+        clearInterval(checkInterval);
+
+        console.log('Killing worker due to all workers being idle');
+
+        return resolve(worker.terminate());
+      }
+
+      const workItem = getLatestQueEntry();
+      if (workItem) {
+        clearInterval(checkInterval);
+
+        resolve(postQueEntry(workItem, worker));
+      }
+    }, 1000);
+  });
 }
 
 /**
@@ -39,7 +91,7 @@ export async function startWebTranspiler(filePath: string): Promise<void[]> {
     specifier: filePath,
   });
 
-  moduleQue.add(entryQueItem);
+  addModuleQue(entryQueItem);
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
   // @ts-ignore
@@ -51,34 +103,32 @@ export async function startWebTranspiler(filePath: string): Promise<void[]> {
   function spawnTranspileWorker(): Promise<void> {
     return new Promise((resolve, reject) => {
       const transpileWorker = spawnWorker(fileURLToPath(workerModulePath), {});
+      idleWorkers++;
 
       transpileWorker.on('message', (workerMessage: TranspileWorkerMessage) => {
         switch (workerMessage.type) {
           case TranspileWorkerMessageType.READY:
-            console.log('Worker ready sending next item in que');
-            transpileWorker.postMessage(getLatestQue());
+            sendLatestQueEntry(transpileWorker);
             break;
           case TranspileWorkerMessageType.PUSH_OUTPUT:
+            if (firstItem === true) firstItem = false;
+            idleWorkers++;
+
             moduleMap.set(
               workerMessage.webModule.filePath,
               workerMessage.webModule,
             );
+
             workerMessage.dependencies.map(addModuleQue);
             break;
         }
       });
 
       transpileWorker.on('exit', (code) => {
-        if (code !== 0) reject(new Error('Worker exited non zero'));
-
         resolve();
       });
     });
   }
 
-  const workerThreads: Promise<void>[] = [];
-
-  for (let i = 0; i < numCPUs; i++) workerThreads.push(spawnTranspileWorker());
-
-  return Promise.all(workerThreads);
+  return Promise.all(Array(numCPUs).fill(0).map(spawnTranspileWorker));
 }
