@@ -17,45 +17,43 @@ export class Modules {
   static async loadModules(): Promise<Modules> {
     const modules = new Modules();
 
-    const moduleItems = await fs.readdir(modulesPath, { withFileTypes: true });
+    const moduleEntries = await fs.readdir(modulesPath, {
+      withFileTypes: true,
+    });
 
-    await Promise.all(
-      moduleItems.map(async (moduleItem) => {
-        if (!moduleItem.isDirectory()) return;
+    const folderContentPromises: Promise<void>[] = [];
 
-        const modulePath = resolvePath(modulesPath, moduleItem.name);
+    for (const moduleEntry of moduleEntries) {
+      if (!moduleEntry.isDirectory()) continue;
 
-        const moduleContents = await fs.readdir(modulePath, {
-          withFileTypes: true,
-        });
+      const folderPath = resolvePath(modulesPath, moduleEntry.name);
+      const folderContents = await fs.readdir(folderPath);
 
-        return Promise.all(
-          moduleContents.map(async (moduleContent) => {
-            const moduleContentPath = resolvePath(
-              modulePath,
-              moduleContent.name,
+      const fileProcessing = folderContents.map(async (fileName) => {
+        const filePath = resolvePath(folderPath, fileName);
+
+        for (const moduleHandlerKey in moduleHandlers) {
+          // Needed because TypeScript is typing moduleHandlerKey as string instead of ModuleTypes
+          const handlerKey = moduleHandlerKey as ModuleTypes;
+
+          const handler = moduleHandlers[handlerKey];
+
+          if (handler.regex.test(fileName)) {
+            const handlerResult = await handler.importHandler(() =>
+              import(filePath),
             );
 
-            for (const moduleHandlerKey in moduleHandlers) {
-              // Needed because TypeScript is typing moduleHandlerKey as string instead of ModuleTypes
-              const handlerKey = moduleHandlerKey as ModuleTypes;
+            modules[handlerKey].push(handlerResult);
 
-              const handler = moduleHandlers[handlerKey];
+            break;
+          }
+        }
+      });
 
-              if (handler.regex.test(moduleContent.name)) {
-                const handlerResult = await handler.importHandler(() =>
-                  import(moduleContentPath),
-                );
+      folderContentPromises.push(...fileProcessing);
+    }
 
-                modules[handlerKey].push(handlerResult);
-
-                break;
-              }
-            }
-          }),
-        );
-      }),
-    );
+    console.log(modules);
 
     return modules;
   }

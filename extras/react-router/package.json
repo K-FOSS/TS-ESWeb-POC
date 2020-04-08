@@ -1,0 +1,64 @@
+{
+  "_from": "react-router@next",
+  "_id": "react-router@6.0.0-alpha.2",
+  "_inBundle": false,
+  "_integrity": "sha512-pQyM4qQfkB2PYzf5O43RKi6nMrdFrUyHfkFRpY3Y/RjgzLljQ8CKy+ePoBSAL94t7WKDew0ArSTUOv1C1uiDVg==",
+  "_location": "/react-router",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "react-router@next",
+    "name": "react-router",
+    "escapedName": "react-router",
+    "rawSpec": "next",
+    "saveSpec": null,
+    "fetchSpec": "next"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/react-router/-/react-router-6.0.0-alpha.2.tgz",
+  "_shasum": "cfed9b59e88109f124f6164108b95d4fc8851a77",
+  "_spec": "react-router@next",
+  "_where": "/workspace",
+  "author": {
+    "name": "React Training",
+    "email": "hello@reacttraining.com"
+  },
+  "bugs": {
+    "url": "https://github.com/ReactTraining/react-router/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "history": "5.0.0-beta.4",
+    "prop-types": "^15.7.2"
+  },
+  "deprecated": false,
+  "description": "Declarative routing for React",
+  "homepage": "https://github.com/ReactTraining/react-router#readme",
+  "keywords": [
+    "react",
+    "router",
+    "route",
+    "routing",
+    "history",
+    "link"
+  ],
+  "license": "MIT",
+  "type": "module",
+  "main": "react-router.development.js",
+  "module": "react-router.js",
+  "name": "react-router",
+  "peerDependencies": {
+    "react": ">=16.8"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ReactTraining/react-router.git"
+  },
+  "sideEffects": false,
+  "unpkg": "umd/react-router.production.min.js",
+  "version": "6.0.0-alpha.2"
+}

@@ -6,6 +6,7 @@
   "type": "module",
   "private": true,
   "scripts": {
+    "postinstall": "node --loader @k-foss/ts-esnode --experimental-specifier-resolution=node --harmony-top-level-await ./bin/postInstall.ts",
     "build": "tsc -p ./tsconfig.build.json",
     "prettier": "prettier --config .prettierrc --check 'src/**/*ts' 'bin/**/*.ts'",
     "lint": "eslint --ext tsx,ts src",
@@ -14,16 +15,21 @@
     "start": "node --loader @k-foss/ts-esnode --experimental-specifier-resolution=node --experimental-import-meta-resolve --harmony-optional-chaining --harmony-top-level-await ./src/Server/index.ts"
   },
   "dependencies": {
-    "@k-foss/ts-esnode": "^1.3.3",
-    "@pika/react": "^16.13.1",
-    "@pika/react-dom": "^16.13.1",
+    "@k-foss/ts-esnode": "^1.3.5",
+    "@wessberg/cjs-to-esm-transformer": "0.0.19",
+    "cross-fetch": "^3.0.4",
     "fastify": "2.13.0",
     "nanoid": "3.0.2",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
+    "react": "0.0.0-experimental-d7382b6c4",
+    "react-client": "file:extras/modules/react-client",
+    "react-dom": "0.0.0-experimental-d7382b6c4",
+    "react-router": "^6.0.0-alpha.2",
+    "react-router-dom": "^6.0.0-alpha.2",
+    "react-server": "file:extras/modules/react-server",
     "typescript": "^3.8.3"
   },
   "devDependencies": {
+    "@types/history": "^4.7.5",
     "@types/node": "13.11.0",
     "@types/react": "16.9.31",
     "@types/react-dom": "16.9.6",
@@ -67,10 +73,8 @@
       "standard",
       "plugin:react/recommended",
       "plugin:@typescript-eslint/recommended",
-      "prettier",
-      "prettier/standard",
       "prettier/@typescript-eslint",
-      "prettier/react"
+      "plugin:prettier/recommended"
     ],
     "rules": {
       "@typescript-eslint/no-unused-vars": [

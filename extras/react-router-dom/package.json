@@ -1,0 +1,59 @@
+{
+  "_from": "react-router-dom@next",
+  "_id": "react-router-dom@6.0.0-alpha.2",
+  "_inBundle": false,
+  "_integrity": "sha512-c0lRIHtxVGj83jDy/HtBhNwJMfNiiDVdIgZ/Y8nUbyLMpl84Lrtfl3s8WQ0S2IVt6yHtbX6THlYUKYru7wQsuQ==",
+  "_location": "/react-router-dom",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "react-router-dom@next",
+    "name": "react-router-dom",
+    "escapedName": "react-router-dom",
+    "rawSpec": "next",
+    "saveSpec": null,
+    "fetchSpec": "next"
+  },
+  "_requiredBy": ["#USER", "/"],
+  "_resolved": "https://registry.npmjs.org/react-router-dom/-/react-router-dom-6.0.0-alpha.2.tgz",
+  "_shasum": "fd79fa09cad791ff2f55fab9246fae49bec912a4",
+  "_spec": "react-router-dom@next",
+  "_where": "/workspace",
+  "author": {
+    "name": "React Training",
+    "email": "hello@reacttraining.com"
+  },
+  "bugs": {
+    "url": "https://github.com/ReactTraining/react-router/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "history": "5.0.0-beta.4",
+    "prop-types": "^15.7.2"
+  },
+  "deprecated": false,
+  "description": "Declarative routing for React web applications",
+  "homepage": "https://github.com/ReactTraining/react-router#readme",
+  "keywords": ["react", "router", "route", "routing", "history", "link"],
+  "license": "MIT",
+  "type": "module",
+  "main": "react-router-dom.development.js",
+  "module": "react-router-dom.js",
+  "name": "react-router-dom",
+  "peerDependencies": {
+    "react": ">=16.8",
+    "react-dom": ">=16.8",
+    "react-router": "6.0.0-alpha.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ReactTraining/react-router.git"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "sideEffects": false,
+  "unpkg": "umd/react-router-dom.production.min.js",
+  "version": "6.0.0-alpha.2"
+}

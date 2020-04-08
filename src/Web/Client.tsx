@@ -1,14 +1,27 @@
 // Web/src/Client.tsx
-import React from '@pika/react';
-import { hydrate } from 'react-dom';
+/// <reference types="react-dom/experimental" />
+import * as React from 'react';
+import { createRoot } from 'react-dom';
 import { App } from './App';
-
-import '@pika/react-dom';
+import { createFromFetch } from './Library/ReactClient/index.ts';
+import { DataProvider } from './Providers/DataProvider';
+import { BrowserRouter } from 'react-router-dom';
 
 async function renderClient(): Promise<void> {
-  console.log('Rendering client.tsx');
+  const response = createFromFetch(fetch('/SSRStream'));
 
-  hydrate(<App />, document.getElementById('app'));
+  const container = document.getElementById('app')!;
+  const root = createRoot(container, {
+    hydrate: true,
+  });
+
+  root.render(
+    <BrowserRouter>
+      <DataProvider response={response}>
+        <App />
+      </DataProvider>
+    </BrowserRouter>,
+  );
 }
 
 console.log('Starting render client');
