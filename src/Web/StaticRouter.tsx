@@ -1,3 +1,4 @@
+/* eslint-disable */
 // @ts-nocheck
 import React from 'react';
 import type { PropsWithChildren } from 'react';
@@ -22,6 +23,7 @@ export function StaticRouter({
   if (typeof loc === 'string') loc = parsePath(loc);
 
   let action = 'POP';
+
   let location = {
     pathname: loc.pathname || '/',
     search: loc.search || '',
