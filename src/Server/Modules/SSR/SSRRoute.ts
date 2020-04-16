@@ -1,13 +1,11 @@
 // src/Modules/SSR/SSRRoute.ts
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import { ServerResponse } from 'http';
+import { HMRLoader } from '../../../Utils/hmrLoader';
 import { Route } from '../../Library/Modules/Models/Route';
 import { moduleMap } from '../WebModule';
-import { entrypoint } from '../WebModule/Entrypoint';
 
 const relativePathRegex = /^\.{0,2}[/]/;
-
-let count = 0;
 
 export default class SSRRoute implements Route {
   public options: Route['options'] = {
@@ -22,16 +20,10 @@ export default class SSRRoute implements Route {
   ) {
     const clientImportMap = new Map<string, string>();
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-    // @ts-ignore
-    const importURLString = await import.meta.resolve('../../../Web/Server');
-
-    const importURL = new URL(importURLString);
-    importURL.searchParams.set('count', `${count++}`);
-
-    const { renderWeb } = (await import(
-      importURL.href
-    )) as typeof import('../../../Web/Server');
+    const { renderWeb } = await HMRLoader<typeof import('../../../Web/Server')>(
+      '../../../Web/Server',
+      import.meta.url,
+    );
 
     const specifierMap = new Map(
       Array.from(moduleMap).map(([, webModule]) => [
@@ -50,22 +42,22 @@ export default class SSRRoute implements Route {
 
       if (relativePathRegex.test(scriptModule.specifier)) {
         clientImportMap.set(
-          `/Static/${scriptModule.filePath
+          `/Static${scriptModule.filePath
             .replace(/\.tsx?$/, '')
             .replace('.js', '')}`,
-          `/Static/${scriptModule.filePath}`,
+          `/Static${scriptModule.filePath}`,
         );
       } else {
         clientImportMap.set(
           scriptModule.specifier,
-          `/Static/${scriptModule.filePath}`,
+          `/Static${scriptModule.filePath}`,
         );
       }
 
       Array.from(scriptModule.dependencies).map((depKey) => getDeps(depKey));
     }
 
-    getDeps(entrypoint);
+    getDeps('/workspace/src/Web/Client.tsx');
 
     const clientMap = Object.fromEntries(clientImportMap);
 

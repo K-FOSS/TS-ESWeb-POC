@@ -1,5 +1,5 @@
 // src/@types/react-server.ts
-declare module 'react-server/cjs/react-server-flight.development' {
+declare module 'react-server/flight' {
   import type { ReactElement } from 'react';
   import type { Writable } from 'stream';
 

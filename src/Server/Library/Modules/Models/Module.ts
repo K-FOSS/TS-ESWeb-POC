@@ -21,39 +21,35 @@ export class Modules {
       withFileTypes: true,
     });
 
-    const folderContentPromises: Promise<void>[] = [];
-
     for (const moduleEntry of moduleEntries) {
       if (!moduleEntry.isDirectory()) continue;
 
       const folderPath = resolvePath(modulesPath, moduleEntry.name);
       const folderContents = await fs.readdir(folderPath);
 
-      const fileProcessing = folderContents.map(async (fileName) => {
-        const filePath = resolvePath(folderPath, fileName);
+      await Promise.all(
+        folderContents.map(async (fileName) => {
+          const filePath = resolvePath(folderPath, fileName);
 
-        for (const moduleHandlerKey in moduleHandlers) {
-          // Needed because TypeScript is typing moduleHandlerKey as string instead of ModuleTypes
-          const handlerKey = moduleHandlerKey as ModuleTypes;
+          for (const moduleHandlerKey in moduleHandlers) {
+            // Needed because TypeScript is typing moduleHandlerKey as string instead of ModuleTypes
+            const handlerKey = moduleHandlerKey as ModuleTypes;
 
-          const handler = moduleHandlers[handlerKey];
+            const handler = moduleHandlers[handlerKey];
 
-          if (handler.regex.test(fileName)) {
-            const handlerResult = await handler.importHandler(() =>
-              import(filePath),
-            );
+            if (handler.regex.test(fileName)) {
+              const handlerResult = await handler.importHandler(() =>
+                import(filePath),
+              );
 
-            modules[handlerKey].push(handlerResult);
+              modules[handlerKey].push(handlerResult);
 
-            break;
+              break;
+            }
           }
-        }
-      });
-
-      folderContentPromises.push(...fileProcessing);
+        }),
+      );
     }
-
-    console.log(modules);
 
     return modules;
   }

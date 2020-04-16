@@ -36,18 +36,14 @@ function startReadingFromStream(
       return;
     }
 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    // @ts-ignore
     processBinaryChunk(response, value);
 
     return reader.read().then(progress, error);
   }
 
   reader.read().then(progress, error);
-}
-
-function createFromReadableStream(stream: ReadableStream) {
-  const response = createResponse();
-  startReadingFromStream(response, stream);
-  return response;
 }
 
 function createFromFetch(promiseForResponse: Promise<Response>) {

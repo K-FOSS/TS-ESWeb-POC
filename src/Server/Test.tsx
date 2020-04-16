@@ -2,7 +2,7 @@
 import { FastifyReply } from 'fastify';
 import { ServerResponse } from 'http';
 import React from 'react';
-import ReactServer from 'react-server/cjs/react-server-flight.development';
+import ReactServer from 'react-server/flight';
 import { Writable } from 'stream';
 import { Toggle } from './Components/Toggle';
 import * as ServerConfig from './ReactServerConfig';

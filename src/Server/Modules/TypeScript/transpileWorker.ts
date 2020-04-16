@@ -21,20 +21,10 @@ function sendReady(): void {
   } as TranspileWorkerMessage);
 }
 
-function sendPushOutput(
-  webModule: WebModule,
-  dependencies: WebModuleDepedency[],
-): void {
-  parentPort!.postMessage({
-    type: TranspileWorkerMessageType.PUSH_OUTPUT,
-    webModule,
-    dependencies,
-  } as TranspileWorkerMessage);
-
-  sendReady();
-}
-
-function transpilePath({ filePath, specifier }: TranspileQueItem): WebModule {
+async function transpilePath({
+  filePath,
+  specifier,
+}: TranspileQueItem): Promise<WebModule[]> {
   const rootDir = dirname(filePath);
 
   const tsConfig = getTSConfig(filePath);
@@ -48,6 +38,8 @@ function transpilePath({ filePath, specifier }: TranspileQueItem): WebModule {
     specifier,
     filePath,
   });
+
+  const localModules: WebModule[] = [];
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
   // @ts-ignore
@@ -67,12 +59,19 @@ function transpilePath({ filePath, specifier }: TranspileQueItem): WebModule {
       initialModule.filePath = initialSource.fileName;
 
       sourceFiles.map((sourceFile) => {
-        if (!sourceFile.resolvedModules) {
-          return;
+        const webModule = new WebModule({
+          code: contents,
+          filePath: sourceFile.fileName,
+          specifier: sourceFile.fileName,
+        });
+
+        if (sourceFile.resolvedModules) {
+          for (const [moduleName] of sourceFile.resolvedModules) {
+            webModule.dependencies.add(moduleName);
+          }
         }
-        for (const [moduleName] of sourceFile.resolvedModules) {
-          initialModule.dependencies.add(moduleName);
-        }
+
+        localModules.push(webModule);
       });
     }
   };
@@ -84,29 +83,40 @@ function transpilePath({ filePath, specifier }: TranspileQueItem): WebModule {
   });
   compilerProgram.emit(undefined, undefined, undefined, undefined, cjsToEsm());
 
-  return initialModule;
+  return localModules;
 }
 
 parentPort.on('message', async (parentMessage: TranspileQueItem) => {
-  const webModule = await transpilePath(parentMessage);
-  const dependencies = await Promise.all(
-    Array.from(webModule.dependencies).map(
-      async (dependencySpecifier): Promise<WebModuleDepedency> => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-        // @ts-ignore
-        const modulePath = await import.meta.resolve(
-          dependencySpecifier,
-          pathToFileURL(webModule.filePath).href,
-        );
-        return {
-          filePath: fileURLToPath(modulePath),
-          specifier: dependencySpecifier,
-        };
-      },
-    ),
+  const webModules = await transpilePath(parentMessage);
+
+  await Promise.all(
+    webModules.map(async (webModule) => {
+      const dependencies = await Promise.all(
+        Array.from(webModule.dependencies).map(
+          async (dependencySpecifier): Promise<WebModuleDepedency> => {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+            // @ts-ignore
+            const modulePath = await import.meta.resolve(
+              dependencySpecifier,
+              pathToFileURL(webModule.filePath).href,
+            );
+            return {
+              filePath: fileURLToPath(modulePath),
+              specifier: dependencySpecifier,
+            };
+          },
+        ),
+      );
+
+      parentPort!.postMessage({
+        type: TranspileWorkerMessageType.PUSH_OUTPUT,
+        webModule,
+        dependencies,
+      } as TranspileWorkerMessage);
+    }),
   );
 
-  return sendPushOutput(webModule, dependencies);
+  sendReady();
 });
 
 sendReady();
