@@ -7,6 +7,8 @@ import { moduleMap } from '../WebModule';
 
 const relativePathRegex = /^\.{0,2}[/]/;
 
+let count = 0;
+
 export default class SSRRoute implements Route {
   public options: Route['options'] = {
     method: 'GET',

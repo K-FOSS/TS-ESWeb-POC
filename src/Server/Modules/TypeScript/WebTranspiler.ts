@@ -103,6 +103,7 @@ export async function startWebTranspiler(filePath: string): Promise<void[]> {
   function spawnTranspileWorker(): Promise<void> {
     return new Promise((resolve, reject) => {
       const transpileWorker = spawnWorker(fileURLToPath(workerModulePath), {});
+      idleWorkers++;
 
       transpileWorker.on('message', (workerMessage: TranspileWorkerMessage) => {
         switch (workerMessage.type) {

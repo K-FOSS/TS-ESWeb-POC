@@ -6,6 +6,7 @@ import { Modules } from './Library/Modules';
 import { startWebTranspiler } from './Modules/TypeScript';
 import { moduleMap } from './Modules/WebModule';
 import { entrypoint } from './Modules/WebModule/Entrypoint';
+import * as inspector from 'inspector';
 
 const modules = await Modules.loadModules();
 
