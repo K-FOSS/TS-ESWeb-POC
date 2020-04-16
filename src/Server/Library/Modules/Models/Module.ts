@@ -21,15 +21,13 @@ export class Modules {
       withFileTypes: true,
     });
 
-    const folderContentPromises: Promise<void>[] = [];
-
     for (const moduleEntry of moduleEntries) {
       if (!moduleEntry.isDirectory()) continue;
 
       const folderPath = resolvePath(modulesPath, moduleEntry.name);
       const folderContents = await fs.readdir(folderPath);
 
-      const fileProcessing = await Promise.all(
+      await Promise.all(
         folderContents.map(async (fileName) => {
           const filePath = resolvePath(folderPath, fileName);
 
