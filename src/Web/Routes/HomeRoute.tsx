@@ -1,6 +1,6 @@
 // Web/src/Routes/HomeRoute.tsx
-import * as React from 'react';
-import { useRoot } from '../Providers/DataProvider.tsx';
+import React from 'react';
+import { useRoot } from '../Providers/DataProvider';
 
 export default function HomeRoute(): React.ReactElement {
   const { content } = useRoot();

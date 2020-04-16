@@ -75,7 +75,7 @@ function sendLatestQueEntry(
 
         resolve(postQueEntry(workItem, worker));
       }
-    }, 1000);
+    }, 500);
   });
 }
 
@@ -103,16 +103,15 @@ export async function startWebTranspiler(filePath: string): Promise<void[]> {
   function spawnTranspileWorker(): Promise<void> {
     return new Promise((resolve, reject) => {
       const transpileWorker = spawnWorker(fileURLToPath(workerModulePath), {});
-      idleWorkers++;
 
       transpileWorker.on('message', (workerMessage: TranspileWorkerMessage) => {
         switch (workerMessage.type) {
           case TranspileWorkerMessageType.READY:
+            idleWorkers++;
             sendLatestQueEntry(transpileWorker);
             break;
           case TranspileWorkerMessageType.PUSH_OUTPUT:
             if (firstItem === true) firstItem = false;
-            idleWorkers++;
 
             moduleMap.set(
               workerMessage.webModule.filePath,

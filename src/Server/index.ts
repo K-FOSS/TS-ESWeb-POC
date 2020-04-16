@@ -1,16 +1,21 @@
 // src/index.ts
 import fastify, { FastifyInstance } from 'fastify';
+import * as inspector from 'inspector';
+import { HMRLoader } from '../Utils/hmrLoader';
 import { Modules } from './Library/Modules';
 import { startWebTranspiler } from './Modules/TypeScript';
 import { moduleMap } from './Modules/WebModule';
 import { entrypoint } from './Modules/WebModule/Entrypoint';
-import * as inspector from 'inspector';
 
 const modules = await Modules.loadModules();
 
-inspector.open(5822, '0.0.0.0');
+if (process.env.NODE_ENV !== 'production') {
+  inspector.open(5822, '0.0.0.0');
 
-await startWebTranspiler(entrypoint);
+  await startWebTranspiler(entrypoint);
+} else {
+  console.log(moduleMap.entries());
+}
 
 const webServer = fastify() as FastifyInstance;
 
@@ -63,21 +68,13 @@ webServer.get('/Static/*', async function (request, reply) {
   );
 });
 
-let count = 0;
-
 webServer.get('/SSRStream', async (request, reply) => {
   reply.header('Access-Control-Allow-Origin', '*');
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-  // @ts-ignore
-  const importURLString = await import.meta.resolve('./Test');
-
-  const importURL = new URL(importURLString);
-  importURL.searchParams.set('count', `${count++}`);
-
-  const { handleRequest } = (await import(
-    importURL.href
-  )) as typeof import('./Test');
+  const { handleRequest } = await HMRLoader<typeof import('./Test')>(
+    './Test',
+    import.meta.url,
+  );
 
   handleRequest(reply);
 });

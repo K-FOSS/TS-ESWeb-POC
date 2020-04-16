@@ -6,12 +6,12 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "postinstall": "node --loader @k-foss/ts-esnode --experimental-specifier-resolution=node --harmony-top-level-await ./bin/postInstall.ts",
-    "build": "tsc -p ./tsconfig.build.json",
+    "runner": "node --loader @k-foss/ts-esnode --experimental-specifier-resolution=node --experimental-import-meta-resolve --harmony-optional-chaining --harmony-top-level-await",
+    "postinstall": "node --loader @k-foss/ts-esnode --experimental-specifier-resolution=node --experimental-import-meta-resolve --harmony-optional-chaining --harmony-top-level-await ./bin/postInstall.ts",
+    "build": "npm run runner -- ./bin/build.ts",
     "prettier": "prettier --config .prettierrc --check 'src/**/*ts' 'bin/**/*.ts'",
     "lint": "eslint --ext tsx,ts src",
-    "test": "jest",
-    "prestart": "node --loader @k-foss/ts-esnode --experimental-specifier-resolution=node --harmony-top-level-await ./bin/build.ts",
+    "test": "echo 'TODO'",
     "start": "node --loader @k-foss/ts-esnode --experimental-specifier-resolution=node --experimental-import-meta-resolve --harmony-optional-chaining --harmony-top-level-await ./src/Server/index.ts"
   },
   "dependencies": {

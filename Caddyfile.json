@@ -1,0 +1,47 @@
+{
+  "apps": {
+    "http": {
+      "servers": {
+        "srv0": {
+          "listen": [":8080"],
+          "routes": [
+            {
+              "match": [
+                {
+                  "path": ["/Static/*"]
+                }
+              ],
+              "handle": [
+                {
+                  "handler": "headers",
+                  "response": {
+                    "add": {
+                      "Content-Type": ["application/javascript"]
+                    }
+                  }
+                },
+                {
+                  "handler": "file_server",
+                  "root": "/app/public"
+                }
+              ]
+            },
+            {
+              "handle": [
+                {
+                  "handler": "reverse_proxy",
+                  "upstreams": [
+                    {
+                      "dial": "UI:1231"
+                    }
+                  ]
+                }
+              ],
+              "terminal": true
+            }
+          ]
+        }
+      }
+    }
+  }
+}

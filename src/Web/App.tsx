@@ -8,12 +8,14 @@ const AboutRoute = React.lazy(() => import('./Routes/AboutRoute'));
 
 export function App() {
   return (
-    <React.Suspense fallback={<div>Loading...</div>}>
+    <>
       <Nav />
-      <Routes>
-        <Route path='/' element={<HomeRoute />} />
-        <Route path='/About' element={<AboutRoute />} />
-      </Routes>
-    </React.Suspense>
+      <React.Suspense fallback={<div>Loading page...</div>}>
+        <Routes>
+          <Route path='/' element={<HomeRoute />} />
+          <Route path='/About' element={<AboutRoute />} />
+        </Routes>
+      </React.Suspense>
+    </>
   );
 }

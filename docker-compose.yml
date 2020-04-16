@@ -1,0 +1,22 @@
+version: '3.7'
+
+volumes:
+  staticWeb:
+
+services:
+  Web:
+    image: caddy/caddy:alpine
+    restart: unless-stopped
+    command: ['caddy', 'run', '--config', '/etc/caddy/Caddyfile.json']
+    ports:
+      - 8080:8080
+    volumes:
+      - staticWeb:/app/public/Static/workspace:ro
+      - ./Caddyfile.json:/etc/caddy/Caddyfile.json:ro
+
+  UI:
+    image: k-foss/ts-esweb-poc-ui
+    build: ./
+    restart: unless-stopped
+    volumes:
+      - staticWeb:/workspace/dist/workspace

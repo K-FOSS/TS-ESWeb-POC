@@ -1,5 +1,5 @@
 // src/Web/Routes/AboutRoute.tsx
-import * as React from 'react';
+import React from 'react';
 
 export default function AboutRoute(): React.ReactElement {
   const handleClick = React.useCallback(() => {
