@@ -29,11 +29,11 @@ await Promise.all([
   ),
   cpFile(
     'extras/scheduler/scheduler-tracing.development.js',
-    'node_modules/react-dom/node_modules/scheduler/cjs/scheduler-tracing.development.js',
+    'node_modules/scheduler/cjs/scheduler-tracing.development.js',
   ),
   cpFile(
     'extras/scheduler/scheduler.development.js',
-    'node_modules/react-dom/node_modules/scheduler/cjs/scheduler.development.js',
+    'node_modules/scheduler/cjs/scheduler.development.js',
   ),
   cpFile('extras/prop-types/index.js', 'node_modules/prop-types/index.js'),
 ]);

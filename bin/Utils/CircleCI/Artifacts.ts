@@ -1,6 +1,6 @@
 // bin/Utils/CircleCI/Artifacts.ts
 import 'cross-fetch/dist/node-polyfill';
-import { extract } from 'tar-fs';
+import { extract, Extract } from 'tar-fs';
 import gunzip from 'gunzip-maybe';
 import { cpDir } from '../cpDir';
 
@@ -29,6 +29,12 @@ interface Artifact {
   node_index: number;
 
   url: string;
+}
+
+function waitOnFinish(stream: Extract): Promise<void> {
+  return new Promise((resolve) => {
+    stream.on('finish', resolve);
+  });
 }
 
 export async function getLatestArtifacts(): Promise<string> {
@@ -62,6 +68,8 @@ export async function getLatestArtifacts(): Promise<string> {
   // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
   // @ts-ignore
   await buildRequest.body.pipe(gunzipStream);
+
+  await waitOnFinish(extractStream);
 
   await cpDir('tmp/build/node_modules', 'node_modules');
 
