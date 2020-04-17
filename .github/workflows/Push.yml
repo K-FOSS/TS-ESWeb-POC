@@ -1,6 +1,6 @@
 name: Build & Push Docker Image
 
-on: push
+on: [push]
 
 jobs:
   Build:
@@ -9,8 +9,6 @@ jobs:
       - uses: actions/checkout@v2
       - name: Publish to Registry
         uses: elgohr/Publish-Docker-Github-Action@master
-        env:
-          BUILD_FILES: './tsconfig.build.json'
         with:
           name: k-foss/ts-esweb-poc/web-ui
           snapshot: true
@@ -18,4 +16,3 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ github.token }}
           registry: docker.pkg.github.com
-          buildargs: BUILD_FILES
