@@ -87,6 +87,8 @@ async function transpilePath({
 }
 
 parentPort.on('message', async (parentMessage: TranspileQueItem) => {
+  console.log('transpiling:', parentMessage.filePath);
+
   const webModules = await transpilePath(parentMessage);
 
   await Promise.all(

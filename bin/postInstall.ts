@@ -1,6 +1,9 @@
 // bin/postInstall.ts
 import { processModule } from './Utils/proceseNodeModule';
 import { cpFile } from './Utils/cpFile';
+import { getLatestArtifacts } from './Utils/CircleCI/Artifacts';
+
+await getLatestArtifacts();
 
 const cjsFiles: string[] = [
   'react/cjs/react.development.js',

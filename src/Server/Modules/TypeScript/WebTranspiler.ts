@@ -61,12 +61,14 @@ function sendLatestQueEntry(
 
   return new Promise((resolve) => {
     const checkInterval = setInterval(() => {
-      if (idleWorkers === numCPUs) {
+      if (idleWorkers === numCPUs * 2) {
         clearInterval(checkInterval);
 
         console.log('Killing worker due to all workers being idle');
 
         return resolve(worker.terminate());
+      } else {
+        console.log(idleWorkers, numCPUs);
       }
 
       const workItem = getLatestQueEntry();
