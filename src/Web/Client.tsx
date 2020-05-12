@@ -1,15 +1,13 @@
 // Web/src/Client.tsx
 /// <reference types="react-dom/experimental" />
+import './Library/Entry';
 import * as React from 'react';
 import { createRoot } from 'react-dom';
 import { App } from './App';
-import { createFromFetch } from './Library/ReactClient';
-import { DataProvider } from './Providers/DataProvider';
 import { BrowserRouter } from 'react-router-dom';
+import 'react-is/cjs/react-is.development';
 
 async function renderClient(): Promise<void> {
-  const response = createFromFetch(fetch('/SSRStream'));
-
   const container = document.getElementById('app')!;
   const root = createRoot(container, {
     hydrate: true,
@@ -17,9 +15,7 @@ async function renderClient(): Promise<void> {
 
   root.render(
     <BrowserRouter>
-      <DataProvider response={response}>
-        <App />
-      </DataProvider>
+      <App />
     </BrowserRouter>,
   );
 }

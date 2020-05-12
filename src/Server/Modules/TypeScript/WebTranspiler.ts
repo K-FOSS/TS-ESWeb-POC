@@ -19,13 +19,17 @@ const queHistory = new Map<string, boolean>();
 function addModuleQue(queItem: TranspileQueItem): void {
   const filePath = queItem.filePath;
 
-  if (
-    queDB.has(filePath) ||
-    queHistory.has(filePath) ||
-    moduleMap.has(queItem.filePath)
-  ) {
+  if (queHistory.has(filePath)) {
+    console.log(`${filePath} already in que history`);
     return;
   }
+
+  if (moduleMap.has(filePath)) {
+    console.log(`${filePath} already in moduleMap`);
+    return;
+  }
+
+  console.log(`Adding ${queItem.filePath} to module que`);
 
   queDB.set(filePath, queItem);
   moduleQue.add(filePath);
@@ -33,7 +37,22 @@ function addModuleQue(queItem: TranspileQueItem): void {
 
 function getLatestQueEntry(): TranspileQueItem | undefined {
   const queArray = Array.from(moduleQue);
-  return queDB.get(queArray[0]);
+  const queEntry = queDB.get(queArray[0]);
+
+  if (queEntry) {
+    const filePath = queEntry.filePath;
+    if (queHistory.has(filePath)) {
+      moduleQue.delete(queEntry.filePath);
+      return;
+    }
+
+    if (moduleMap.has(filePath)) {
+      moduleQue.delete(queEntry.filePath);
+      return;
+    }
+  }
+
+  return queEntry;
 }
 
 let idleWorkers = 0;
@@ -93,8 +112,6 @@ export async function startWebTranspiler(filePath: string): Promise<void[]> {
 
   addModuleQue(entryQueItem);
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-  // @ts-ignore
   const workerModulePath = await import.meta.resolve(
     './transpileWorker',
     import.meta.url,
@@ -103,7 +120,6 @@ export async function startWebTranspiler(filePath: string): Promise<void[]> {
   function spawnTranspileWorker(): Promise<void> {
     return new Promise((resolve, reject) => {
       const transpileWorker = spawnWorker(fileURLToPath(workerModulePath), {});
-      idleWorkers++;
 
       transpileWorker.on('message', (workerMessage: TranspileWorkerMessage) => {
         switch (workerMessage.type) {
@@ -114,12 +130,21 @@ export async function startWebTranspiler(filePath: string): Promise<void[]> {
           case TranspileWorkerMessageType.PUSH_OUTPUT:
             if (firstItem === true) firstItem = false;
 
+            console.log(
+              `Done transpiling: ${workerMessage.webModule.filePath} specifier: ${workerMessage.webModule.specifier}`,
+            );
+
             moduleMap.set(
               workerMessage.webModule.filePath,
               workerMessage.webModule,
             );
 
-            workerMessage.dependencies.map(addModuleQue);
+            break;
+          case TranspileWorkerMessageType.PUSH_DEPENDENCY:
+            addModuleQue({
+              filePath: workerMessage.filePath,
+              specifier: workerMessage.specifier,
+            });
             break;
         }
       });

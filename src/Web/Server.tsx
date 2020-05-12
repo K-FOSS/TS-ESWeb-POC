@@ -3,8 +3,6 @@ import 'cross-fetch/dist/node-polyfill';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { HMRLoader } from '../Utils/hmrLoader';
-import { createResponse, processStringChunk } from './Library/SSR';
-import { DataProvider } from './Providers/DataProvider';
 import { StaticRouter } from './StaticRouter';
 
 export async function renderWeb(
@@ -13,13 +11,6 @@ export async function renderWeb(
     [key: string]: string;
   },
 ): Promise<string> {
-  const response = createResponse();
-
-  const fetchResults = await fetch('http://localhost:1231/SSRStream');
-  const fetchText = await fetchResults.text();
-
-  processStringChunk(response, fetchText, fetch.length);
-
   // eslint-disable-next-line prefer-const
   let context = {};
 
@@ -30,9 +21,7 @@ export async function renderWeb(
 
   const appHTML = renderToString(
     <StaticRouter location={url} context={context}>
-      <DataProvider response={response}>
-        <App />
-      </DataProvider>
+      <App />
     </StaticRouter>,
   );
 
@@ -47,8 +36,7 @@ export async function renderWeb(
       "imports": ${JSON.stringify(importMap)}
     }
     </script>
-    <script src="/Static/workspace/src/Web/Client.tsx" type="module">
-    </script>
+    <script src="/Static/workspace/src/Web/Client.tsx" type="module"></script>
   </body>
   </html>`;
 

@@ -1,4 +1,4 @@
-/** @license React v0.0.0-experimental-d7382b6c4
+/** @license React v0.0.0-experimental-1b9107580
  * scheduler-tracing.development.js
  *
  * Copyright (c) Facebook, Inc. and its affiliates.
@@ -16,11 +16,12 @@ var threadIDCounter = 0; // Set of currently traced interactions.
 // Meaning that newly traced interactions are appended to the previously active set.
 // When an interaction goes out of scope, the previous set (if any) is restored.
 
-var __interactionsRef = null;
+var __interactionsRef = null; // Listener(s) to notify when interactions begin and end.
 var __subscriberRef = null;
 
-exports.__interactionsRef = __interactionsRef; // Listener(s) to notify when interactions begin and end.
 
+
+exports.__interactionsRef = __interactionsRef;
 exports.__subscriberRef = __subscriberRef;
 
 {
@@ -50,6 +51,8 @@ exports.unstable_getCurrent = function unstable_getCurrent() {
 exports.unstable_getThreadID = function unstable_getThreadID() {
   return ++threadIDCounter;
 }
+
+
 exports.unstable_trace = function unstable_trace(name, timestamp, callback) {
   var threadID = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : DEFAULT_THREAD_ID;
 
@@ -102,6 +105,7 @@ exports.unstable_trace = function unstable_trace(name, timestamp, callback) {
 
   return returnValue;
 }
+
 
 exports.unstable_wrap = function unstable_wrap(callback) {
   var threadID = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : DEFAULT_THREAD_ID;
@@ -194,6 +198,7 @@ var subscribers = null;
 {
   subscribers = new Set();
 }
+
 exports.unstable_subscribe = function unstable_subscribe(subscriber) {
   {
     subscribers.add(subscriber);
@@ -210,6 +215,8 @@ exports.unstable_subscribe = function unstable_subscribe(subscriber) {
     }
   }
 }
+
+
 exports.unstable_unsubscribe = function unstable_unsubscribe(subscriber) {
   {
     subscribers.delete(subscriber);
@@ -333,3 +340,4 @@ function onWorkCanceled(interactions, threadID) {
     throw caughtError;
   }
 }
+

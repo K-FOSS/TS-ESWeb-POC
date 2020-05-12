@@ -1,5 +1,4 @@
 /* eslint-disable */
-// @ts-nocheck
 import React from 'react';
 import type { PropsWithChildren } from 'react';
 
@@ -87,5 +86,5 @@ export function StaticRouter({
     block() {},
   };
 
-  return <Router children={children} history={mockHistory} />;
+  return <Router history={mockHistory}>{children}</Router>;
 }

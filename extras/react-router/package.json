@@ -1,8 +1,8 @@
 {
   "_from": "react-router@next",
-  "_id": "react-router@6.0.0-alpha.2",
+  "_id": "react-router@6.0.0-alpha.3",
   "_inBundle": false,
-  "_integrity": "sha512-pQyM4qQfkB2PYzf5O43RKi6nMrdFrUyHfkFRpY3Y/RjgzLljQ8CKy+ePoBSAL94t7WKDew0ArSTUOv1C1uiDVg==",
+  "_integrity": "sha512-Evp8ua5c7rFDIuF0KK/tkzbh7aPIWWyjWKr3yOLNine1liiphHZidDL/5jLTBjE9HN0/vdCZPuV2VWjZ82TShA==",
   "_location": "/react-router",
   "_phantomChildren": {},
   "_requested": {
@@ -15,12 +15,9 @@
     "saveSpec": null,
     "fetchSpec": "next"
   },
-  "_requiredBy": [
-    "#USER",
-    "/"
-  ],
-  "_resolved": "https://registry.npmjs.org/react-router/-/react-router-6.0.0-alpha.2.tgz",
-  "_shasum": "cfed9b59e88109f124f6164108b95d4fc8851a77",
+  "_requiredBy": ["#USER", "/"],
+  "_resolved": "https://registry.npmjs.org/react-router/-/react-router-6.0.0-alpha.3.tgz",
+  "_shasum": "c031a5262801315571f8b609620ae9c1b083dee3",
   "_spec": "react-router@next",
   "_where": "/workspace",
   "author": {
@@ -38,14 +35,7 @@
   "deprecated": false,
   "description": "Declarative routing for React",
   "homepage": "https://github.com/ReactTraining/react-router#readme",
-  "keywords": [
-    "react",
-    "router",
-    "route",
-    "routing",
-    "history",
-    "link"
-  ],
+  "keywords": ["react", "router", "route", "routing", "history", "link"],
   "license": "MIT",
   "type": "module",
   "main": "react-router.development.js",
@@ -60,5 +50,5 @@
   },
   "sideEffects": false,
   "unpkg": "umd/react-router.production.min.js",
-  "version": "6.0.0-alpha.2"
+  "version": "6.0.0-alpha.3"
 }
