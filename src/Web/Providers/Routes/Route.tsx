@@ -9,8 +9,6 @@ export class Route {
   importFn: () => Promise<RouteModule>;
 
   Component(): ReactElement {
-    console.log(`I'm a route component`);
-
     return <div>Loading...</div>;
   }
 

@@ -1,12 +1,8 @@
 // bin/postInstall.ts
 import { processModule } from './Utils/proceseNodeModule';
 import { cpFile } from './Utils/cpFile';
-import { getLatestArtifacts } from './Utils/CircleCI/Artifacts';
-
-await getLatestArtifacts();
 
 const cjsFiles: string[] = [
-  'react/cjs/react.development.js',
   'react/cjs/react.development.js',
   'react-dom/cjs/react-dom.development.js',
   'react-dom/cjs/react-dom.production.min.js',
@@ -15,7 +11,7 @@ const cjsFiles: string[] = [
 
 console.log(`Processing module files: `, cjsFiles);
 
-await Promise.all(cjsFiles.map(processModule));
+// await Promise.all(cjsFiles.map(processModule));
 
 await Promise.all([
   cpFile('extras/history/package.json', 'node_modules/history/package.json'),
@@ -26,14 +22,6 @@ await Promise.all([
   cpFile(
     'extras/react-router-dom/package.json',
     'node_modules/react-router-dom/package.json',
-  ),
-  cpFile(
-    'extras/scheduler/scheduler-tracing.development.js',
-    'node_modules/scheduler/cjs/scheduler-tracing.development.js',
-  ),
-  cpFile(
-    'extras/scheduler/scheduler.development.js',
-    'node_modules/scheduler/cjs/scheduler.development.js',
   ),
   cpFile('extras/prop-types/index.js', 'node_modules/prop-types/index.js'),
 ]);

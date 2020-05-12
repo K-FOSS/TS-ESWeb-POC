@@ -1,8 +1,8 @@
 {
   "_from": "react-router-dom@next",
-  "_id": "react-router-dom@6.0.0-alpha.2",
+  "_id": "react-router-dom@6.0.0-alpha.3",
   "_inBundle": false,
-  "_integrity": "sha512-c0lRIHtxVGj83jDy/HtBhNwJMfNiiDVdIgZ/Y8nUbyLMpl84Lrtfl3s8WQ0S2IVt6yHtbX6THlYUKYru7wQsuQ==",
+  "_integrity": "sha512-3Fu9Az+ofgv58WxtaPokADdNXJmxE6td5na2HFIN0cgRBYo2TPJ83KlIt4XCNvq1Y473pr8hOkD621CmauztEw==",
   "_location": "/react-router-dom",
   "_phantomChildren": {},
   "_requested": {
@@ -16,8 +16,8 @@
     "fetchSpec": "next"
   },
   "_requiredBy": ["#USER", "/"],
-  "_resolved": "https://registry.npmjs.org/react-router-dom/-/react-router-dom-6.0.0-alpha.2.tgz",
-  "_shasum": "fd79fa09cad791ff2f55fab9246fae49bec912a4",
+  "_resolved": "https://registry.npmjs.org/react-router-dom/-/react-router-dom-6.0.0-alpha.3.tgz",
+  "_shasum": "295aa7691de913b81f481b7cb14418e3b2f08edf",
   "_spec": "react-router-dom@next",
   "_where": "/workspace",
   "author": {
@@ -44,7 +44,7 @@
   "peerDependencies": {
     "react": ">=16.8",
     "react-dom": ">=16.8",
-    "react-router": "6.0.0-alpha.2"
+    "react-router": "6.0.0-alpha.3"
   },
   "repository": {
     "type": "git",
@@ -55,5 +55,5 @@
   },
   "sideEffects": false,
   "unpkg": "umd/react-router-dom.production.min.js",
-  "version": "6.0.0-alpha.2"
+  "version": "6.0.0-alpha.3"
 }

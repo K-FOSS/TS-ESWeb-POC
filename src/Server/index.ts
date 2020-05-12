@@ -13,8 +13,6 @@ if (process.env.NODE_ENV !== 'production') {
   inspector.open(5822, '0.0.0.0');
 
   await startWebTranspiler(entrypoint);
-} else {
-  console.log(moduleMap.entries());
 }
 
 const webServer = fastify() as FastifyInstance;
@@ -22,7 +20,7 @@ const webServer = fastify() as FastifyInstance;
 await modules.createRoutes(webServer);
 
 webServer.get('/Static/*', async function (request, reply) {
-  const filePath = request.params['*'];
+  const filePath = request.params['*'] as string;
   if (!filePath) {
     const err = (new Error() as unknown) as {
       statusCode: number;
@@ -33,7 +31,8 @@ webServer.get('/Static/*', async function (request, reply) {
     throw err;
   }
 
-  const fullModule = moduleMap.get(filePath);
+  const moduleFilePath = filePath.startsWith('/') ? filePath : `/${filePath}`;
+  const fullModule = moduleMap.get(moduleFilePath);
   if (!fullModule) {
     const err = (new Error() as unknown) as {
       statusCode: number;

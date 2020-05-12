@@ -1,8 +1,7 @@
 // bin/Utils/CircleCI/Artifacts.ts
 import 'cross-fetch/dist/node-polyfill';
-import { extract, Extract } from 'tar-fs';
 import gunzip from 'gunzip-maybe';
-import { cpDir } from '../cpDir';
+import { extract, Extract } from 'tar-fs';
 
 interface Workflow {
   job_name: string;
@@ -37,7 +36,7 @@ function waitOnFinish(stream: Extract): Promise<void> {
   });
 }
 
-export async function getLatestArtifacts(): Promise<string> {
+export async function getLatestArtifacts(): Promise<void> {
   const projectRequest = await fetch(
     'https://circleci.com/api/v1.1/project/github/facebook/react',
   );
@@ -69,9 +68,7 @@ export async function getLatestArtifacts(): Promise<string> {
   // @ts-ignore
   await buildRequest.body.pipe(gunzipStream);
 
+  console.log('test');
+
   await waitOnFinish(extractStream);
-
-  await cpDir('tmp/build/node_modules', 'node_modules');
-
-  return '';
 }
