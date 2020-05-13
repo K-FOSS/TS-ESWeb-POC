@@ -31,7 +31,7 @@
     "react-server": "file:tmp/build/node_modules/react-server",
     "scheduler": "file:tmp/build/node_modules/scheduler",
     "tar-fs": "^2.1.0",
-    "typescript": "^3.9.0-dev.20200426"
+    "typescript": "^3.9.2"
   },
   "devDependencies": {
     "@types/gunzip-maybe": "^1.4.0",
