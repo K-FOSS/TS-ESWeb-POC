@@ -30,7 +30,7 @@
     "react-router-dom": "^6.0.0-alpha.3",
     "react-server": "file:tmp/build/node_modules/react-server",
     "scheduler": "file:tmp/build/node_modules/scheduler",
-    "tar-fs": "^2.0.1",
+    "tar-fs": "^2.1.0",
     "typescript": "^3.9.0-dev.20200426"
   },
   "devDependencies": {
