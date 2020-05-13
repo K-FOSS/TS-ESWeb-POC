@@ -18,6 +18,5 @@
   ],
   "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
   "workspaceFolder": "/workspace",
-  "mounts": ["source=ts-esweb-poc,target=/workspace/node_modules,type=volume"],
-  "postCreateCommand": "sudo chown -R node ./node_modules"
+  "mounts": ["source=ts-esweb-poc,target=/workspace/node_modules,type=volume"]
 }

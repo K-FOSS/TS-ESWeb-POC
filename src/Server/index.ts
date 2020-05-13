@@ -1,7 +1,6 @@
 // src/index.ts
 import fastify, { FastifyInstance } from 'fastify';
 import * as inspector from 'inspector';
-import { HMRLoader } from '../Utils/hmrLoader';
 import { Modules } from './Library/Modules';
 import { startWebTranspiler } from './Modules/TypeScript';
 import { moduleMap } from './Modules/WebModule';
@@ -65,17 +64,6 @@ webServer.get('/Static/*', async function (request, reply) {
         'import * as ReactIs from "react-is";',
       ),
   );
-});
-
-webServer.get('/SSRStream', async (request, reply) => {
-  reply.header('Access-Control-Allow-Origin', '*');
-
-  const { handleRequest } = await HMRLoader<typeof import('./Test')>(
-    './Test',
-    import.meta.url,
-  );
-
-  handleRequest(reply);
 });
 
 await webServer.listen(1231, '0.0.0.0');
