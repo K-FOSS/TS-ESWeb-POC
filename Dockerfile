@@ -29,7 +29,6 @@ ENV NODE_ENV=production
 
 COPY --from=fetcher /workspace/node_modules /workspace/node_modules
 COPY --from=builder /workspace/dist /workspace/dist
-COPY --from=builder /workspace/extras/modules/react-client /workspace/node_modules/react-client
 COPY --from=builder /workspace/package.json ./package.json
 
 

@@ -56,14 +56,13 @@ export default class SSRRoute implements Route {
 
     const importMap = {
       ...clientMap,
-      react:
-        '/Static//workspace/tmp/build/node_modules/react/cjs/react.development.js',
+      react: '/Static//workspace/node_modules/react/cjs/react.development.js',
       'react-dom':
-        '/Static//workspace/tmp/build/node_modules/react-dom/cjs/react-dom.development.js',
+        '/Static//workspace/node_modules/react-dom/cjs/react-dom.development.js',
       scheduler:
-        '/Static//workspace/tmp/build/node_modules/scheduler/cjs/scheduler.development.js',
+        '/Static//workspace/node_modules/react-dom/node_modules/scheduler/cjs/scheduler.development.js',
       'scheduler/tracing':
-        '/Static//workspace/tmp/build/node_modules/scheduler/cjs/scheduler-tracing.development.js',
+        '/Static//workspace/node_modules/react-dom/node_modules/scheduler/cjs/scheduler-tracing.development.js',
       history: '/Static//workspace/node_modules/history/history.js',
       'object-assign': '/Static//workspace/node_modules/object-assign/index.js',
       'react-router':
@@ -71,9 +70,9 @@ export default class SSRRoute implements Route {
       'react-router-dom':
         '/Static//workspace/node_modules/react-router-dom/react-router-dom.development.js',
       'react-is/cjs/react-is.development':
-        '/Static//workspace/tmp/build/node_modules/react-is/cjs/react-is.development.js',
+        '/Static//workspace/node_modules/react-is/cjs/react-is.development.js',
       'react-is':
-        '/Static//workspace/tmp/build/node_modules/react-is/cjs/react-is.development.js',
+        '/Static//workspace/node_modules/react-is/cjs/react-is.development.js',
       '/Static//workspace/node_modules/prop-types/factoryWithTypeCheckers':
         '/Static//workspace/node_modules/prop-types/factoryWithTypeCheckers.js',
       '/Static//workspace/node_modules/prop-types/lib/ReactPropTypesSecret':
@@ -81,12 +80,10 @@ export default class SSRRoute implements Route {
       '/Static//workspace/node_modules/prop-types/checkPropTypes':
         '/Static//workspace/node_modules/prop-types/checkPropTypes.js',
       'prop-types': '/Static//workspace/node_modules/prop-types/index.js',
-      'react-client/cjs/react-client-flight.development.js':
-        '/Static//workspace/tmp/build/node_modules/react-client/cjs/react-client-flight.development.js',
       '@babel/runtime/helpers/esm/extends':
         '/Static//workspace/node_modules/@babel/runtime/helpers/esm/extends.js',
       'react-refresh/runtime':
-        '/Static//workspace/tmp/build/node_modules/react-refresh/cjs/react-refresh-runtime.development.js',
+        '/Static//workspace/node_modules/react-refresh/cjs/react-refresh-runtime.development.js',
     };
 
     return renderWeb(request.req.url!, importMap);

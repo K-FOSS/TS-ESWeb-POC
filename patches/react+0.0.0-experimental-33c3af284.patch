@@ -1,0 +1,89 @@
+diff --git a/node_modules/react/cjs/react.development.js b/node_modules/react/cjs/react.development.js
+index f67b000..e2aaf82 100644
+--- a/node_modules/react/cjs/react.development.js
++++ b/node_modules/react/cjs/react.development.js
+@@ -11,8 +11,6 @@
+ 
+ 
+ 
+-if (process.env.NODE_ENV !== "production") {
+-  (function() {
+ 'use strict';
+ 
+ var _assign = require('object-assign');
+@@ -27,14 +25,14 @@ var ReactVersion = '16.13.1-experimental-33c3af284';
+ // nor polyfill, then a plain number is used for performance.
+ var REACT_ELEMENT_TYPE = 0xeac7;
+ var REACT_PORTAL_TYPE = 0xeaca;
+-exports.Fragment = 0xeacb;
+-exports.StrictMode = 0xeacc;
+-exports.Profiler = 0xead2;
++var Fragment = 0xeacb;
++var StrictMode = 0xeacc;
++var Profiler = 0xead2;
+ var REACT_PROVIDER_TYPE = 0xeacd;
+ var REACT_CONTEXT_TYPE = 0xeace;
+ var REACT_FORWARD_REF_TYPE = 0xead0;
+-exports.Suspense = 0xead1;
+-exports.unstable_SuspenseList = 0xead8;
++var Suspense = 0xead1;
++var unstable_SuspenseList = 0xead8;
+ var REACT_MEMO_TYPE = 0xead3;
+ var REACT_LAZY_TYPE = 0xead4;
+ var REACT_BLOCK_TYPE = 0xead9;
+@@ -43,7 +41,7 @@ var REACT_FUNDAMENTAL_TYPE = 0xead5;
+ var REACT_RESPONDER_TYPE = 0xead6;
+ var REACT_SCOPE_TYPE = 0xead7;
+ var REACT_OPAQUE_ID_TYPE = 0xeae0;
+-exports.unstable_DebugTracingMode = 0xeae1;
++var unstable_DebugTracingMode = 0xeae1;
+ var REACT_OFFSCREEN_TYPE = 0xeae2;
+ var REACT_LEGACY_HIDDEN_TYPE = 0xeae3;
+ 
+@@ -51,14 +49,14 @@ if (typeof Symbol === 'function' && Symbol.for) {
+   var symbolFor = Symbol.for;
+   REACT_ELEMENT_TYPE = symbolFor('react.element');
+   REACT_PORTAL_TYPE = symbolFor('react.portal');
+-  exports.Fragment = symbolFor('react.fragment');
+-  exports.StrictMode = symbolFor('react.strict_mode');
+-  exports.Profiler = symbolFor('react.profiler');
++  Fragment = symbolFor('react.fragment');
++  StrictMode = symbolFor('react.strict_mode');
++  Profiler = symbolFor('react.profiler');
+   REACT_PROVIDER_TYPE = symbolFor('react.provider');
+   REACT_CONTEXT_TYPE = symbolFor('react.context');
+   REACT_FORWARD_REF_TYPE = symbolFor('react.forward_ref');
+-  exports.Suspense = symbolFor('react.suspense');
+-  exports.unstable_SuspenseList = symbolFor('react.suspense_list');
++  Suspense = symbolFor('react.suspense');
++  unstable_SuspenseList = symbolFor('react.suspense_list');
+   REACT_MEMO_TYPE = symbolFor('react.memo');
+   REACT_LAZY_TYPE = symbolFor('react.lazy');
+   REACT_BLOCK_TYPE = symbolFor('react.block');
+@@ -67,11 +65,18 @@ if (typeof Symbol === 'function' && Symbol.for) {
+   REACT_RESPONDER_TYPE = symbolFor('react.responder');
+   REACT_SCOPE_TYPE = symbolFor('react.scope');
+   REACT_OPAQUE_ID_TYPE = symbolFor('react.opaque.id');
+-  exports.unstable_DebugTracingMode = symbolFor('react.debug_trace_mode');
++  unstable_DebugTracingMode = symbolFor('react.debug_trace_mode');
+   REACT_OFFSCREEN_TYPE = symbolFor('react.offscreen');
+   REACT_LEGACY_HIDDEN_TYPE = symbolFor('react.legacy_hidden');
+ }
+ 
++exports.Fragment = Fragment;
++exports.StrictMode = StrictMode;
++exports.Profiler = Profiler;
++exports.Suspense = Suspense
++exports.unstable_SuspenseList = unstable_SuspenseList;
++exports.unstable_DebugTracingMode = unstable_DebugTracingMode
++
+ var MAYBE_ITERATOR_SYMBOL = typeof Symbol === 'function' && Symbol.iterator;
+ var FAUX_ITERATOR_SYMBOL = '@@iterator';
+ function getIteratorFn(maybeIterable) {
+@@ -2376,5 +2381,4 @@ exports.useReducer = useReducer;
+ exports.useRef = useRef;
+ exports.useState = useState;
+ exports.version = ReactVersion;
+-  })();
+-}
++  
