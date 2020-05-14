@@ -1,10 +1,13 @@
 // src/index.ts
 import fastify, { FastifyInstance } from 'fastify';
+import fastifyWS from 'fastify-websocket';
 import * as inspector from 'inspector';
 import { Modules } from './Library/Modules';
+import { startHMRWatcher } from './Modules/HMR';
 import { startWebTranspiler } from './Modules/TypeScript';
 import { moduleMap } from './Modules/WebModule';
 import { entrypoint } from './Modules/WebModule/Entrypoint';
+import { hmrFiles } from './Modules/HMR/HMRFiles';
 
 const modules = await Modules.loadModules();
 
@@ -12,9 +15,12 @@ if (process.env.NODE_ENV !== 'production') {
   inspector.open(5822, '0.0.0.0');
 
   await startWebTranspiler(entrypoint);
+
+  hmrFiles.map(startHMRWatcher);
 }
 
 const webServer = fastify() as FastifyInstance;
+webServer.register(fastifyWS);
 
 await modules.createRoutes(webServer);
 

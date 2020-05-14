@@ -36,7 +36,7 @@ export async function renderWeb(
       "imports": ${JSON.stringify(importMap)}
     }
     </script>
-    <script src="/Static/workspace/src/Web/Client.tsx" type="module"></script>
+    <script src="/Static/home/node/workspace/src/Web/Client.tsx" type="module"></script>
   </body>
   </html>`;
 

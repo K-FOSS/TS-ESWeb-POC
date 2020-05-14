@@ -1,22 +1,27 @@
 {
   "name": "TS-ESWeb Container",
   "dockerFile": "./Dockerfile.dev",
-  "settings": {
-    // This dev container does include /bin/bash if you prefer to use it instead of ash.
-    "terminal.integrated.shell.linux": "/bin/sh"
-  },
+  "remoteUser": "node",
+
+  "workspaceMount": "source=${localWorkspaceFolder},target=/home/node/workspace,type=bind,consistency=cached",
+  "workspaceFolder": "/home/node/workspace",
+
+  "mounts": [
+    "source=ts-esweb-poc-modules,target=/workspace/node_modules,type=volume"
+  ],
+
+  "runArgs": ["--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined"],
+
+  "extensions": [
+    "ms-vsonline.vsonline",
+    "GitHub.vscode-pull-request-github",
+    "MS-vsliveshare.vsliveshare",
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+    "visualstudioexptteam.vscodeintellicode"
+  ],
 
   "remoteEnv": {
     "SHELL": "/bin/sh"
-  },
-
-  "extensions": [
-    "esbenp.prettier-vscode",
-    "dbaeumer.vscode-eslint",
-    "eamodio.gitlens",
-    "visualstudioexptteam.vscodeintellicode"
-  ],
-  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
-  "workspaceFolder": "/workspace",
-  "mounts": ["source=ts-esweb-poc,target=/workspace/node_modules,type=volume"]
+  }
 }

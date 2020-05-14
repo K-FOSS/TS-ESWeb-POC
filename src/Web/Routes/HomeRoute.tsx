@@ -1,9 +1,13 @@
 // Web/src/Routes/HomeRoute.tsx
 import React from 'react';
 
-export default function HomeRoute(): React.ReactElement {
+/**
+ * HelloWorld
+ * @hmr test
+ */
+function HomeRoute(): React.ReactElement {
   const handleClick = React.useCallback(() => {
-    console.log('HelloWorld');
+    console.log('HelloWorld1');
   }, []);
 
   return (
@@ -13,3 +17,5 @@ export default function HomeRoute(): React.ReactElement {
     </>
   );
 }
+
+export default HomeRoute;

@@ -1,84 +1,32 @@
 // src/Server/Modules/TypeScript/HMRTransformer/HMRTransformer.ts
 import * as ts from 'typescript';
+import { parentPort } from 'worker_threads';
 import {
-  TransformerFactory,
-  Visitor,
-  SourceFile,
-  isNumericLiteral,
-  createStringLiteral,
-  Program,
-  visitEachChild,
-  TransformationContext,
-  visitNode,
-  Node,
-  isCallExpression,
-} from 'typescript';
-import { nameOfGenerateFunction } from './HMRGenerate';
+  TranspileWorkerMessage,
+  TranspileWorkerMessageType,
+} from '../WorkerMessages';
 
-function getDescriptor(
-  type: ts.Node,
-  typeChecker: ts.TypeChecker,
-): ts.Expression {
-  switch (type.kind) {
-    case ts.SyntaxKind.PropertySignature:
-      return getDescriptor((type as ts.PropertySignature).type, typeChecker);
-    case ts.SyntaxKind.TypeLiteral:
-
-    case ts.SyntaxKind.InterfaceDeclaration:
-      return ts.createObjectLiteral(
-        (type as ts.InterfaceDeclaration).members.map(
-          (m): ts.ObjectLiteralElementLike =>
-            ts.createPropertyAssignment(
-              m.name || '',
-              getDescriptor(m, typeChecker),
-            ),
-        ),
-      );
-
-    case ts.SyntaxKind.TypeReference:
-      const symbol = typeChecker.getSymbolAtLocation(
-        (type as ts.TypeReferenceNode).typeName,
-      );
-      const declaration = ((symbol && symbol.declarations) || [])[0];
-      return getDescriptor(declaration, typeChecker);
-    case ts.SyntaxKind.NumberKeyword:
-    case ts.SyntaxKind.BooleanKeyword:
-    case ts.SyntaxKind.AnyKeyword:
-    case ts.SyntaxKind.StringKeyword:
-      return ts.createLiteral('string');
-    case ts.SyntaxKind.ArrayType:
-    default:
-      throw new Error('Unknown type ' + ts.SyntaxKind[type.kind]);
-  }
-}
-
-export function hmrTransformer<T extends ts.SourceFile>(
+export function hmrTransformer(
   program: ts.Program,
-): ts.TransformerFactory<T> {
+): ts.TransformerFactory<ts.SourceFile> {
+  let test: ts.NodeArray<ts.Statement>;
+
   function visitor(
     ctx: ts.TransformationContext,
     sf: ts.SourceFile,
     result: { seen: boolean },
   ) {
-    const typeChecker = program.getTypeChecker();
-
     const visitor: ts.Visitor = (node: ts.Node) => {
-      if (
-        ts.isCallExpression(node) &&
-        node.typeArguments &&
-        node.expression.getText(sf) == 'generateRtti'
-      ) {
-        const [type] = node.typeArguments;
-        const [argument] = node.arguments;
-        const fn = ts.createIdentifier(nameOfGenerateFunction);
-        const typeName = type.getText();
-        argumen;
-        const typeSource = getDescriptor(type, typeChecker);
-        result.seen = true;
-        return ts.createCall(fn, undefined, [
-          argument || ts.createStringLiteral(typeName),
-          typeSource,
-        ]);
+      if (ts.isFunctionDeclaration(node)) {
+        const tags = ts.getJSDocTags(node);
+
+        for (const tag of tags) {
+          if (tag.tagName.escapedText === 'hmr') {
+            result.seen = true;
+
+            test = node.body!.statements;
+          }
+        }
       }
 
       // Implementation here
@@ -91,14 +39,267 @@ export function hmrTransformer<T extends ts.SourceFile>(
   return (ctx) => {
     return (sf) => {
       const result = { seen: false };
-      const newSf = visitNode(sf, visitor(ctx, sf, result));
+      const newSf = ts.visitNode(sf, visitor(ctx, sf, result));
+
+      const importStatements: ts.Statement[] = [];
+
+      let exportStatement: ts.Statement;
 
       if (result.seen) {
-        const fn = createGenerateFunction();
-        return ts.updateSourceFileNode(newSf, [fn, ...newSf.statements]);
+        parentPort!.postMessage({
+          type: TranspileWorkerMessageType.PUSH_HMR,
+          filePath: sf.fileName,
+        } as TranspileWorkerMessage);
+
+        newSf.statements
+          .map((statement) => {
+            switch (statement.kind) {
+              case ts.SyntaxKind.ImportDeclaration:
+                importStatements.push(statement);
+                break;
+              case ts.SyntaxKind.ExportAssignment:
+                exportStatement = statement;
+                break;
+              case ts.SyntaxKind.FunctionExpression:
+                console.log(statement);
+                break;
+              default:
+                return statement;
+            }
+          })
+          .filter(Boolean);
+
+        return ts.updateSourceFileNode(newSf, [
+          ts.createVariableStatement(
+            undefined,
+            ts.createVariableDeclarationList(
+              [
+                ts.createVariableDeclaration(
+                  ts.createIdentifier('prevRefreshReg'),
+                  undefined,
+                  ts.createPropertyAccess(
+                    ts.createIdentifier('window'),
+                    ts.createIdentifier('$RefreshReg$'),
+                  ),
+                ),
+              ],
+              ts.NodeFlags.Const,
+            ),
+          ),
+          ts.createVariableStatement(
+            undefined,
+            ts.createVariableDeclarationList(
+              [
+                ts.createVariableDeclaration(
+                  ts.createIdentifier('prevRefreshSig'),
+                  undefined,
+                  ts.createPropertyAccess(
+                    ts.createIdentifier('window'),
+                    ts.createIdentifier('$RefreshSig$'),
+                  ),
+                ),
+              ],
+              ts.NodeFlags.Const,
+            ),
+          ),
+
+          ts.createImportDeclaration(
+            undefined,
+            undefined,
+            ts.createImportClause(
+              undefined,
+              ts.createNamespaceImport(ts.createIdentifier('RefreshRuntime')),
+              false,
+            ),
+            ts.createStringLiteral('react-refresh/runtime'),
+          ),
+          ...importStatements,
+          ts.createExpressionStatement(
+            ts.createBinary(
+              ts.createPropertyAccess(
+                ts.createIdentifier('window'),
+                ts.createIdentifier('$RefreshReg$'),
+              ),
+              ts.createToken(ts.SyntaxKind.EqualsToken),
+              ts.createArrowFunction(
+                undefined,
+                undefined,
+                [
+                  ts.createParameter(
+                    undefined,
+                    undefined,
+                    undefined,
+                    ts.createIdentifier('type'),
+                    undefined,
+                    undefined,
+                    undefined,
+                  ),
+                  ts.createParameter(
+                    undefined,
+                    undefined,
+                    undefined,
+                    ts.createIdentifier('id'),
+                    undefined,
+                    undefined,
+                    undefined,
+                  ),
+                ],
+                undefined,
+                ts.createToken(ts.SyntaxKind.EqualsGreaterThanToken),
+                ts.createBlock(
+                  [
+                    ts.createVariableStatement(
+                      undefined,
+                      ts.createVariableDeclarationList(
+                        [
+                          ts.createVariableDeclaration(
+                            ts.createIdentifier('fullId'),
+                            undefined,
+                            ts.createBinary(
+                              ts.createBinary(
+                                ts.createPropertyAccess(
+                                  ts.createIdentifier('module'),
+                                  ts.createIdentifier('id'),
+                                ),
+                                ts.createToken(ts.SyntaxKind.PlusToken),
+                                ts.createStringLiteral(' '),
+                              ),
+                              ts.createToken(ts.SyntaxKind.PlusToken),
+                              ts.createIdentifier('id'),
+                            ),
+                          ),
+                        ],
+                        ts.NodeFlags.Const,
+                      ),
+                    ),
+                    ts.createExpressionStatement(
+                      ts.createCall(
+                        ts.createPropertyAccess(
+                          ts.createIdentifier('RefreshRuntime'),
+                          ts.createIdentifier('register'),
+                        ),
+                        undefined,
+                        [
+                          ts.createIdentifier('type'),
+                          ts.createIdentifier('fullId'),
+                        ],
+                      ),
+                    ),
+                  ],
+                  true,
+                ),
+              ),
+            ),
+          ),
+          ts.createExpressionStatement(
+            ts.createBinary(
+              ts.createPropertyAccess(
+                ts.createIdentifier('window'),
+                ts.createIdentifier('$RefreshSig$'),
+              ),
+              ts.createToken(ts.SyntaxKind.EqualsToken),
+              ts.createPropertyAccess(
+                ts.createIdentifier('RefreshRuntime'),
+                ts.createIdentifier('createSignatureFunctionForTransform'),
+              ),
+            ),
+          ),
+          ts.createVariableStatement(
+            undefined,
+            ts.createVariableDeclarationList(
+              [
+                ts.createVariableDeclaration(
+                  ts.createIdentifier('exportedFn'),
+                  undefined,
+                  undefined,
+                ),
+              ],
+              ts.NodeFlags.Let,
+            ),
+          ),
+
+          ts.createTry(
+            ts.createBlock(
+              [
+                ts.createExpressionStatement(
+                  ts.createBinary(
+                    ts.createIdentifier('exportedFn'),
+                    ts.createToken(ts.SyntaxKind.EqualsToken),
+                    ts.createFunctionExpression(
+                      undefined,
+                      undefined,
+                      ts.createIdentifier('test'),
+                      undefined,
+                      [],
+                      undefined,
+                      ts.createBlock(test),
+                    ),
+                  ),
+                ),
+              ],
+              true,
+            ),
+            undefined,
+            ts.createBlock(
+              [
+                ts.createExpressionStatement(
+                  ts.createBinary(
+                    ts.createPropertyAccess(
+                      ts.createIdentifier('window'),
+                      ts.createIdentifier('$RefreshReg$'),
+                    ),
+                    ts.createToken(ts.SyntaxKind.EqualsToken),
+                    ts.createIdentifier('prevRefreshReg'),
+                  ),
+                ),
+                ts.createExpressionStatement(
+                  ts.createBinary(
+                    ts.createPropertyAccess(
+                      ts.createIdentifier('window'),
+                      ts.createIdentifier('$RefreshSig$'),
+                    ),
+                    ts.createToken(ts.SyntaxKind.EqualsToken),
+                    ts.createIdentifier('prevRefreshSig'),
+                  ),
+                ),
+              ],
+              true,
+            ),
+          ),
+          ts.createExportAssignment(
+            undefined,
+            undefined,
+            undefined,
+            ts.createIdentifier('exportedFn'),
+          ),
+        ]);
       }
 
       return newSf;
     };
   };
+
+  // const transformerFactory: ts.TransformerFactory<ts.SourceFile> = (
+  //   context,
+  // ) => {
+  //   return (sourceFile) => {
+  //     const visitor = (node: ts.Node, result: { seen: boolean }): ts.Node => {
+  //       if (ts.isFunctionDeclaration(node)) {
+  //         const tags = ts.getJSDocTags(node);
+
+  //         for (const tag of tags) {
+  //           if (tag.tagName.escapedText === 'hmr') {
+  //             console.log(node.getText());
+  //           }
+  //         }
+  //       }
+
+  //       return ts.visitEachChild(node, visitor, context);
+  //     };
+
+  //     if (sourceFile.fileName.endsWith('.tsx')) {
+  //       return ts.visitNode(sourceFile, visitor);
+  //     } else return sourceFile;
+  //   };
+  // };
 }

@@ -106,8 +106,8 @@ async function transpilePath({
     host: compilierHost,
   });
   compilerProgram.emit(undefined, undefined, undefined, undefined, {
-    before: [cjsToEsmTransformerFactory()],
-    after: [hmrTransformer(compilerProgram)],
+    before: [cjsToEsmTransformerFactory(), hmrTransformer(compilerProgram)],
+    after: [],
   });
 
   console.log('Emitted program');

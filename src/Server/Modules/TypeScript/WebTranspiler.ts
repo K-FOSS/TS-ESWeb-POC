@@ -8,6 +8,7 @@ import {
 } from './WorkerMessages';
 import { moduleMap } from '../WebModule';
 import { cpus } from 'os';
+import { hmrFiles } from '../HMR/HMRFiles';
 
 const numCPUs = cpus().length - 1;
 
@@ -86,7 +87,7 @@ function sendLatestQueEntry(
         console.log('Killing worker due to all workers being idle');
 
         return resolve(worker.terminate());
-      }
+      } else console.log(idleWorkers, numCPUs);
 
       const workItem = getLatestQueEntry();
       if (workItem) {
@@ -145,6 +146,9 @@ export async function startWebTranspiler(filePath: string): Promise<void[]> {
               filePath: workerMessage.filePath,
               specifier: workerMessage.specifier,
             });
+            break;
+          case TranspileWorkerMessageType.PUSH_HMR:
+            hmrFiles.push(workerMessage.filePath);
             break;
         }
       });
