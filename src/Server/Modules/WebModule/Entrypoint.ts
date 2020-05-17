@@ -11,7 +11,7 @@ switch (nodeEnv) {
     entrypoint = '/app/dist/Web/Client.js';
     break;
   case 'development':
-    entrypoint = '/workspace/src/Web/Client.tsx';
+    entrypoint = '/home/node/workspace/src/Web/Client.tsx';
     break;
 }
 

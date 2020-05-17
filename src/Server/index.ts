@@ -1,7 +1,9 @@
 // src/index.ts
 import fastify, { FastifyInstance } from 'fastify';
+import fastifyWS from 'fastify-websocket';
 import * as inspector from 'inspector';
 import { Modules } from './Library/Modules';
+import { HMR } from './Modules/HMR';
 import { startWebTranspiler } from './Modules/TypeScript';
 import { moduleMap } from './Modules/WebModule';
 import { entrypoint } from './Modules/WebModule/Entrypoint';
@@ -12,9 +14,13 @@ if (process.env.NODE_ENV !== 'production') {
   inspector.open(5822, '0.0.0.0');
 
   await startWebTranspiler(entrypoint);
+
+  console.info('Watching for changes to HMR files');
+  await HMR.createWatcher();
 }
 
 const webServer = fastify() as FastifyInstance;
+webServer.register(fastifyWS);
 
 await modules.createRoutes(webServer);
 

@@ -1,5 +1,4 @@
 // Web/src/Server.tsx
-import 'cross-fetch/dist/node-polyfill';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { HMRLoader } from '../Utils/hmrLoader';
@@ -36,7 +35,7 @@ export async function renderWeb(
       "imports": ${JSON.stringify(importMap)}
     }
     </script>
-    <script src="/Static/workspace/src/Web/Client.tsx" type="module"></script>
+    <script src="/Static/home/node/workspace/src/Web/Client.tsx" type="module"></script>
   </body>
   </html>`;
 

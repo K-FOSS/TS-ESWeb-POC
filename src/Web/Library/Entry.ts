@@ -9,7 +9,7 @@ declare global {
   }
 }
 
-if (process.env.NODE_ENV !== 'production' && typeof window !== 'undefined') {
+if (typeof window !== 'undefined') {
   runtime.injectIntoGlobalHook(window);
   window.$RefreshReg$ = () => {
     console.log('Register refresh');

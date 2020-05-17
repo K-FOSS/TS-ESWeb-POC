@@ -5,6 +5,7 @@ export enum TranspileWorkerMessageType {
   READY,
   PUSH_OUTPUT,
   PUSH_DEPENDENCY,
+  PUSH_HMR,
 }
 
 interface TranspileWorkerPushOutputMessage {
@@ -21,6 +22,12 @@ interface TranspileWorkerPushDependencyMessage {
   filePath: string;
 }
 
+interface TranspileWorkerPushHMRMessage {
+  type: TranspileWorkerMessageType.PUSH_HMR;
+
+  filePath: string;
+}
+
 interface TranspileWorkerReadyMessage {
   type: TranspileWorkerMessageType.READY;
 }
@@ -28,4 +35,5 @@ interface TranspileWorkerReadyMessage {
 export type TranspileWorkerMessage =
   | TranspileWorkerPushOutputMessage
   | TranspileWorkerReadyMessage
+  | TranspileWorkerPushHMRMessage
   | TranspileWorkerPushDependencyMessage;

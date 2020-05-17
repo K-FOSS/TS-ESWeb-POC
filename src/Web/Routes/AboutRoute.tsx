@@ -1,9 +1,12 @@
 // src/Web/Routes/AboutRoute.tsx
 import React from 'react';
 
+/**
+ * @hmr true
+ */
 export default function AboutRoute(): React.ReactElement {
   const handleClick = React.useCallback(() => {
-    console.log('HelloWorld About');
+    console.log('About Page');
   }, []);
 
   return (
