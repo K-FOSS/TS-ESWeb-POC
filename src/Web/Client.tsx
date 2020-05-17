@@ -7,7 +7,6 @@ import * as runtime from 'react-refresh/runtime';
 import { App } from './App';
 import { BrowserRouter } from 'react-router-dom';
 import 'react-is/cjs/react-is.development';
-import './Library/Helper';
 import { useWebSockets } from './Hooks/useWebsockets';
 import { registerExportsForReactRefresh } from './Library/Helper';
 
@@ -23,7 +22,6 @@ async function renderClient(): Promise<void> {
   useWebSockets('ws://localhost:1231/HMR', {
     onMesssage: async function (msg) {
       const filePath = msg.data;
-      // @ts-ignore
       const fileData = await import(`/Static/${filePath}?count=${count++}`);
 
       registerExportsForReactRefresh(fileData, filePath);
