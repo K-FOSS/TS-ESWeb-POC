@@ -1,11 +1,15 @@
 // src/Web/Library/Helper.ts
 import * as Refresh from 'react-refresh/runtime';
 
-function debounce(func: Function, wait: any, immediate: any) {
+function debounce<T extends Function>(func: T, wait: any, immediate?: any) {
   let timeout: NodeJS.Timeout | null;
   return function () {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
     // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
     const context = this;
+
+    // eslint-disable-next-line prefer-rest-params
     const args = arguments;
     const later = function () {
       timeout = null;
@@ -18,16 +22,19 @@ function debounce(func: Function, wait: any, immediate: any) {
   };
 }
 
-export const enqueueUpdate = () => {
+const enqueueUpdateFn = () => {
   try {
     Refresh.performReactRefresh();
   } catch (e) {
+    // @ts-expect-error
     module.hot.decline();
     throw e;
   }
 };
 
-export function isReactRefreshBoundary(moduleExports) {
+export const isReactRefreshBoundary = (moduleExports: {
+  [key: string]: Function;
+}) => {
   if (Object.keys(Refresh).length === 0) {
     return false;
   }
@@ -56,9 +63,12 @@ export function isReactRefreshBoundary(moduleExports) {
     }
   }
   return hasExports && areAllExportsComponents;
-}
+};
 
-export const registerExportsForReactRefresh = (moduleExports, moduleID) => {
+export const registerExportsForReactRefresh = (
+  moduleExports: any,
+  moduleID: string,
+) => {
   Refresh.register(moduleExports, moduleID + ' %exports%');
   if (moduleExports == null || typeof moduleExports !== 'object') {
     // Exit if we can't iterate over exports.
@@ -78,3 +88,5 @@ export const registerExportsForReactRefresh = (moduleExports, moduleID) => {
 };
 
 export const helloWorld = 'fucker';
+
+export const enqueueUpdate = debounce(enqueueUpdateFn, 30);

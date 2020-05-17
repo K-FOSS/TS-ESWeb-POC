@@ -190,18 +190,7 @@ export function hmrTransformer(
                           ts.createVariableDeclaration(
                             ts.createIdentifier('fullId'),
                             undefined,
-                            ts.createBinary(
-                              ts.createBinary(
-                                ts.createPropertyAccess(
-                                  ts.createIdentifier('module'),
-                                  ts.createIdentifier('id'),
-                                ),
-                                ts.createToken(ts.SyntaxKind.PlusToken),
-                                ts.createStringLiteral(' '),
-                              ),
-                              ts.createToken(ts.SyntaxKind.PlusToken),
-                              ts.createIdentifier('id'),
-                            ),
+                            ts.createLiteral(sf.fileName),
                           ),
                         ],
                         ts.NodeFlags.Const,

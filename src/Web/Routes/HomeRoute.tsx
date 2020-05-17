@@ -6,13 +6,17 @@ import React from 'react';
  * @hmr test
  */
 function HomeRoute(): React.ReactElement {
-  const handleClick = React.useCallback(() => {
-    console.log(window, document);
-  }, []);
+  const [value, setValue] = React.useState(false);
+
+  const handleClick = React.useCallback(
+    async () => setValue((currentState) => !currentState),
+    [setValue],
+  );
 
   return (
     <>
-      <h1>Home Route HelloWorld2</h1>
+      <h1>Home Route Hello22</h1>
+      <p>Current state: {value ? 'True' : 'False'}</p>
       <button onClick={handleClick}>Click me</button>
     </>
   );

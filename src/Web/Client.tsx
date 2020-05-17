@@ -9,6 +9,9 @@ import { BrowserRouter } from 'react-router-dom';
 import 'react-is/cjs/react-is.development';
 import './Library/Helper';
 import { useWebSockets } from './Hooks/useWebsockets';
+import { registerExportsForReactRefresh } from './Library/Helper';
+
+let count = 0;
 
 async function renderClient(): Promise<void> {
   const container = document.getElementById('app')!;
@@ -17,12 +20,17 @@ async function renderClient(): Promise<void> {
     hydrate: true,
   });
 
-  const ws = useWebSockets('ws://localhost:1231/HMR', {
-    onMesssage: async function (event) {
-      console.log('Recieved Messsage', event.data);
-      console.log(runtime);
-      runtime.performReactRefresh();
-      window.location.reload();
+  useWebSockets('ws://localhost:1231/HMR', {
+    onMesssage: async function (msg) {
+      const filePath = msg.data;
+      // @ts-ignore
+      const fileData = await import(`/Static/${filePath}?count=${count++}`);
+
+      registerExportsForReactRefresh(fileData, filePath);
+
+      const refreshed = runtime.performReactRefresh();
+
+      console.log(refreshed);
     },
   });
 
