@@ -26,9 +26,7 @@ async function renderClient(): Promise<void> {
 
       registerExportsForReactRefresh(fileData, filePath);
 
-      const refreshed = runtime.performReactRefresh();
-
-      console.log(refreshed);
+      runtime.performReactRefresh();
     },
   });
 

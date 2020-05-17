@@ -1,10 +1,6 @@
 // src/Web/Components/Counter.tsx
 import React from 'react';
 
-interface CounterProps {
-  initialValue?: number;
-}
-
 /**
  * @hmr true
  */

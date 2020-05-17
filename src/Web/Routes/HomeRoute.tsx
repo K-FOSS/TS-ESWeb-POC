@@ -16,7 +16,7 @@ function HomeRoute(): React.ReactElement {
 
   return (
     <>
-      <h1>Home Router</h1>
+      <h1>Home Route</h1>
       <p>Current state: {value ? 'True' : 'False'}</p>
       <button onClick={handleClick}>Click me</button>
       <Counter />

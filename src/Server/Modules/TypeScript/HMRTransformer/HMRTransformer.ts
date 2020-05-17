@@ -313,28 +313,4 @@ export function hmrTransformer(
       return newSf;
     };
   };
-
-  // const transformerFactory: ts.TransformerFactory<ts.SourceFile> = (
-  //   context,
-  // ) => {
-  //   return (sourceFile) => {
-  //     const visitor = (node: ts.Node, result: { seen: boolean }): ts.Node => {
-  //       if (ts.isFunctionDeclaration(node)) {
-  //         const tags = ts.getJSDocTags(node);
-
-  //         for (const tag of tags) {
-  //           if (tag.tagName.escapedText === 'hmr') {
-  //             console.log(node.getText());
-  //           }
-  //         }
-  //       }
-
-  //       return ts.visitEachChild(node, visitor, context);
-  //     };
-
-  //     if (sourceFile.fileName.endsWith('.tsx')) {
-  //       return ts.visitNode(sourceFile, visitor);
-  //     } else return sourceFile;
-  //   };
-  // };
 }
