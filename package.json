@@ -12,16 +12,14 @@
     "prettier": "prettier --config .prettierrc --check 'src/**/*ts' 'bin/**/*.ts'",
     "lint": "eslint --ext tsx,ts src",
     "test": "echo 'TODO'",
-    "start": "node --trace-warnings  --loader @k-foss/ts-esnode --experimental-specifier-resolution=node --experimental-import-meta-resolve --harmony-optional-chaining --harmony-top-level-await ./src/Server/index.ts"
+    "start": "node --loader @k-foss/ts-esnode --experimental-specifier-resolution=node --experimental-import-meta-resolve --harmony-optional-chaining --harmony-top-level-await ./src/Server/index.ts"
   },
   "dependencies": {
     "@wessberg/cjs-to-esm-transformer": "0.0.19",
     "cross-fetch": "^3.0.4",
     "fastify": "^2.14.1",
     "fastify-websocket": "^1.1.2",
-    "fb-watchman": "^2.0.1",
     "gunzip-maybe": "^1.4.2",
-    "nanoid": "^3.1.7",
     "patch-package": "^6.2.2",
     "react": "0.0.0-experimental-33c3af284",
     "react-dom": "0.0.0-experimental-33c3af284",
