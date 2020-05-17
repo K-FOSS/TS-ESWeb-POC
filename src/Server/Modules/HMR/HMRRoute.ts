@@ -13,10 +13,6 @@ export default class HMRRoute implements Route {
       HMR.on('moduleUpdated', (filePath) => {
         conn.socket.send(filePath);
       });
-
-      // conn.once('data', (chunk) => {
-      //   conn.end();
-      // });
     },
   };
 
