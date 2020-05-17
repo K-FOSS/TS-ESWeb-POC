@@ -1,2 +1,2 @@
 // src/Server/Modules/HMR/index.ts
-export { startHMRWatcher } from './HMRWatcher';
+export { HMR } from './HMR';

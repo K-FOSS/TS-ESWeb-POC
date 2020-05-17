@@ -2,7 +2,7 @@
 import { promises as fs } from 'fs';
 import { resolve as resolvePath, dirname } from 'path';
 import { moduleMap, WebModule } from '../src/Server/Modules/WebModule';
-import { startWebTranspiler } from '../src/Server/Modules/TypeScript/WebTranspiler';
+import { startWebTranspiler } from '../src/Server/Modules/TypeScript/TSTranspiler';
 import { buildPath } from './Utils/TypeScript/buildPath';
 
 const distDir = resolvePath('dist');

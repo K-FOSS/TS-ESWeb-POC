@@ -1,10 +1,61 @@
 // src/Server/Modules/HMR/HMR.ts
-import { EventEmitter } from 'events';
+import { BaseEventEmitter } from '../../Utils/Events';
+import type { PathLike } from 'fs';
+import { debounce } from '../../../Utils/debounce';
+import { WorkerController } from '../TypeScript/WorkerController';
 
-export const HMREvents = new EventEmitter();
+interface HMREventsMap {
+  fileChanged: {
+    filePath: PathLike;
+  };
 
-export function emitFileChanged(filePath: string): void {
-  console.log(`File ${filePath} has changed`);
-
-  HMREvents.emit('fileChanged', { filePath });
+  moduleUpdated: string;
 }
+
+type WatchedFileEvents = 'change' | string;
+
+class HMRController extends BaseEventEmitter<HMREventsMap> {
+  /**
+   * Files to be watched for changes, on file change event it is send to a
+   * transpiler thread to be transpled and the module graph's entry is updated with the returned output code.
+   */
+  public watchedFiles = new Set<PathLike>();
+
+  async createWatcher(): Promise<void> {
+    const fs = await import('fs');
+
+    const workerController = await WorkerController.spawnWorkers(2, {
+      cache: false,
+    });
+    workerController.startPolling();
+
+    Array.from(this.watchedFiles).map(async (filePath) => {
+      const watcher = fs.watch(filePath);
+      console.log(`Watching ${filePath}`);
+
+      watcher.on(
+        'change',
+        debounce((eventType: WatchedFileEvents, fileName: string | Buffer) => {
+          switch (eventType) {
+            case 'change':
+              this.emit('fileChanged', {
+                filePath,
+              });
+          }
+        }, 1500),
+      );
+    });
+
+    this.on('fileChanged', async ({ filePath }) => {
+      console.log(
+        `Spawned threads. Starting jobs with ${filePath} as the entrypoint`,
+      );
+
+      workerController
+        .forceAddJob(filePath.toString())
+        .then(() => this.emit('moduleUpdated', filePath.toString()));
+    });
+  }
+}
+
+export const HMR = new HMRController();

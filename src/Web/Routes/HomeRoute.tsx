@@ -7,12 +7,12 @@ import React from 'react';
  */
 function HomeRoute(): React.ReactElement {
   const handleClick = React.useCallback(() => {
-    console.log('HelloWorld1');
+    console.log(window, document);
   }, []);
 
   return (
     <>
-      <h1>Home Route</h1>
+      <h1>Home Route HelloWorld2</h1>
       <button onClick={handleClick}>Click me</button>
     </>
   );

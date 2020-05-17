@@ -1,2 +1,2 @@
 // src/Modules/TypeScript/index.ts
-export { startWebTranspiler } from './WebTranspiler';
+export { startWebTranspiler } from './TSTranspiler';

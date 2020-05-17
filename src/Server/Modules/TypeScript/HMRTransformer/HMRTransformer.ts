@@ -21,7 +21,7 @@ export function hmrTransformer(
         const tags = ts.getJSDocTags(node);
 
         for (const tag of tags) {
-          if (tag.tagName.escapedText === 'hmr') {
+          if (tag.tagName.escapedText.toString().toLowerCase() === 'hmr') {
             result.seen = true;
 
             test = node.body!.statements;
@@ -43,6 +43,7 @@ export function hmrTransformer(
 
       const importStatements: ts.Statement[] = [];
 
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       let exportStatement: ts.Statement;
 
       if (result.seen) {
@@ -61,7 +62,6 @@ export function hmrTransformer(
                 exportStatement = statement;
                 break;
               case ts.SyntaxKind.FunctionExpression:
-                console.log(statement);
                 break;
               default:
                 return statement;
@@ -112,6 +112,41 @@ export function hmrTransformer(
               false,
             ),
             ts.createStringLiteral('react-refresh/runtime'),
+          ),
+          ts.createImportDeclaration(
+            undefined,
+            undefined,
+            ts.createImportClause(
+              undefined,
+              ts.createNamedImports([
+                ts.createImportSpecifier(
+                  undefined,
+                  ts.createIdentifier('enqueueUpdate'),
+                ),
+                ts.createImportSpecifier(
+                  undefined,
+                  ts.createIdentifier('isReactRefreshBoundary'),
+                ),
+                ts.createImportSpecifier(
+                  undefined,
+                  ts.createIdentifier('registerExportsForReactRefresh'),
+                ),
+              ]),
+              false,
+            ),
+            ts.createStringLiteral(
+              '/Static/home/node/workspace/src/Web/Library/Helper.ts',
+            ),
+          ),
+          ts.createExpressionStatement(
+            ts.createCall(
+              ts.createPropertyAccess(
+                ts.createIdentifier('console'),
+                ts.createIdentifier('log'),
+              ),
+              undefined,
+              [ts.createThis(), ts.createIdentifier('window')],
+            ),
           ),
           ...importStatements,
           ts.createExpressionStatement(
@@ -265,6 +300,27 @@ export function hmrTransformer(
               ],
               true,
             ),
+          ),
+          ts.createExpressionStatement(
+            ts.createCall(
+              ts.createIdentifier('registerExportsForReactRefresh'),
+              undefined,
+              [
+                ts.createObjectLiteral(
+                  [
+                    ts.createPropertyAssignment(
+                      ts.createIdentifier('default'),
+                      ts.createIdentifier('exportedFn'),
+                    ),
+                  ],
+                  false,
+                ),
+                ts.createLiteral(sf.fileName),
+              ],
+            ),
+          ),
+          ts.createExpressionStatement(
+            ts.createCall(ts.createIdentifier('enqueueUpdate'), undefined, []),
           ),
           ts.createExportAssignment(
             undefined,
