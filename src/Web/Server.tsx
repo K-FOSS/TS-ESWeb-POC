@@ -1,5 +1,4 @@
 // Web/src/Server.tsx
-import 'cross-fetch/dist/node-polyfill';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { HMRLoader } from '../Utils/hmrLoader';

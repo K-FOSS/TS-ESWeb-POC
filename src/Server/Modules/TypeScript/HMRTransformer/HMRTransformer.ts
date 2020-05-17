@@ -138,16 +138,6 @@ export function hmrTransformer(
               '/Static/home/node/workspace/src/Web/Library/Helper.ts',
             ),
           ),
-          ts.createExpressionStatement(
-            ts.createCall(
-              ts.createPropertyAccess(
-                ts.createIdentifier('console'),
-                ts.createIdentifier('log'),
-              ),
-              undefined,
-              [ts.createThis(), ts.createIdentifier('window')],
-            ),
-          ),
           ...importStatements,
           ts.createExpressionStatement(
             ts.createBinary(
