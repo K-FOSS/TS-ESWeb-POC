@@ -1,4 +1,5 @@
 // src/Server/Modules/WebModule/Entrypoint.ts
+import { resolveWebPath } from '../../Utils/resolveWebPath';
 
 type NodeENV = 'production' | 'development';
 
@@ -11,7 +12,7 @@ switch (nodeEnv) {
     entrypoint = '/app/dist/Web/Client.js';
     break;
   case 'development':
-    entrypoint = '/home/node/workspace/src/Web/Client.tsx';
+    entrypoint = resolveWebPath('Imports.ts');
     break;
 }
 

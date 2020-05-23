@@ -1,39 +1,36 @@
 // src/Server/Modules/WebModule/WebModule.ts
-import { resolve as resolvePath } from 'path';
+import { ObjectType, Field } from 'type-graphql';
 
-const distDir = resolvePath('dist');
-const mapPath = resolvePath(distDir, 'moduleMap.json');
+// const distDir = resolvePath('dist');
+// const mapPath = resolvePath(distDir, 'moduleMap.json');
 
-export class WebModuleDepedency {
-  specifier: string;
-
-  filePath: string;
-}
-
+@ObjectType()
 export class WebModule {
-  specifier: string;
+  @Field()
+  public filePath: string;
 
-  filePath: string;
+  @Field()
+  public code: string;
 
-  code: string;
-
-  dependencies = new Set<string>();
+  public dependencies = new Set<string>();
 
   constructor(opts: Partial<WebModule> = {}) {
     Object.assign(this, opts);
   }
 }
 
-let mapData: any;
+// let mapData: any;
 
-if (process.env.NODE_ENV === 'production') {
-  try {
-    const { promises: fs } = await import('fs');
+// if (process.env.NODE_ENV === 'production') {
+//   try {
+//     const { promises: fs } = await import('fs');
 
-    const mapFile = await fs.readFile(mapPath);
+//     const mapFile = await fs.readFile(mapPath);
 
-    mapData = JSON.parse(mapFile.toString());
-  } catch {}
-}
+//     mapData = JSON.parse(mapFile.toString());
+//   } catch {}
+// }
 
-export const moduleMap = new Map<string, WebModule>(mapData);
+// type Specifier = string;
+
+// export const moduleMap = new Map<Specifier, WebModule>(mapData);

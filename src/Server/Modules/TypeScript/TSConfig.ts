@@ -38,5 +38,6 @@ export function getTSConfig(modulePath: string) {
       pathDirname(tsConfigPath),
     ).options;
   }
+
   return tsConfigCache;
 }

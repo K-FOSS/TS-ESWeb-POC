@@ -5,6 +5,7 @@ import {
   TranspileWorkerMessage,
   TranspileWorkerMessageType,
 } from '../WorkerMessages';
+import { resolveWebPath } from '../../../Utils/resolveWebPath';
 
 export function hmrTransformer(
   program: ts.Program,
@@ -134,9 +135,7 @@ export function hmrTransformer(
               ]),
               false,
             ),
-            ts.createStringLiteral(
-              '/Static/home/node/workspace/src/Web/Library/Helper.ts',
-            ),
+            ts.createStringLiteral(resolveWebPath('/Library/Helper.ts')),
           ),
           ...importStatements,
           ts.createExpressionStatement(

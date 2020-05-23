@@ -4,12 +4,12 @@ import { Worker } from 'worker_threads';
 import { BaseEventEmitter } from '../../Utils/Events';
 import { spawnWorker } from '../../Utils/Worker';
 import { HMR } from '../HMR';
-import { moduleMap } from '../WebModule';
-import { TranspileQueItem } from './TranspileQue';
 import {
   TranspileWorkerMessage,
   TranspileWorkerMessageType,
 } from './WorkerMessages';
+import { webModuleController } from '../WebModule/WebModuleController';
+import { WebModule } from '../WebModule';
 
 interface WorkerControllerEventMap {
   fileTranspiled: any;
@@ -50,7 +50,7 @@ export class WorkerController extends BaseEventEmitter<
   }
 
   private pathHistory = new Set<string>();
-  private jobQue = new Set<TranspileQueItem>();
+  private jobQue = new Set<string>();
 
   static async spawnWorkers(
     threadCount: number,
@@ -91,13 +91,19 @@ export class WorkerController extends BaseEventEmitter<
     return controller;
   }
 
-  addJob(queItem: TranspileQueItem): void {
-    if (this.pathHistory.has(queItem.filePath) === true) return;
-    else if (this.jobQue.has(queItem)) return;
-    else if (moduleMap.has(queItem.filePath) === true) return;
+  addJob(filePath: string): void {
+    if (this.pathHistory.has(filePath)) {
+      return;
+    } else if (this.jobQue.has(filePath)) {
+      return;
+    } else if (webModuleController.getModule(filePath)) {
+      return;
+    }
 
-    this.pathHistory.add(queItem.filePath);
-    this.jobQue.add(queItem);
+    console.log(`Adding ${filePath}`);
+
+    this.jobQue.add(filePath);
+    this.pathHistory.add(filePath);
   }
 
   handleWorkerMessage(worker: Worker): (msg: TranspileWorkerMessage) => void {
@@ -105,36 +111,53 @@ export class WorkerController extends BaseEventEmitter<
       switch (msg.type) {
         case TranspileWorkerMessageType.PUSH_DEPENDENCY:
           if (this.started === false) this.started = true;
-          this.addJob(msg);
+
+          this.addJob(msg.filePath);
+
           break;
         case TranspileWorkerMessageType.PUSH_HMR:
           HMR.watchedFiles.add(msg.filePath);
+
           break;
         case TranspileWorkerMessageType.PUSH_OUTPUT:
-          moduleMap.set(msg.webModule.filePath, msg.webModule);
+          // // eslint-disable-next-line no-case-declarations
+          // const cjsExec = cjsMatcher.exec(msg.filePath);
+
+          // if (cjsExec) {
+          //   webModuleController.setSpecifier(
+          //     cjsExec!.groups!.module,
+          //     msg.filePath,
+          //   );
+          // } else {
+          // }
+          console.log(`PUSH_OUTPUT pushModule(${msg.filePath})`);
+
+          webModuleController.pushModule(
+            msg.filePath,
+            new WebModule({
+              code: msg.outputCode,
+              dependencies: new Set(),
+              filePath: msg.filePath,
+            }),
+          );
+
           break;
         case TranspileWorkerMessageType.READY:
           this.workers.find(
             ({ workerThread }) => workerThread.threadId === worker.threadId,
           )!.ready = true;
+
           break;
-        default:
-          console.log('Unknown message: ', msg);
       }
     };
   }
 
-  removeJob(job: TranspileQueItem): void {
-    this.jobQue.delete(job);
+  removeJob(filePath: string): void {
+    this.jobQue.delete(filePath);
   }
 
   forceAddJob(filePath: string): Promise<boolean> {
-    this.jobQue.add(
-      new TranspileQueItem({
-        filePath,
-        specifier: filePath,
-      }),
-    );
+    this.jobQue.add(filePath);
 
     return new Promise((resolve) => {
       this.on('done', resolve);
@@ -142,15 +165,25 @@ export class WorkerController extends BaseEventEmitter<
   }
 
   startPolling(): void {
+    webModuleController.on('newModule', (msg) => {
+      if (this.jobQue.has(msg.filePath)) this.removeJob(msg.filePath);
+    });
+
     const poll = setInterval(() => {
       const jobQueArray = Array.from(this.jobQue);
 
       if (this.lazyThreads > 0 && jobQueArray.length > 0) {
         const lazyWorker = this.lazyWorkers.pop()!;
-        const job = jobQueArray.pop()!;
+        const filePath = jobQueArray.pop()!;
 
-        lazyWorker.workerThread.postMessage(job);
-        this.removeJob(job);
+        if (webModuleController.getModule(filePath)) {
+          this.removeJob(filePath);
+          return;
+        }
+
+        this.removeJob(filePath);
+        lazyWorker.workerThread.postMessage(filePath);
+
         this.workers.find(
           ({ workerThread }) =>
             workerThread.threadId === lazyWorker.workerThread.threadId,
@@ -170,12 +203,7 @@ export class WorkerController extends BaseEventEmitter<
    * @param entrypoint Path to entryfile
    */
   async start(filePath: string): Promise<boolean> {
-    this.addJob(
-      new TranspileQueItem({
-        filePath,
-        specifier: filePath,
-      }),
-    );
+    this.addJob(filePath);
 
     this.startPolling();
 

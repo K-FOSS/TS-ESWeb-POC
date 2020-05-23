@@ -1,8 +1,8 @@
 {
   "_from": "react-router@next",
-  "_id": "react-router@6.0.0-alpha.3",
+  "_id": "react-router@6.0.0-alpha.5",
   "_inBundle": false,
-  "_integrity": "sha512-Evp8ua5c7rFDIuF0KK/tkzbh7aPIWWyjWKr3yOLNine1liiphHZidDL/5jLTBjE9HN0/vdCZPuV2VWjZ82TShA==",
+  "_integrity": "sha512-cDj70bTUAgcfx6b5Fx1+wVlBSDVZGo8N+GUDk/yNFDCyGLfAsFlRpS3BhQqx8c49w2cCW+OrXxFhB4cbLZxWJw==",
   "_location": "/react-router",
   "_phantomChildren": {},
   "_requested": {
@@ -16,10 +16,10 @@
     "fetchSpec": "next"
   },
   "_requiredBy": ["#USER", "/"],
-  "_resolved": "https://registry.npmjs.org/react-router/-/react-router-6.0.0-alpha.3.tgz",
-  "_shasum": "c031a5262801315571f8b609620ae9c1b083dee3",
+  "_resolved": "https://registry.npmjs.org/react-router/-/react-router-6.0.0-alpha.5.tgz",
+  "_shasum": "c98805e50dc0e64787aa8aa4fa6753b435f2496b",
   "_spec": "react-router@next",
-  "_where": "/workspace",
+  "_where": "/home/node/workspace",
   "author": {
     "name": "React Training",
     "email": "hello@reacttraining.com"
@@ -29,7 +29,7 @@
   },
   "bundleDependencies": false,
   "dependencies": {
-    "history": "5.0.0-beta.4",
+    "history": "5.0.0-beta.9",
     "prop-types": "^15.7.2"
   },
   "deprecated": false,
@@ -38,8 +38,8 @@
   "keywords": ["react", "router", "route", "routing", "history", "link"],
   "license": "MIT",
   "type": "module",
-  "main": "react-router.development.js",
-  "module": "react-router.js",
+  "main": "index.js",
+  "module": "index.js",
   "name": "react-router",
   "peerDependencies": {
     "react": ">=16.8"
@@ -49,6 +49,7 @@
     "url": "git+https://github.com/ReactTraining/react-router.git"
   },
   "sideEffects": false,
+  "types": "index.d.ts",
   "unpkg": "umd/react-router.production.min.js",
-  "version": "6.0.0-alpha.3"
+  "version": "6.0.0-alpha.5"
 }

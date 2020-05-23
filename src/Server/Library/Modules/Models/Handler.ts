@@ -1,6 +1,7 @@
 // src/Library/Modules/Handler.ts
-import { handler } from './Route';
 import { Modules } from './Module';
+import { resolverHandler } from './Resolver';
+import { routeHandler } from './Route';
 
 export type ModuleImport<T> = () => Promise<T>;
 
@@ -23,5 +24,6 @@ export type ModuleHandlers = {
 };
 
 export const moduleHandlers: ModuleHandlers = {
-  routes: handler,
+  routes: routeHandler,
+  resolvers: resolverHandler,
 };

@@ -15,13 +15,11 @@ export default class ManifestRoute implements Route {
     request: FastifyRequest,
     reply: FastifyReply<ServerResponse>,
   ) {
-    console.log('Manifest handling');
-
     return {
-      name: 'vSphere Tools',
-      description: 'Tools and utilities for vSphere automation',
+      name: 'TS-ESWeb',
+      description: 'Proof of concept next generation web SSR framework',
       // eslint-disable-next-line @typescript-eslint/camelcase
-      short_name: 'vSphere Tools',
+      short_name: 'TS-ESWeb',
 
       // eslint-disable-next-line @typescript-eslint/camelcase
       start_url: '/',

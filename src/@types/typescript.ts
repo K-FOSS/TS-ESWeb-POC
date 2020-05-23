@@ -1,12 +1,13 @@
 // src/@types/typescript.ts
-import {
-  SyntaxKind,
-  SourceFile as TSSource,
-  Token,
-  ResolvedModuleFull,
-} from 'typescript';
+import { ResolvedModuleFull, SourceFile as TSSource } from 'typescript';
 
-export declare interface SourceFile extends TSSource {
-  imports: Token<SyntaxKind.ImportClause>[];
-  resolvedModules: Map<string, ResolvedModuleFull>;
+type ResolvedModuleMap = Map<string, ResolvedModuleFull>;
+
+declare module 'typescript' {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+  // @ts-ignore
+  interface SourceFile extends TSSource {
+    imports: Token<SyntaxKind.ImportClause>[];
+    resolvedModules: ResolvedModuleMap;
+  }
 }

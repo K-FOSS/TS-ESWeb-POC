@@ -1,8 +1,8 @@
 {
   "_from": "react-router-dom@next",
-  "_id": "react-router-dom@6.0.0-alpha.3",
+  "_id": "react-router-dom@6.0.0-alpha.5",
   "_inBundle": false,
-  "_integrity": "sha512-3Fu9Az+ofgv58WxtaPokADdNXJmxE6td5na2HFIN0cgRBYo2TPJ83KlIt4XCNvq1Y473pr8hOkD621CmauztEw==",
+  "_integrity": "sha512-xo3VM55aE563uyZBPoUplfCPOYKJmTP2oA8wamm0k4K07e/6T4x4DDunS5Gu2VIy+m2+5mZp8n0rT6S+tYCb6Q==",
   "_location": "/react-router-dom",
   "_phantomChildren": {},
   "_requested": {
@@ -15,11 +15,14 @@
     "saveSpec": null,
     "fetchSpec": "next"
   },
-  "_requiredBy": ["#USER", "/"],
-  "_resolved": "https://registry.npmjs.org/react-router-dom/-/react-router-dom-6.0.0-alpha.3.tgz",
-  "_shasum": "295aa7691de913b81f481b7cb14418e3b2f08edf",
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/react-router-dom/-/react-router-dom-6.0.0-alpha.5.tgz",
+  "_shasum": "3c3e22226ee610eb91042a351741ce3f53596323",
   "_spec": "react-router-dom@next",
-  "_where": "/workspace",
+  "_where": "/home/node/workspace",
   "author": {
     "name": "React Training",
     "email": "hello@reacttraining.com"
@@ -29,22 +32,29 @@
   },
   "bundleDependencies": false,
   "dependencies": {
-    "history": "5.0.0-beta.4",
+    "history": "5.0.0-beta.9",
     "prop-types": "^15.7.2"
   },
   "deprecated": false,
   "description": "Declarative routing for React web applications",
   "homepage": "https://github.com/ReactTraining/react-router#readme",
-  "keywords": ["react", "router", "route", "routing", "history", "link"],
+  "keywords": [
+    "react",
+    "router",
+    "route",
+    "routing",
+    "history",
+    "link"
+  ],
   "license": "MIT",
+  "main": "index.js",
   "type": "module",
-  "main": "react-router-dom.development.js",
-  "module": "react-router-dom.js",
+  "module": "index.js",
   "name": "react-router-dom",
   "peerDependencies": {
     "react": ">=16.8",
     "react-dom": ">=16.8",
-    "react-router": "6.0.0-alpha.3"
+    "react-router": "6.0.0-alpha.5"
   },
   "repository": {
     "type": "git",
@@ -54,6 +64,7 @@
     "start": "node server.js"
   },
   "sideEffects": false,
+  "types": "index.d.ts",
   "unpkg": "umd/react-router-dom.production.min.js",
-  "version": "6.0.0-alpha.3"
+  "version": "6.0.0-alpha.5"
 }

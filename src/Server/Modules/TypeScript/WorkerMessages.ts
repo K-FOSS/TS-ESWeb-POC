@@ -1,6 +1,4 @@
 // src/Server/Modules/TypeScript/WorkerMessages.ts
-import { WebModule } from '../WebModule';
-
 export enum TranspileWorkerMessageType {
   READY,
   PUSH_OUTPUT,
@@ -11,7 +9,9 @@ export enum TranspileWorkerMessageType {
 interface TranspileWorkerPushOutputMessage {
   type: TranspileWorkerMessageType.PUSH_OUTPUT;
 
-  webModule: WebModule;
+  filePath: string;
+
+  outputCode: string;
 }
 
 interface TranspileWorkerPushDependencyMessage {
