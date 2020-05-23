@@ -1,7 +1,6 @@
 // src/Server/Components/ModuleTable.tsx
 import React, { PropsWithChildren } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { moduleMap } from '../Modules/WebModule';
 import { webModuleController } from '../Modules/WebModule/WebModuleController';
 
 function TD({ children }: PropsWithChildren<{}>): React.ReactElement {

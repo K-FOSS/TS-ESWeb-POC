@@ -74,7 +74,7 @@ class WebModuleController extends BaseEventEmitter<WebModuleEventMap> {
       specifier = indexMatch;
     }
 
-    if (!!!specifier) {
+    if (!specifier) {
       specifier = filePath;
     }
     this.setSpecifier(specifier, filePath);
@@ -94,8 +94,6 @@ class WebModuleController extends BaseEventEmitter<WebModuleEventMap> {
   public testIndex(filePath: string): string | undefined {
     const indexMatcher = new RegExp(`(?<module>(?!/)[\\w,-]+)/index.js`, 'gm');
     const indexExec = indexMatcher.exec(filePath);
-
-    console.log(`indexExec: `, indexMatcher.compile(), indexExec);
 
     return indexExec?.groups?.module;
   }

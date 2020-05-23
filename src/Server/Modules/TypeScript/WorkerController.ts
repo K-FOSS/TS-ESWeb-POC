@@ -1,15 +1,15 @@
 // src/Server/Modules/TypeScript/WorkerController.ts
+import { spawnWorker } from '@k-foss/ts-worker';
 import { fileURLToPath } from 'url';
 import { Worker } from 'worker_threads';
 import { BaseEventEmitter } from '../../Utils/Events';
-import { spawnWorker } from '../../Utils/Worker';
 import { HMR } from '../HMR';
+import { WebModule } from '../WebModule';
+import { webModuleController } from '../WebModule/WebModuleController';
 import {
   TranspileWorkerMessage,
   TranspileWorkerMessageType,
 } from './WorkerMessages';
-import { webModuleController } from '../WebModule/WebModuleController';
-import { WebModule } from '../WebModule';
 
 interface WorkerControllerEventMap {
   fileTranspiled: any;
@@ -120,17 +120,7 @@ export class WorkerController extends BaseEventEmitter<
 
           break;
         case TranspileWorkerMessageType.PUSH_OUTPUT:
-          // // eslint-disable-next-line no-case-declarations
-          // const cjsExec = cjsMatcher.exec(msg.filePath);
-
-          // if (cjsExec) {
-          //   webModuleController.setSpecifier(
-          //     cjsExec!.groups!.module,
-          //     msg.filePath,
-          //   );
-          // } else {
-          // }
-          console.log(`PUSH_OUTPUT pushModule(${msg.filePath})`);
+          console.debug(`PUSH_OUTPUT pushModule(${msg.filePath})`);
 
           webModuleController.pushModule(
             msg.filePath,
