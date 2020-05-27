@@ -31,7 +31,7 @@
     "typescript": "^3.9.2"
   },
   "devDependencies": {
-    "@k-foss/ts-esnode": "^1.4.1",
+    "@k-foss/ts-esnode": "^1.5.1",
     "@types/gunzip-maybe": "^1.4.0",
     "@types/history": "^4.7.5",
     "@types/node": "^14.0.1",
