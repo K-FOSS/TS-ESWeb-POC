@@ -16,10 +16,6 @@ export class EnvironmentTransformer extends Transformer {
           ts.isIdentifier(node.expression.name) &&
           node.expression.name.escapedText === 'env'
         ) {
-          console.log(
-            node.name.escapedText.toString(),
-            process.env[node.name.escapedText.toString()] || '',
-          );
           return ts.createStringLiteral(
             process.env[node.name.escapedText.toString()] || '',
           );
