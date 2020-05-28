@@ -7,7 +7,7 @@ export async function getResolvers(): Promise<Function[]> {
   const resolverModules = await findModuleFiles(/.*Resolver\.ts/);
 
   return resolverModules.flatMap((resolverModule) =>
-    Object.values(resolverModule),
+    Object.values(resolverModule as any),
   );
 }
 

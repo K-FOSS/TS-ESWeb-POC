@@ -87,6 +87,6 @@ export const registerExportsForReactRefresh = (
   }
 };
 
-export const helloWorld = 'fucker';
+export const helloWorld = 'helloWorld';
 
 export const enqueueUpdate = debounce(enqueueUpdateFn, 30);

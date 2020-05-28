@@ -1,8 +1,8 @@
 // Web/src/Client.tsx
 /// <reference types="react-dom/experimental" />
 import './Library/Entry';
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import * as runtime from 'react-refresh/runtime';
 import { App } from './App';
 import { BrowserRouter } from 'react-router-dom';

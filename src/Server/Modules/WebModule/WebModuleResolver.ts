@@ -14,10 +14,10 @@ import { webModuleController } from './WebModuleController';
 @InputType()
 class WebModuleFilter {
   @Field({ nullable: true })
-  specifier: string;
+  public specifier: string;
 
   @Field({ nullable: true })
-  filePath: string;
+  public filePath: string;
 }
 
 @Resolver(() => WebModule)
@@ -38,7 +38,7 @@ export class WebModuleResolver {
 
       console.log(`result for ${specifier} is filePath: ${filePath}`);
 
-      return webModuleController.getModule(filePath);
+      return webModuleController.getModule(filePath!);
     }
   }
 
@@ -46,9 +46,9 @@ export class WebModuleResolver {
   dependencies(@Root() webModule: WebModule): WebModule[] {
     const deps = Array.from(webModule.dependencies);
 
-    return deps.flatMap((moduleKey) =>
-      webModuleController.getModule(moduleKey),
-    );
+    return deps.flatMap(
+      (moduleKey) => webModuleController.getModule(moduleKey)!,
+    )!;
   }
 
   @FieldResolver(() => String)

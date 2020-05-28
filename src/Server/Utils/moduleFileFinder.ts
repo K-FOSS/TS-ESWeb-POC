@@ -2,6 +2,7 @@
 import { promises as fs } from 'fs';
 import { resolvePath } from './resolvePath';
 import { resolve } from 'path';
+import { pathToFileURL } from 'url';
 
 type FileMatcher = RegExp;
 
@@ -30,7 +31,7 @@ export async function findModuleFiles<T>(
         }
 
         if (fileMatcher.test(directoryContent.name) === true) {
-          return import(contentPath) as Promise<T>;
+          return import(pathToFileURL(contentPath).href) as Promise<T>;
         }
 
         return [];
