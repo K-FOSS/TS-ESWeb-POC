@@ -166,7 +166,7 @@ export class WorkerController extends BaseEventEmitter<
         const lazyWorker = this.lazyWorkers.pop()!;
         const filePath = jobQueArray.pop()!;
 
-        if (webModuleController.getModule(filePath)) {
+        if (webModuleController.getModule(filePath) && this.cache) {
           this.removeJob(filePath);
           return;
         }
@@ -182,8 +182,9 @@ export class WorkerController extends BaseEventEmitter<
 
       if (this.lazyThreads === this.threads && this.started === true) {
         this.emit('done', true);
-
-        if (this.cache) clearInterval(poll);
+        if (this.cache) {
+          clearInterval(poll);
+        }
       }
     }, 500);
   }

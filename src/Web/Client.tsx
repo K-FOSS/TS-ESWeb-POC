@@ -1,5 +1,6 @@
 // Web/src/Client.tsx
 /// <reference types="react-dom/experimental" />
+import './Library/Entry';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as runtime from 'react-refresh/runtime';
@@ -20,7 +21,7 @@ async function renderClient(): Promise<void> {
   useWebSockets('ws://localhost:1231/HMR', {
     onMesssage: async function (msg) {
       const filePath = msg.data;
-      const fileData = await import(`/Static/${filePath}?count=${count++}`);
+      const fileData = await import(`/Static/import?specifier=${filePath}`);
 
       registerExportsForReactRefresh(fileData, filePath);
 
