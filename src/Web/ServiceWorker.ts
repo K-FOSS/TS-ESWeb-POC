@@ -20,7 +20,7 @@ type WebModuleQuery = { data: { webModule: WebModuleQueryResponse | null } };
 workbox.routing.registerRoute(
   new RegExp('/Static/import'),
   async ({ url, request, event, params }) => {
-    let moduleSpecifier = url.searchParams.get('specifier');
+    const moduleSpecifier = url.searchParams.get('specifier');
 
     let response: Response;
     if (moduleSpecifier) {

@@ -1,6 +1,5 @@
 // src/Server/Modules/HMR/ReactRefreshAST.ts
 import * as ts from 'typescript';
-import { resolveWebPath } from '../../Utils/resolveWebPath';
 
 interface InjectReactRefreshInput {
   importStatements: ts.ImportDeclaration[];

@@ -9,8 +9,6 @@ import { BrowserRouter } from 'react-router-dom';
 import { useWebSockets } from './Hooks/useWebsockets';
 import { registerExportsForReactRefresh } from './Library/Helper';
 
-let count = 0;
-
 async function renderClient(): Promise<void> {
   const container = document.getElementById('app')!;
 
