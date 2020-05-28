@@ -5,6 +5,10 @@
   "main": "src/index.ts",
   "type": "module",
   "private": true,
+  "engineStrict": true,
+  "engines": {
+    "node": ">= 14"
+  },
   "scripts": {
     "runner": "node --loader @k-foss/ts-esnode --experimental-specifier-resolution=node --experimental-import-meta-resolve --harmony-optional-chaining --harmony-top-level-await",
     "postinstall": "node --loader @k-foss/ts-esnode --experimental-specifier-resolution=node --experimental-import-meta-resolve --harmony-optional-chaining --harmony-top-level-await ./bin/postInstall.ts && patch-package",
