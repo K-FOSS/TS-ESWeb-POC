@@ -41,7 +41,7 @@
   "devDependencies": {
     "@apollo/client": "^3.0.0-beta.50",
     "@gqless/cli": "0.0.1-alpha.31",
-    "@k-foss/ts-esnode": "^1.4.1",
+    "@k-foss/ts-esnode": "^1.6.0",
     "@types/history": "^4.7.5",
     "@types/node": "^14.0.1",
     "@types/react": "^16.9.35",
