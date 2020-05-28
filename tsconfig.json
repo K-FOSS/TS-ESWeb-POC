@@ -10,7 +10,7 @@
     "alwaysStrict": true,
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
-    "strictPropertyInitialization": true,
+    "strictPropertyInitialization": false,
 
     "allowJs": true,
     "outDir": "dist",

@@ -1,18 +1,23 @@
 // src/Server/Library/Apollo.ts
 import { getGQLContext } from './Context';
-import { GraphQLSchema } from 'graphql';
 
 type ApolloServer = import('apollo-server-fastify').ApolloServer;
 
 let gqlServer: ApolloServer;
-export async function createApolloServer(
-  schema: GraphQLSchema,
-): Promise<ApolloServer> {
+export async function createApolloServer(): Promise<ApolloServer> {
   if (!gqlServer) {
-    const { ApolloServer } = await import('apollo-server-fastify');
+    const [
+      { ApolloServer },
+      { getResolvers, buildGQLSchema },
+    ] = await Promise.all([
+      import('apollo-server-fastify'),
+      import('./Resolvers'),
+    ]);
+
+    const resolvers = await getResolvers();
 
     gqlServer = new ApolloServer({
-      schema,
+      schema: await buildGQLSchema(resolvers),
       context: getGQLContext,
       introspection: true,
       playground: {
