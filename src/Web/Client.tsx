@@ -9,6 +9,8 @@ import { BrowserRouter } from 'react-router-dom';
 import { useWebSockets } from './Hooks/useWebsockets';
 import { registerExportsForReactRefresh } from './Library/Helper';
 
+let count = 0;
+
 async function renderClient(): Promise<void> {
   const container = document.getElementById('app')!;
 
@@ -19,7 +21,10 @@ async function renderClient(): Promise<void> {
   useWebSockets('ws://localhost:1231/HMR', {
     onMesssage: async function (msg) {
       const filePath = msg.data;
-      const fileData = await import(`/Static/import?specifier=${filePath}`);
+      const fileData = await import(
+        // eslint-disable-next-line comma-dangle
+        `/Static/import?specifier=${filePath}&count=${count++}`
+      );
 
       registerExportsForReactRefresh(fileData, filePath);
 
