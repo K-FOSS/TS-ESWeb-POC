@@ -19,5 +19,5 @@ This template is designed to be developed within a VSCode Remote Container. When
 ### Start
 
 ```
-npm start
+npm run dev
 ```

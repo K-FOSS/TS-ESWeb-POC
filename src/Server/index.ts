@@ -9,6 +9,7 @@ import { startWebTranspiler } from './Modules/TypeScript';
 import { entrypoint } from './Modules/WebModule/Entrypoint';
 import { webModuleController } from './Modules/WebModule/WebModuleController';
 import { createApolloServer } from './Library/Apollo';
+import { getResolvers, buildGQLSchema } from './Library/Resolvers';
 
 const modules = await Modules.loadModules();
 
@@ -21,8 +22,10 @@ if (process.env.NODE_ENV !== 'production') {
   await HMR.createWatcher();
 }
 
+const [resolvers] = await Promise.all([getResolvers()]);
+
 const webServer = fastify() as FastifyInstance;
-const gqlServer = await createApolloServer(await modules.buildResovlerSchema());
+const gqlServer = await createApolloServer(await buildGQLSchema(resolvers));
 
 webServer.register(fastifyWS);
 webServer.register(gqlServer.createHandler());

@@ -4,8 +4,8 @@ import { parentPort } from 'worker_threads';
 import {
   TranspileWorkerMessage,
   TranspileWorkerMessageType,
-} from '../WorkerMessages';
-import { resolveWebPath } from '../../../Utils/resolveWebPath';
+} from '../TypeScript/WorkerMessages';
+import { resolveWebPath } from '../../Utils/resolveWebPath';
 
 export function hmrTransformer(
   program: ts.Program,

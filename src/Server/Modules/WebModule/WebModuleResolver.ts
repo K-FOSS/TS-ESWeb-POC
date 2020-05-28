@@ -35,6 +35,9 @@ export class WebModuleResolver {
       return webModuleController.getModule(filePath);
     } else {
       const filePath = webModuleController.specifierTest.get(specifier);
+
+      console.log(`result for ${specifier} is filePath: ${filePath}`);
+
       return webModuleController.getModule(filePath);
     }
   }

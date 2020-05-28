@@ -50,7 +50,6 @@ workbox.routing.registerRoute(
     return response;
   },
 );
-
 const channel = new BroadcastChannel('sw-messages');
 
 interface ServiceWorkerSkipWaitingMessage {

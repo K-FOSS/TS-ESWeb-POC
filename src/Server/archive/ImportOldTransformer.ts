@@ -1,4 +1,4 @@
-// src/Server/Modules/TypeScript/HMRTransformer/HMRTransformer.ts
+// src/Server/Modules/WebModule/ImportTransformer.ts
 import * as ts from 'typescript';
 
 const relativePathRegex = /^\.{0,2}[/]/;

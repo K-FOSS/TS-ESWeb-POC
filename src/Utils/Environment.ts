@@ -1,6 +1,6 @@
 // src/Server/Modules/Config/Env.ts
 
-export const enum Environment {
+export enum Environment {
   PRODUCTION = 'production',
   DEVELOPMENT = 'development',
   TESTING = 'testing',

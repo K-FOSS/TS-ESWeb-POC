@@ -8,9 +8,7 @@ import {
 import ts from 'typescript';
 import { getTSConfig } from './TSConfig';
 import { pathToFileURL, fileURLToPath } from 'url';
-import { cjsToEsmTransformerFactory } from '@wessberg/cjs-to-esm-transformer';
-import { hmrTransformer } from './HMRTransformer/index';
-import { importTransformer } from './ImportTransformer/ImportTransformer';
+import { getTransformers } from '../../Library/Transformers';
 
 if (!parentPort) throw new Error(`Worker does not have parentPort open`);
 
@@ -79,16 +77,13 @@ async function transpilePath(filePath: string): Promise<void[]> {
     options: tsConfig,
     host: compilierHost,
   });
-  compilerProgram.emit(undefined, undefined, undefined, undefined, {
-    before: [
-      cjsToEsmTransformerFactory({
-        typescript: ts,
-        debug: false,
-      }),
-      hmrTransformer(compilerProgram),
-    ],
-    after: [importTransformer(compilerProgram)],
-  });
+  compilerProgram.emit(
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    await getTransformers(compilerProgram),
+  );
 
   console.log('Emitted program');
 

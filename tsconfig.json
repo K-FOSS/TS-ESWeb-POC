@@ -6,17 +6,17 @@
     "allowSyntheticDefaultImports": true,
 
     // Strict Rules
-    "strict": false,
-    "alwaysStrict": false,
-    "allowUnreachableCode": true,
-    "allowUnusedLabels": true,
-    "strictPropertyInitialization": false,
+    "strict": true,
+    "alwaysStrict": true,
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+    "strictPropertyInitialization": true,
 
     "allowJs": true,
     "outDir": "dist",
 
     // Source Maps
-    "inlineSourceMap": true,
+    "inlineSourceMap": false,
     "lib": ["ES2020", "DOM", "WebWorker"],
 
     // Features

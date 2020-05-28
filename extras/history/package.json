@@ -1,32 +1,32 @@
 {
   "_args": [
     [
-      "history@5.0.0-beta.4",
+      "history@5.0.0-beta.9",
       "/workspace"
     ]
   ],
-  "_from": "history@5.0.0-beta.4",
-  "_id": "history@5.0.0-beta.4",
+  "_from": "history@5.0.0-beta.9",
+  "_id": "history@5.0.0-beta.9",
   "_inBundle": false,
-  "_integrity": "sha512-LMUnKPB5UlEzDF1BO0VxtDsrguGPO7SuQEmB/5OjL1305afR1O8FvX29rbJep4g2SLmKK3YdDA7+8ZDs8P8n8g==",
+  "_integrity": "sha512-iLpu0fzu3iM041KDMNsawyB6YZjPLB+Bn+Pvq2lMnY7xxpxDIYvEz7r4et3Na8FthWzbYeukjl74ZKGWXcLhIA==",
   "_location": "/history",
   "_phantomChildren": {},
   "_requested": {
     "type": "version",
     "registry": true,
-    "raw": "history@5.0.0-beta.4",
+    "raw": "history@5.0.0-beta.9",
     "name": "history",
     "escapedName": "history",
-    "rawSpec": "5.0.0-beta.4",
+    "rawSpec": "5.0.0-beta.9",
     "saveSpec": null,
-    "fetchSpec": "5.0.0-beta.4"
+    "fetchSpec": "5.0.0-beta.9"
   },
   "_requiredBy": [
     "/react-router",
     "/react-router-dom"
   ],
-  "_resolved": "https://registry.npmjs.org/history/-/history-5.0.0-beta.4.tgz",
-  "_spec": "5.0.0-beta.4",
+  "_resolved": "https://registry.npmjs.org/history/-/history-5.0.0-beta.9.tgz",
+  "_spec": "5.0.0-beta.9",
   "_where": "/workspace",
   "author": {
     "name": "React Training",
@@ -46,14 +46,15 @@
   ],
   "license": "MIT",
   "type": "module",
-  "main": "history.js",
-  "module": "history.js",
+  "main": "index.js",
+  "module": "index.js",
   "name": "history",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ReactTraining/history.git"
   },
   "sideEffects": false,
+  "types": "index.d.ts",
   "unpkg": "umd/history.production.min.js",
-  "version": "5.0.0-beta.4"
+  "version": "5.0.0-beta.9"
 }

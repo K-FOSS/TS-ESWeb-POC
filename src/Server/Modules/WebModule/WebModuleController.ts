@@ -52,7 +52,7 @@ class WebModuleController extends BaseEventEmitter<WebModuleEventMap> {
   public pushModule(filePath: string, webModule: WebModule): void {
     this.emit('newModule', this.createEventModule(filePath));
 
-    this.createSpecifier(filePath);
+    this.createSpecifiers(filePath);
 
     this.modules.set(filePath, webModule);
   }
@@ -61,7 +61,7 @@ class WebModuleController extends BaseEventEmitter<WebModuleEventMap> {
     return this.modules.get(filePath);
   }
 
-  public createSpecifier(filePath: string): void {
+  public createSpecifiers(filePath: string): void {
     let specifier: string | undefined;
 
     const cjsMatch = this.testCJS(filePath);
@@ -76,17 +76,32 @@ class WebModuleController extends BaseEventEmitter<WebModuleEventMap> {
 
     if (!specifier) {
       specifier = filePath;
+
+      const moduleSubPath = /\S+\/(node_modules)\/(?<module>(?!\/)\S+)\.((ts|js)x?)$/gm;
+      const execResult = moduleSubPath.exec(specifier);
+
+      if (execResult?.groups?.module) {
+        console.log(`Setting ${execResult.groups.module} to ${filePath}`);
+        this.setSpecifier(execResult.groups.module, filePath);
+      }
+
+      this.setSpecifier(specifier.replace(/\.((ts|js)x?)$/gim, ''), filePath);
     }
+
     this.setSpecifier(specifier, filePath);
   }
 
   public testCJS(filePath: string): string | undefined {
     const cjsMatcher = new RegExp(
-      `(?<module>(?!/)\\S+)/cjs/(\\k<module>).${envMode}.js`,
+      `(?<module>(?!/)\\S+)/cjs/(\\k<module>)-?(?<moduleSub>\\w+)?.${envMode}.js`,
       'gm',
     );
 
     const cjsExec = cjsMatcher.exec(filePath);
+
+    if (cjsExec?.groups?.moduleSub) {
+      return `${cjsExec?.groups?.module}/${cjsExec?.groups?.moduleSub}`;
+    }
 
     return cjsExec?.groups?.module;
   }
