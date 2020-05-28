@@ -1,5 +1,5 @@
 diff --git a/node_modules/react/cjs/react.development.js b/node_modules/react/cjs/react.development.js
-index f67b000..e2aaf82 100644
+index f67b000..ba46a55 100644
 --- a/node_modules/react/cjs/react.development.js
 +++ b/node_modules/react/cjs/react.development.js
 @@ -11,8 +11,6 @@
@@ -80,10 +80,68 @@ index f67b000..e2aaf82 100644
  var MAYBE_ITERATOR_SYMBOL = typeof Symbol === 'function' && Symbol.iterator;
  var FAUX_ITERATOR_SYMBOL = '@@iterator';
  function getIteratorFn(maybeIterable) {
-@@ -2376,5 +2381,4 @@ exports.useReducer = useReducer;
+@@ -499,22 +504,22 @@ function getComponentName(type) {
+   }
+ 
+   switch (type) {
+-    case exports.Fragment:
++    case Fragment:
+       return 'Fragment';
+ 
+     case REACT_PORTAL_TYPE:
+       return 'Portal';
+ 
+-    case exports.Profiler:
++    case Profiler:
+       return "Profiler";
+ 
+-    case exports.StrictMode:
++    case StrictMode:
+       return 'StrictMode';
+ 
+-    case exports.Suspense:
++    case Suspense:
+       return 'Suspense';
+ 
+-    case exports.unstable_SuspenseList:
++    case unstable_SuspenseList:
+       return 'SuspenseList';
+   }
+ 
+@@ -1434,7 +1439,7 @@ function forwardRef(render) {
+ 
+ function isValidElementType(type) {
+   return typeof type === 'string' || typeof type === 'function' || // Note: its typeof might be other than 'symbol' or 'number' if it's a polyfill.
+-  type === exports.Fragment || type === exports.Profiler || type === exports.unstable_DebugTracingMode || type === exports.StrictMode || type === exports.Suspense || type === exports.unstable_SuspenseList || typeof type === 'object' && type !== null && (type.$$typeof === REACT_LAZY_TYPE || type.$$typeof === REACT_MEMO_TYPE || type.$$typeof === REACT_PROVIDER_TYPE || type.$$typeof === REACT_CONTEXT_TYPE || type.$$typeof === REACT_FORWARD_REF_TYPE || type.$$typeof === REACT_FUNDAMENTAL_TYPE || type.$$typeof === REACT_RESPONDER_TYPE || type.$$typeof === REACT_SCOPE_TYPE || type.$$typeof === REACT_BLOCK_TYPE || type[0] === REACT_SERVER_BLOCK_TYPE);
++  type === Fragment || type === Profiler || type === unstable_DebugTracingMode || type === StrictMode || type === Suspense || type === unstable_SuspenseList || typeof type === 'object' && type !== null && (type.$$typeof === REACT_LAZY_TYPE || type.$$typeof === REACT_MEMO_TYPE || type.$$typeof === REACT_PROVIDER_TYPE || type.$$typeof === REACT_CONTEXT_TYPE || type.$$typeof === REACT_FORWARD_REF_TYPE || type.$$typeof === REACT_FUNDAMENTAL_TYPE || type.$$typeof === REACT_RESPONDER_TYPE || type.$$typeof === REACT_SCOPE_TYPE || type.$$typeof === REACT_BLOCK_TYPE || type[0] === REACT_SERVER_BLOCK_TYPE);
+ }
+ 
+ function memo(type, compare) {
+@@ -1934,10 +1939,10 @@ function describeUnknownElementTypeFrameInDEV(type, source, ownerFn) {
+   }
+ 
+   switch (type) {
+-    case exports.Suspense:
++    case Suspense:
+       return describeBuiltInComponentFrame('Suspense');
+ 
+-    case exports.unstable_SuspenseList:
++    case unstable_SuspenseList:
+       return describeBuiltInComponentFrame('SuspenseList');
+   }
+ 
+@@ -2258,7 +2263,7 @@ function createElementWithValidation(type, props, children) {
+     }
+   }
+ 
+-  if (type === exports.Fragment) {
++  if (type === Fragment) {
+     validateFragmentProps(element);
+   } else {
+     validatePropTypes(element);
+@@ -2376,5 +2381,3 @@ exports.useReducer = useReducer;
  exports.useRef = useRef;
  exports.useState = useState;
  exports.version = ReactVersion;
 -  })();
 -}
-+  

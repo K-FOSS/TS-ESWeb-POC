@@ -1,0 +1,20 @@
+diff --git a/node_modules/react-refresh/cjs/react-refresh-runtime.development.js b/node_modules/react-refresh/cjs/react-refresh-runtime.development.js
+index 7e471c1..ec67978 100644
+--- a/node_modules/react-refresh/cjs/react-refresh-runtime.development.js
++++ b/node_modules/react-refresh/cjs/react-refresh-runtime.development.js
+@@ -11,8 +11,6 @@
+ 
+ 
+ 
+-if (process.env.NODE_ENV !== "production") {
+-  (function() {
+ 'use strict';
+ 
+ // ATTENTION
+@@ -671,5 +669,4 @@ exports.isLikelyComponentType = isLikelyComponentType;
+ exports.performReactRefresh = performReactRefresh;
+ exports.register = register;
+ exports.setSignature = setSignature;
+-  })();
+-}
++  
