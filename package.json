@@ -7,7 +7,8 @@
   "private": true,
   "scripts": {
     "runner": "node --loader @k-foss/ts-esnode --experimental-specifier-resolution=node --experimental-import-meta-resolve --harmony-optional-chaining --harmony-top-level-await",
-    "postinstall": "node --loader @k-foss/ts-esnode --experimental-specifier-resolution=node --experimental-import-meta-resolve --harmony-optional-chaining --harmony-top-level-await ./bin/postInstall.ts; patch-package",
+    "postinstall": "node --loader @k-foss/ts-esnode --experimental-specifier-resolution=node --experimental-import-meta-resolve --harmony-optional-chaining --harmony-top-level-await ./bin/postInstall.ts",
+    "postpostinstall": "echo hello",
     "build": "npm run runner -- ./bin/build.ts",
     "prettier": "prettier --config .prettierrc --check 'src/**/*ts' 'bin/**/*.ts'",
     "lint": "eslint --ext tsx,ts src",
