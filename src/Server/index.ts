@@ -1,12 +1,15 @@
 // src/index.ts
+import 'reflect-metadata';
 import fastify, { FastifyInstance } from 'fastify';
 import fastifyWS from 'fastify-websocket';
 import * as inspector from 'inspector';
 import { Modules } from './Library/Modules';
 import { HMR } from './Modules/HMR';
 import { startWebTranspiler } from './Modules/TypeScript';
-import { moduleMap } from './Modules/WebModule';
 import { entrypoint } from './Modules/WebModule/Entrypoint';
+import { webModuleController } from './Modules/WebModule/WebModuleController';
+import { createApolloServer } from './Library/Apollo';
+import { getResolvers, buildGQLSchema } from './Library/Resolvers';
 
 const modules = await Modules.loadModules();
 
@@ -19,8 +22,13 @@ if (process.env.NODE_ENV !== 'production') {
   await HMR.createWatcher();
 }
 
+const [resolvers] = await Promise.all([getResolvers()]);
+
 const webServer = fastify() as FastifyInstance;
+const gqlServer = await createApolloServer(await buildGQLSchema(resolvers));
+
 webServer.register(fastifyWS);
+webServer.register(gqlServer.createHandler());
 
 await modules.createRoutes(webServer);
 
@@ -37,8 +45,10 @@ webServer.get('/Static/*', async function (request, reply) {
   }
 
   const moduleFilePath = filePath.startsWith('/') ? filePath : `/${filePath}`;
-  const fullModule = moduleMap.get(moduleFilePath);
-  if (!fullModule) {
+
+  const webModule = webModuleController.getModule(moduleFilePath);
+
+  if (!webModule) {
     const err = (new Error() as unknown) as {
       statusCode: number;
       message: string;
@@ -49,8 +59,9 @@ webServer.get('/Static/*', async function (request, reply) {
   }
 
   reply.type('text/javascript');
+  reply.header('Service-Worker-Allowed', '/');
   reply.send(
-    fullModule.code
+    webModule.code
       .replace(/exports\./gm, '')
       .replace(
         /process\.env\.(?<env>\S+)/g,

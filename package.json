@@ -12,32 +12,41 @@
     "prettier": "prettier --config .prettierrc --check 'src/**/*ts' 'bin/**/*.ts'",
     "lint": "eslint --ext tsx,ts src",
     "test": "echo 'TODO'",
-    "start": "node --loader @k-foss/ts-esnode --experimental-specifier-resolution=node --experimental-import-meta-resolve --harmony-optional-chaining --harmony-top-level-await ./src/Server/index.ts"
+    "start": "node --loader @k-foss/ts-esnode --experimental-specifier-resolution=node --experimental-import-meta-resolve --harmony-optional-chaining --harmony-top-level-await ./src/Server/index.ts",
+    "dev": "nodemon"
   },
   "dependencies": {
+    "@k-foss/ts-worker": "^1.0.5",
     "@wessberg/cjs-to-esm-transformer": "0.0.19",
+    "apollo-server-fastify": "^2.13.1",
+    "class-validator": "^0.12.2",
     "cross-fetch": "^3.0.4",
     "fastify": "^2.14.1",
     "fastify-websocket": "^1.1.2",
+    "gqless": "0.0.1-alpha.29",
+    "graphql": "^15.0.0",
     "gunzip-maybe": "^1.4.2",
     "patch-package": "^6.2.2",
     "react": "0.0.0-experimental-33c3af284",
     "react-dom": "0.0.0-experimental-33c3af284",
     "react-is": "0.0.0-experimental-33c3af284",
     "react-refresh": "0.0.0-experimental-33c3af284",
-    "react-router": "^6.0.0-alpha.3",
-    "react-router-dom": "^6.0.0-alpha.3",
-    "tar-fs": "^2.1.0",
-    "typescript": "^3.9.2"
+    "react-router": "^6.0.0-alpha.5",
+    "react-router-dom": "^6.0.0-alpha.5",
+    "reflect-metadata": "^0.1.13",
+    "type-graphql": "^1.0.0-rc.2",
+    "typescript": "^3.9.2",
+    "workbox-window": "^5.1.3"
   },
   "devDependencies": {
+    "@apollo/client": "^3.0.0-beta.50",
+    "@gqless/cli": "0.0.1-alpha.31",
     "@k-foss/ts-esnode": "^1.4.1",
-    "@types/gunzip-maybe": "^1.4.0",
     "@types/history": "^4.7.5",
     "@types/node": "^14.0.1",
     "@types/react": "^16.9.35",
     "@types/react-dom": "^16.9.8",
-    "@types/tar-fs": "^2.0.0",
+    "@types/workbox-sw": "^4.3.1",
     "@types/ws": "^7.2.4",
     "@typescript-eslint/eslint-plugin": "^2.33.0",
     "@typescript-eslint/parser": "^2.33.0",
@@ -68,7 +77,11 @@
     },
     "env": {
       "browser": true,
-      "node": true
+      "node": true,
+      "serviceworker": true
+    },
+    "globals": {
+      "workbox": true
     },
     "plugins": [
       "react",

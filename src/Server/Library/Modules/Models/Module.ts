@@ -5,15 +5,24 @@ import { fileURLToPath } from 'url';
 import { Route } from './Route';
 import { FastifyInstance } from 'fastify';
 import { moduleHandlers, ModuleTypes } from './Handler';
+import { buildSchema, NonEmptyArray } from 'type-graphql';
 
 const modulesPath = resolvePath(
   fileURLToPath(import.meta.url),
   '../../../../Modules',
 );
 
+/**
+ * This is a controller used to provide dynamiclly loaded class based "stuff"
+ */
 export class Modules {
-  routes: Route[] = [];
+  public routes: Route[] = [];
 
+  public resolvers: Function[] = [];
+
+  /**
+   * Load all the module types from [`./Models`](./Models)
+   */
   static async loadModules(): Promise<Modules> {
     const modules = new Modules();
 
@@ -27,41 +36,55 @@ export class Modules {
       const folderPath = resolvePath(modulesPath, moduleEntry.name);
       const folderContents = await fs.readdir(folderPath);
 
-      await Promise.all(
-        folderContents.map(async (fileName) => {
-          const filePath = resolvePath(folderPath, fileName);
+      for (const fileName of folderContents) {
+        const filePath = resolvePath(folderPath, fileName);
 
-          for (const moduleHandlerKey in moduleHandlers) {
-            // Needed because TypeScript is typing moduleHandlerKey as string instead of ModuleTypes
-            const handlerKey = moduleHandlerKey as ModuleTypes;
+        // await Promise.all(
+        //   Object.entries(moduleHandlers).map(([moduleHandlerKey, handler]) => {
+        //     if (fileName.match(handler.regex)) {
 
-            const handler = moduleHandlers[handlerKey];
+        //     }
+        //     console.log(
+        //       fileName,
+        //       ,
+        //       moduleHandlerKey,
+        //       handler.regex.test(fileName),
+        //       handler.regex,
+        //     );
+        //   }),
+        // );
 
-            if (handler.regex.test(fileName)) {
-              const handlerResult = await handler.importHandler(() =>
-                import(filePath),
-              );
+        for (const [moduleHandlerKey, handler] of Object.entries(
+          moduleHandlers,
+        )) {
+          if (fileName.match(handler.regex)) {
+            const handlerResult = await handler.importHandler(() =>
+              import(filePath),
+            );
 
-              modules[handlerKey].push(handlerResult);
+            modules[moduleHandlerKey as ModuleTypes].push(handlerResult);
 
-              break;
-            }
+            break;
           }
-        }),
-      );
+        }
+      }
     }
 
     return modules;
   }
 
   async createRoutes(webServer: FastifyInstance): Promise<void> {
-    const routes = this.routes;
-
-    routes.map(({ options, handler }) =>
+    this.routes.map(({ options, handler }) =>
       webServer.route({
         ...options,
         handler,
       }),
     );
+  }
+
+  async buildResovlerSchema(): Promise<any> {
+    return buildSchema({
+      resolvers: (this.resolvers.flat(5) as any) as NonEmptyArray<Function>,
+    });
   }
 }

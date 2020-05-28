@@ -1,14 +1,18 @@
 /* eslint-disable */
+
 import React from 'react';
-import type { PropsWithChildren } from 'react';
-
+import PropTypes from 'prop-types';
+import {
+  Action,
+  Path,
+  Location,
+  LocationPieces,
+  To,
+  createPath,
+  parsePath,
+} from 'history';
 import { Router } from 'react-router-dom';
-import { createPath, parsePath } from 'history';
-
-interface StaticRouterProps {
-  context: { [key: string]: any };
-  location: URL | string;
-}
+import { Environment, envMode } from '../Utils/Environment';
 
 /**
  * A <Router> that may not transition to any other location. This is useful
@@ -16,14 +20,14 @@ interface StaticRouterProps {
  */
 export function StaticRouter({
   children,
-  context = {},
   location: loc = '/',
-}: PropsWithChildren<StaticRouterProps>) {
-  if (typeof loc === 'string') loc = parsePath(loc);
+}: StaticRouterProps) {
+  if (typeof loc === 'string') {
+    loc = parsePath(loc);
+  }
 
-  let action = 'POP';
-
-  let location = {
+  let action = Action.Pop;
+  let location: Location = {
     pathname: loc.pathname || '/',
     search: loc.search || '',
     hash: loc.hash || '',
@@ -31,60 +35,81 @@ export function StaticRouter({
     key: loc.key || 'default',
   };
 
-  function getNextLocation(to, state) {
-    return {
-      ...location,
-      ...(typeof to === 'string' ? parsePath(to) : to),
-      state,
-    };
-  }
-
-  let mockHistory = {
-    get action() {
-      return action;
-    },
-    get location() {
-      return location;
-    },
-    createHref(to) {
+  let staticNavigator = {
+    createHref(to: To) {
       return typeof to === 'string' ? to : createPath(to);
     },
-    push(to, state) {
-      let nextLocation = getNextLocation(to, state);
-
-      if (__DEV__) {
-        let url = createPath(nextLocation);
-
-        // A PUSH is not technically valid in a static context because we can't
-        // push a new URL onto the history stack in a stateless environment. They
-        // most likely want a regular redirect so just warn them and carry on.
-        console.warn(
-          `You cannot perform a PUSH with a <StaticRouter>. You probably want a REPLACE instead.` +
-            `\n\nTo avoid this warning, find the element that is calling \`navigate("${url}")\`` +
-            ` and change it to \`navigate("${url}", { replace: true })\`. This could also be` +
-            ` caused by rendering a \`<Navigate to={"${url}"} />\`. In that case, just add a ` +
-            `\`replace={true}\` prop to do a redirect instead.`,
-        );
-      }
-
-      context.url = createPath(nextLocation);
-      context.state = nextLocation.state;
-    },
-    replace(to, state) {
-      let nextLocation = getNextLocation(to, state);
-      context.url = createPath(nextLocation);
-      context.state = nextLocation.state;
-    },
-    go(n) {
+    push(to: To) {
       throw new Error(
-        `You cannot perform ${n === -1 ? 'GO BACK' : `GO(${n})`} on the ` +
-          `server because it is a stateless environment. This error was probably ` +
-          `triggered when you did a \`navigate(${n})\` somewhere in your app.`,
+        `You cannot use navigator.push() on the server because it is a stateless ` +
+          `environment. This error was probably triggered when you did a ` +
+          `\`navigate(${JSON.stringify(to)})\` somewhere in your app.`,
       );
     },
-    listen() {},
-    block() {},
+    replace(to: To) {
+      throw new Error(
+        `You cannot use navigator.replace() on the server because it is a stateless ` +
+          `environment. This error was probably triggered when you did a ` +
+          `\`navigate(${JSON.stringify(to)}, { replace: true })\` somewhere ` +
+          `in your app.`,
+      );
+    },
+    go(n: number) {
+      throw new Error(
+        `You cannot use navigator.go(${n}) on the server because it is a stateless` +
+          `environment. This error was probably triggered when you did a ` +
+          `\`navigate(${n})\` somewhere in your app.`,
+      );
+    },
+    back() {
+      throw new Error(
+        `You cannot use navigator.back() on the server because it is a stateless ` +
+          `environment.`,
+      );
+    },
+    forward() {
+      throw new Error(
+        `You cannot use navigator.forward() on the server because it is a stateless ` +
+          `environment.`,
+      );
+    },
+    block() {
+      throw new Error(
+        `You cannot use navigator.block() on the server because it is a stateless ` +
+          `environment.`,
+      );
+    },
   };
 
-  return <Router history={mockHistory}>{children}</Router>;
+  return (
+    <Router
+      children={children}
+      action={action}
+      location={location}
+      navigator={staticNavigator}
+      static={true}
+    />
+  );
+}
+
+export interface StaticRouterProps {
+  children?: React.ReactNode;
+  location?: Path | LocationPieces;
+}
+
+if (envMode === Environment.DEVELOPMENT) {
+  StaticRouter.displayName = 'StaticRouter';
+  StaticRouter.propTypes = {
+    children: PropTypes.node,
+    location: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.shape({
+        pathname: PropTypes.string,
+        search: PropTypes.string,
+        hash: PropTypes.string,
+        state: PropTypes.object,
+        key: PropTypes.string,
+      }),
+    ]),
+  };
 }

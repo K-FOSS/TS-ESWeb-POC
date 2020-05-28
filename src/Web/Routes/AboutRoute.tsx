@@ -4,7 +4,7 @@ import React from 'react';
 /**
  * @hmr true
  */
-export default function AboutRoute(): React.ReactElement {
+function AboutRoute(): React.ReactElement {
   const handleClick = React.useCallback(() => {
     console.log('About Page');
   }, []);
@@ -16,3 +16,5 @@ export default function AboutRoute(): React.ReactElement {
     </>
   );
 }
+
+export default AboutRoute;

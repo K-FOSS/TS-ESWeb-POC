@@ -7,16 +7,10 @@ ARG USERNAME=node
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID
 
-# Options for common package install script - SHA updated on release
-ARG INSTALL_ZSH="true"
-ARG COMMON_SCRIPT_SOURCE="https://raw.githubusercontent.com/microsoft/vscode-dev-containers/master/script-library/common-alpine.sh"
-ARG COMMON_SCRIPT_SHA="dev-mode"
+RUN apk add --no-cache sudo git
 
-RUN apk update \
-    #
-    # Verify git, common tools / libs installed, add/modify non-root user, optionally install zsh
-    && apk add --no-cache curl ca-certificates \
-    && curl -sSL  ${COMMON_SCRIPT_SOURCE} -o /tmp/common-setup.sh \
-    && echo "${COMMON_SCRIPT_SHA} /tmp/common-setup.sh" \
-    && /bin/ash /tmp/common-setup.sh "${INSTALL_ZSH}" "${USERNAME}" "${USER_UID}" "${USER_GID}" \
-    && rm /tmp/common-setup.sh
+# Add Sudo to allow occasional usage of root. I wish I could remove this but I can't seem to get the node_modules volume working correctly.
+RUN echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
+  && chmod 0440 /etc/sudoers.d/$USERNAME
+
+CMD [ "tail", "-f", "/dev/null" ]

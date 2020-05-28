@@ -8,15 +8,16 @@
     // Strict Rules
     "strict": true,
     "alwaysStrict": true,
-    "allowUnreachableCode": true,
-    "allowUnusedLabels": true,
-    "strictPropertyInitialization": false,
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+    "strictPropertyInitialization": true,
 
     "allowJs": true,
     "outDir": "dist",
 
     // Source Maps
-    "inlineSourceMap": true,
+    "inlineSourceMap": false,
+    "lib": ["ES2020", "DOM", "WebWorker"],
 
     // Features
     "experimentalDecorators": true,

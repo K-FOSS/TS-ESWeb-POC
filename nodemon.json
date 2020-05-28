@@ -1,6 +1,7 @@
 {
-  "watch": ["src"],
+  "signal": "SIGHUP",
+  "watch": ["src/Server"],
   "ext": "ts",
   "ignore": ["src/**/*.test.ts"],
-  "exec": "npm run start:debug"
+  "exec": "npm run start"
 }

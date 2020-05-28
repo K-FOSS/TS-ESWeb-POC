@@ -2,7 +2,7 @@
 import { RequestHandler, RouteOptions } from 'fastify';
 import { ModuleHandler } from './Handler';
 
-export const handler: ModuleHandler<
+export const routeHandler: ModuleHandler<
   { default: typeof import('../../../Modules/SSR/SSRRoute').default },
   Route
 > = {

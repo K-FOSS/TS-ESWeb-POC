@@ -3,19 +3,15 @@
   "dockerFile": "./Dockerfile.dev",
   "remoteUser": "node",
 
-  "workspaceMount": "source=${localWorkspaceFolder},target=/home/node/workspace,type=bind,consistency=cached",
-  "workspaceFolder": "/home/node/workspace",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
+  "workspaceFolder": "/workspace",
 
   "mounts": [
     "source=ts-esweb-poc-modules,target=/workspace/node_modules,type=volume"
   ],
 
-  "runArgs": ["--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined"],
-
   "extensions": [
-    "ms-vsonline.vsonline",
     "GitHub.vscode-pull-request-github",
-    "MS-vsliveshare.vsliveshare",
     "esbenp.prettier-vscode",
     "dbaeumer.vscode-eslint",
     "visualstudioexptteam.vscodeintellicode"
@@ -23,5 +19,7 @@
 
   "remoteEnv": {
     "SHELL": "/bin/sh"
-  }
+  },
+
+  "postCreateCommand": "chown -R node /workspace"
 }
