@@ -1,0 +1,21 @@
+diff --git a/node_modules/react-dom/cjs/react-dom.development.js b/node_modules/react-dom/cjs/react-dom.development.js
+index 7c15905..b4128e2 100644
+--- a/node_modules/react-dom/cjs/react-dom.development.js
++++ b/node_modules/react-dom/cjs/react-dom.development.js
+@@ -11,8 +11,6 @@
+ 
+ 
+ 
+-if (process.env.NODE_ENV !== "production") {
+-  (function() {
+ 'use strict';
+ 
+ var React = require('react');
+@@ -26699,5 +26697,4 @@ exports.unstable_flushControlled = flushControlled;
+ exports.unstable_renderSubtreeIntoContainer = renderSubtreeIntoContainer;
+ exports.unstable_scheduleHydration = scheduleHydration;
+ exports.version = ReactVersion;
+-  })();
+-}
++  
+\ No newline at end of file
