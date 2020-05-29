@@ -2,7 +2,7 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import { ServerResponse } from 'http';
 import { HMRLoader } from '../../../Utils/hmrLoader';
-import { Route } from '../../Library/Modules/Models/Route';
+import { Route } from '../../Library/Fastify';
 
 export default class SSRRoute implements Route {
   public options: Route['options'] = {

@@ -4,6 +4,9 @@ import type { PathLike } from 'fs';
 import { debounce } from '../../../Utils/debounce';
 import { WorkerController } from '../TypeScript/WorkerController';
 
+/**
+ * HMR Class Event Map
+ */
 interface HMREventsMap {
   fileChanged: {
     filePath: PathLike;
@@ -14,6 +17,10 @@ interface HMREventsMap {
 
 type WatchedFileEvents = 'change' | string;
 
+/**
+ * Hot Module Reload Controller Class
+ * this controls the HMR features of this system
+ */
 class HMRController extends BaseEventEmitter<HMREventsMap> {
   /**
    * Files to be watched for changes, on file change event it is send to a
@@ -21,6 +28,9 @@ class HMRController extends BaseEventEmitter<HMREventsMap> {
    */
   public watchedFiles = new Set<PathLike>();
 
+  /**
+   * Creates the fs watcher on all HMRed files
+   */
   async createWatcher(): Promise<void> {
     const fs = await import('fs');
 
@@ -31,6 +41,7 @@ class HMRController extends BaseEventEmitter<HMREventsMap> {
 
     Array.from(this.watchedFiles).map(async (filePath) => {
       const watcher = fs.watch(filePath);
+
       console.log(`Watching ${filePath}`);
 
       watcher.on(

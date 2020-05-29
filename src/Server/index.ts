@@ -1,16 +1,12 @@
 // src/index.ts
 import 'reflect-metadata';
-import fastify, { FastifyInstance } from 'fastify';
-import fastifyWS from 'fastify-websocket';
 import * as inspector from 'inspector';
-import { Modules } from './Library/Modules';
 import { HMR } from './Modules/HMR';
 import { startWebTranspiler } from './Modules/TypeScript';
 import { entrypoint } from './Modules/WebModule/Entrypoint';
 import { webModuleController } from './Modules/WebModule/WebModuleController';
 import { createApolloServer } from './Library/Apollo';
-
-const modules = await Modules.loadModules();
+import { createFastifyServer } from './Library/Fastify';
 
 if (process.env.NODE_ENV !== 'production') {
   inspector.open(5822, '0.0.0.0');
@@ -21,13 +17,20 @@ if (process.env.NODE_ENV !== 'production') {
   await HMR.createWatcher();
 }
 
-const webServer = fastify() as FastifyInstance;
+/**
+ * Fastify Web Server
+ */
+const webServer = await createFastifyServer();
+
+/**
+ * Apollo GraphQL Server
+ */
 const gqlServer = await createApolloServer();
 
-webServer.register(fastifyWS);
+/**
+ * Register the Apollo Server Routes into the Fastify instance
+ */
 webServer.register(gqlServer.createHandler());
-
-await modules.createRoutes(webServer);
 
 webServer.get('/Static/*', async function (request, reply) {
   const filePath = request.params['*'] as string;
@@ -57,27 +60,7 @@ webServer.get('/Static/*', async function (request, reply) {
 
   reply.type('text/javascript');
   reply.header('Service-Worker-Allowed', '/');
-  reply.send(
-    webModule.code
-      .replace(/exports\./gm, '')
-      .replace(
-        /process\.env\.(?<env>\S+)/g,
-        (match, env) => `'${process.env[env]}'`,
-      )
-      .replace(`import React from 'react';`, `import * as React from 'react';`)
-      .replace(
-        `import tracing from "scheduler/tracing";`,
-        `import * as tracing from "scheduler/tracing";`,
-      )
-      .replace(
-        'import Scheduler from "scheduler";',
-        'import * as Scheduler from "scheduler";',
-      )
-      .replace(
-        'import ReactIs from "react-is";',
-        'import * as ReactIs from "react-is";',
-      ),
-  );
+  reply.send(webModule.code);
 });
 
 await webServer.listen(1231, '0.0.0.0');

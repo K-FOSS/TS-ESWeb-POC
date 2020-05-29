@@ -2,6 +2,9 @@
 import { Route } from '../../Library/Modules/Models/Route';
 import { HMR } from './HMR';
 
+/**
+ * HMR Routes
+ */
 export default class HMRRoute implements Route {
   public options: Route['options'] = {
     method: 'GET',
@@ -10,6 +13,7 @@ export default class HMRRoute implements Route {
       // this will handle websockets connections
       conn.setEncoding('utf8');
 
+      // When the HMR controller emits the moduleUpdated event notify all subscribed websockets
       HMR.on('moduleUpdated', (filePath) => {
         conn.socket.send(filePath);
       });
