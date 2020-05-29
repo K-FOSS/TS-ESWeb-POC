@@ -1,7 +1,7 @@
 // src/Modules/WebManifest/WebManifestRoute.ts
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import { ServerResponse } from 'http';
-import { Route } from '../../Library/Modules/Models/Route';
+import { Route } from '../../Library/Fastify';
 import { DisplayMode } from './WebManifet';
 
 export default class ManifestRoute implements Route {

@@ -9,10 +9,19 @@ import {
 import { injectReactRefreshAST } from './ReactRefreshAST';
 
 interface Result {
+  /**
+   * SoureFile has HMR enabled
+   */
   hmr: boolean;
 
+  /**
+   * All import statements in the SourceFile
+   */
   importStatements: ts.ImportDeclaration[];
 
+  /**
+   * The statements within the React HMRed file
+   */
   functionStatements: ts.Statement[];
 }
 
@@ -22,7 +31,7 @@ export class HMRTransformer extends Transformer {
       context: ts.TransformationContext,
       result: Result,
     ) => {
-      return (sourceFile) => {
+      return (sourceFile: ts.SourceFile) => {
         const visitor: ts.Visitor = (node) => {
           if (ts.isFunctionDeclaration(node)) {
             const tags = ts.getJSDocTags(node);

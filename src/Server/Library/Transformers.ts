@@ -11,27 +11,63 @@ import { cjsToEsmTransformerFactory } from '@wessberg/cjs-to-esm-transformer';
 
 let customTransformers: CustomTransformers;
 
+/**
+ * TypeScript Transformer
+ */
 export abstract class Transformer {
+  /**
+   * TypeScript Program
+   */
   public program: Program;
 
   constructor(program: Program) {
     this.program = program;
   }
 
+  /**
+   * Transformer before the TypeScript ones (code has not been compiled)
+   */
   before?: TransformerFactory<SourceFile>;
-  /** Custom transformers to evaluate after built-in .js transformations. */
+
+  /**
+   *  transformers after the TypeScript ones (code has been compiled)
+   */
   after?: TransformerFactory<SourceFile>;
-  /** Custom transformers to evaluate after built-in .d.ts transformations. */
+
+  /**
+   * Custom transformers to evaluate after built-in .d.ts transformations.
+   */
   afterDeclarations?: TransformerFactory<Bundle | SourceFile>;
 }
 
-export async function getTransformers<T extends typeof Transformer>(
+/**
+ * Example Transformer so the findModuleFiles returns non abstract
+ */
+class ExampleTransformer extends Transformer {
+  public program: Transformer['program'];
+
+  after: Transformer['after'] = (context) => {
+    return (sourceFile: SourceFile) => {
+      return sourceFile;
+    };
+  };
+}
+
+type TransformerModule = {
+  [key: string]: typeof ExampleTransformer;
+};
+
+/**
+ *
+ * @param compilerProgram TypeScript CompilerProgram
+ */
+export async function getTransformers(
   compilerProgram: Program,
 ): Promise<CustomTransformers> {
   if (!customTransformers) {
-    const transformerFiles = await findModuleFiles<{
-      [key: string]: T;
-    }>(/.*Transformer\.ts/gm);
+    const transformerFiles = await findModuleFiles<TransformerModule>(
+      /.*Transformer\.ts/gm,
+    );
 
     customTransformers = {
       before: [cjsToEsmTransformerFactory()],
@@ -41,14 +77,18 @@ export async function getTransformers<T extends typeof Transformer>(
 
     transformerFiles.map((transformerExports) =>
       Object.entries(transformerExports).map(([string, TransformerClass]) => {
-        // @ts-expect-error
         const transformerClass = new TransformerClass(compilerProgram);
 
-        Object.entries(transformerClass).map(([entryKey, entry]) => {
-          if (customTransformers[entryKey]) {
-            customTransformers[entryKey].push(entry);
+        for (const [key, value] of Object.entries(transformerClass) as [
+          keyof CustomTransformers,
+          Transformer[keyof CustomTransformers],
+        ][]) {
+          const transformerArray = customTransformers[key];
+
+          if (transformerArray) {
+            transformerArray.push(value as any);
           }
-        });
+        }
 
         return transformerClass;
       }),
@@ -56,8 +96,6 @@ export async function getTransformers<T extends typeof Transformer>(
   } else {
     console.log('Cached');
   }
-
-  console.log(customTransformers);
 
   return customTransformers;
 }

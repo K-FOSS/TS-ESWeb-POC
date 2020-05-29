@@ -3,7 +3,7 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Nav } from './Components/Nav';
 
-const HomeRoute = React.lazy(() => import('./Routes/HomeRoute'));
+const HomeRoute = React.lazy(() => import('./Routes/HomeRoute/index'));
 const AboutRoute = React.lazy(() => import('./Routes/AboutRoute'));
 
 export function App() {

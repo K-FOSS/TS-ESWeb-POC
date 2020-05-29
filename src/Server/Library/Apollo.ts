@@ -2,6 +2,7 @@
 import { getGQLContext } from './Context';
 
 type ApolloServer = import('apollo-server-fastify').ApolloServer;
+type ApolloServerTestClient = import('apollo-server-testing').ApolloServerTestClient;
 
 let gqlServer: ApolloServer;
 export async function createApolloServer(): Promise<ApolloServer> {
@@ -31,4 +32,14 @@ export async function createApolloServer(): Promise<ApolloServer> {
   }
 
   return gqlServer;
+}
+
+export async function createApolloTestClient(): Promise<
+  ApolloServerTestClient
+> {
+  const { createTestClient } = await import('apollo-server-testing');
+
+  const gqlServer = await createApolloServer();
+
+  return createTestClient(gqlServer);
 }

@@ -1,7 +1,7 @@
 // src/Server/Modules/Hello/HealthCheckRoute.ts
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import { ServerResponse } from 'http';
-import { Route } from '../../Library/Modules/Models/Route';
+import { Route } from '../../Library/Fastify';
 
 export default class HealthCheckRoute implements Route {
   public options: Route['options'] = {
