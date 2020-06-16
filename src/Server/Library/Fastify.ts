@@ -28,8 +28,6 @@ export abstract class Route {
  */
 export class ExampleRoute extends Route {
   handler: Route['handler'] = async (request, reply) => {
-    console.log('HelloWorld');
-
     return 'example';
   };
 }

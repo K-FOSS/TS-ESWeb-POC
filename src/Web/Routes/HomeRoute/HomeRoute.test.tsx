@@ -1,16 +1,14 @@
-// tests/nav.test.ts
-import { TestSuite } from '@k-foss/ts-estests/dist/index';
+// src/Web/Routes/HomeRoute/HomeRoute.test.tsx
+import { TestSuite } from '@k-foss/ts-estests';
 import { strictEqual } from 'assert';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import HomeRoute from './index';
 
-export class HomeRouteTest extends TestSuite {
-  public testName = 'HomeRoute';
+export class HomeRouteSuite extends TestSuite {
+  public testName = 'HomeRoute Suite';
 
   public async test(): Promise<void> {
-    console.log();
-
     strictEqual(
       renderToString(<HomeRoute />),
       '<h1>Home Route</h1><p>Current state: <!-- -->False</p><button>Click me</button>',

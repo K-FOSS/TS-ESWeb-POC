@@ -1,5 +1,5 @@
 // src/Server/Modules/HMR/HMRRoute.ts
-import { Route } from '../../Library/Modules/Models/Route';
+import { Route } from '../../Library/Fastify';
 import { HMR } from './HMR';
 
 /**

@@ -1,7 +1,7 @@
 // src/Modules/Template/TemplateRoute.ts
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import { ServerResponse } from 'http';
-import { Route } from '../../Library/Modules/Models/Route';
+import { Route } from '../../Library/Fastify';
 
 export default class TemplateRoute implements Route {
   public options: Route['options'] = {
@@ -14,8 +14,6 @@ export default class TemplateRoute implements Route {
     request: FastifyRequest,
     reply: FastifyReply<ServerResponse>,
   ) {
-    console.log('HelloWorld');
-
     return 'Hello, World!';
   }
 }

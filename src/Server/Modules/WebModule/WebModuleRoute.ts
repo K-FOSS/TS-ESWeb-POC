@@ -1,7 +1,7 @@
 // src/Server/Modules/WebModule/ModuleRoute.ts
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import { ServerResponse } from 'http';
-import { Route } from '../../Library/Modules/Models/Route';
+import { Route } from '../../Library/Fastify';
 import { renderModuleTable } from '../../Components/ModuleTable';
 
 export default class TemplateRoute implements Route {
