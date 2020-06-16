@@ -5,7 +5,7 @@ volumes:
 
 services:
   Web:
-    image: caddy/caddy:alpine
+    image: caddy/caddy:scratch
     restart: unless-stopped
     command: ['caddy', 'run', '--config', '/etc/caddy/Caddyfile.json']
     ports:
