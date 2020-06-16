@@ -22,7 +22,7 @@
   "dependencies": {
     "@k-foss/ts-worker": "^1.0.5",
     "@wessberg/cjs-to-esm-transformer": "0.0.19",
-    "apollo-server-fastify": "^2.14.1",
+    "apollo-server-fastify": "^2.14.4",
     "class-validator": "^0.12.2",
     "cross-fetch": "^3.0.4",
     "fastify": "^2.14.1",
