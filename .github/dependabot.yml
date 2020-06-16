@@ -5,7 +5,34 @@
 
 version: 2
 updates:
-  - package-ecosystem: 'npm' # See documentation for possible values
-    directory: '/' # Location of package manifests
+  # Maintain dependencies for GitHub Actions
+  - package-ecosystem: 'github-actions'
+    directory: '/'
     schedule:
       interval: 'daily'
+    assignees:
+      - 'KristianFJones'
+    reviewers:
+      - 'KristianFJones'
+
+  # Maintain dependencies for npm
+  - package-ecosystem: 'npm' # See documentation for possible values
+    directory: '/' # Location of package manifests
+    versioning-strategy: increase
+    schedule:
+      interval: 'daily'
+    assignees:
+      - 'KristianFJones'
+    reviewers:
+      - 'KristianFJones'
+
+  # Maintain dependencies for Docker
+  - package-ecosystem: 'docker' # See documentation for possible values
+    directory: '/' # Location of package manifests
+    versioning-strategy: increase
+    schedule:
+      interval: 'daily'
+    assignees:
+      - 'KristianFJones'
+    reviewers:
+      - 'KristianFJones'
