@@ -11,7 +11,7 @@
   },
   "scripts": {
     "runner": "node --loader @k-foss/ts-esnode --experimental-specifier-resolution=node --experimental-import-meta-resolve --harmony-top-level-await",
-    "postinstall": "node --loader @k-foss/ts-esnode --experimental-specifier-resolution=node --experimental-import-meta-resolve --harmony-top-level-await ./bin/postInstall.ts",
+    "postinstall": "node --loader @k-foss/ts-esnode --experimental-specifier-resolution=node --experimental-import-meta-resolve --harmony-top-level-await ./bin/postInstall.ts && patch-package",
     "build": "npm run runner -- ./bin/build.ts",
     "prettier": "prettier --config .prettierrc --check 'src/**/*ts' 'bin/**/*.ts'",
     "lint": "eslint --ext tsx,ts src",

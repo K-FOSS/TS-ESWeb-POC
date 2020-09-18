@@ -1,32 +1,26 @@
 diff --git a/node_modules/scheduler/cjs/scheduler-tracing.development.js b/node_modules/scheduler/cjs/scheduler-tracing.development.js
-index e92cda0..ab1c149 100644
+index 8a17c20..be4daa9 100644
 --- a/node_modules/scheduler/cjs/scheduler-tracing.development.js
 +++ b/node_modules/scheduler/cjs/scheduler-tracing.development.js
-@@ -6,13 +6,6 @@
-  * This source code is licensed under the MIT license found in the
-  * LICENSE file in the root directory of this source tree.
-  */
--
--'use strict';
--
--
--
+@@ -9,8 +9,6 @@
+ 
+ 'use strict';
+ 
 -if (process.env.NODE_ENV !== "production") {
 -  (function() {
  'use strict';
  
  var DEFAULT_THREAD_ID = 0; // Counters used to generate unique IDs.
-@@ -23,27 +16,30 @@ var threadIDCounter = 0; // Set of currently traced interactions.
+@@ -21,32 +19,34 @@ var threadIDCounter = 0; // Set of currently traced interactions.
  // Meaning that newly traced interactions are appended to the previously active set.
  // When an interaction goes out of scope, the previous set (if any) is restored.
  
 -exports.__interactionsRef = null; // Listener(s) to notify when interactions begin and end.
-+var __interactionsRef = null;
-+var __subscriberRef = null;
-+
++var __interactionsRef = null
 +exports.__interactionsRef = __interactionsRef; // Listener(s) to notify when interactions begin and end.
  
 -exports.__subscriberRef = null;
++var __subscriberRef = null;
 +exports.__subscriberRef = __subscriberRef;
  
  {
@@ -54,7 +48,13 @@ index e92cda0..ab1c149 100644
    }
  }
  function unstable_getCurrent() {
-@@ -63,14 +59,14 @@ function unstable_trace(name, timestamp, callback) {
+   {
+-    return exports.__interactionsRef.current;
++    return __interactionsRef.current;
+   }
+ }
+ function unstable_getThreadID() {
+@@ -61,14 +61,14 @@ function unstable_trace(name, timestamp, callback) {
      name: name,
      timestamp: timestamp
    };
@@ -72,7 +72,7 @@ index e92cda0..ab1c149 100644
    var returnValue;
  
    try {
-@@ -86,7 +82,7 @@ function unstable_trace(name, timestamp, callback) {
+@@ -84,7 +84,7 @@ function unstable_trace(name, timestamp, callback) {
        try {
          returnValue = callback();
        } finally {
@@ -81,7 +81,7 @@ index e92cda0..ab1c149 100644
  
          try {
            if (subscriber !== null) {
-@@ -109,8 +105,8 @@ function unstable_trace(name, timestamp, callback) {
+@@ -107,8 +107,8 @@ function unstable_trace(name, timestamp, callback) {
  function unstable_wrap(callback) {
    var threadID = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : DEFAULT_THREAD_ID;
  
@@ -92,7 +92,7 @@ index e92cda0..ab1c149 100644
  
    if (subscriber !== null) {
      subscriber.onWorkScheduled(wrappedInteractions, threadID);
-@@ -124,9 +120,9 @@ function unstable_wrap(callback) {
+@@ -122,9 +122,9 @@ function unstable_wrap(callback) {
    var hasRun = false;
  
    function wrapped() {
@@ -105,7 +105,7 @@ index e92cda0..ab1c149 100644
  
      try {
        var returnValue;
-@@ -139,7 +135,7 @@ function unstable_wrap(callback) {
+@@ -137,7 +137,7 @@ function unstable_wrap(callback) {
          try {
            returnValue = callback.apply(undefined, arguments);
          } finally {
@@ -114,7 +114,7 @@ index e92cda0..ab1c149 100644
  
            if (subscriber !== null) {
              subscriber.onWorkStopped(wrappedInteractions, threadID);
-@@ -169,7 +165,7 @@ function unstable_wrap(callback) {
+@@ -167,7 +167,7 @@ function unstable_wrap(callback) {
    }
  
    wrapped.cancel = function cancel() {
@@ -123,7 +123,7 @@ index e92cda0..ab1c149 100644
  
      try {
        if (subscriber !== null) {
-@@ -203,7 +199,7 @@ function unstable_subscribe(subscriber) {
+@@ -201,7 +201,7 @@ function unstable_subscribe(subscriber) {
      subscribers.add(subscriber);
  
      if (subscribers.size === 1) {
@@ -132,7 +132,7 @@ index e92cda0..ab1c149 100644
          onInteractionScheduledWorkCompleted: onInteractionScheduledWorkCompleted,
          onInteractionTraced: onInteractionTraced,
          onWorkCanceled: onWorkCanceled,
-@@ -219,7 +215,7 @@ function unstable_unsubscribe(subscriber) {
+@@ -217,7 +217,7 @@ function unstable_unsubscribe(subscriber) {
      subscribers.delete(subscriber);
  
      if (subscribers.size === 0) {
@@ -141,35 +141,52 @@ index e92cda0..ab1c149 100644
      }
    }
  }
-@@ -345,5 +341,3 @@ exports.unstable_subscribe = unstable_subscribe;
+@@ -343,5 +343,4 @@ exports.unstable_subscribe = unstable_subscribe;
  exports.unstable_trace = unstable_trace;
  exports.unstable_unsubscribe = unstable_unsubscribe;
  exports.unstable_wrap = unstable_wrap;
 -  })();
 -}
++  
 diff --git a/node_modules/scheduler/cjs/scheduler.development.js b/node_modules/scheduler/cjs/scheduler.development.js
-index 077b597..59625c2 100644
+index 7d5ec2e..b5644fb 100644
 --- a/node_modules/scheduler/cjs/scheduler.development.js
 +++ b/node_modules/scheduler/cjs/scheduler.development.js
-@@ -11,8 +11,6 @@
+@@ -9,8 +9,6 @@
  
- 
+ 'use strict';
  
 -if (process.env.NODE_ENV !== "production") {
 -  (function() {
  'use strict';
  
  var enableSchedulerDebugging = false;
-@@ -23,6 +21,8 @@ var requestHostTimeout;
- var cancelHostTimeout;
- var shouldYieldToHost;
+@@ -23,17 +21,22 @@ var shouldYieldToHost;
  var requestPaint;
+ var hasPerformanceNow = typeof performance === 'object' && typeof performance.now === 'function';
+ 
 +var unstable_now;
 +var unstable_forceFrameRate;
++
++exports.unstable_now = unstable_now;
++
+ if (hasPerformanceNow) {
+   var localPerformance = performance;
  
- if ( // If Scheduler runs in a non-DOM environment, it falls back to a naive
- // implementation using setTimeout.
-@@ -36,7 +36,7 @@ typeof MessageChannel !== 'function') {
+-  exports.unstable_now = function () {
++  unstable_now = function () {
+     return localPerformance.now();
+   };
+ } else {
+   var localDate = Date;
+   var initialTime = localDate.now();
+ 
+-  exports.unstable_now = function () {
++  unstable_now = function () {
+     return localDate.now() - initialTime;
+   };
+ }
+@@ -50,7 +53,7 @@ typeof MessageChannel !== 'function') {
    var _flushCallback = function () {
      if (_callback !== null) {
        try {
@@ -178,16 +195,7 @@ index 077b597..59625c2 100644
          var hasRemainingTime = true;
  
          _callback(hasRemainingTime, currentTime);
-@@ -51,7 +51,7 @@ typeof MessageChannel !== 'function') {
- 
-   var initialTime = Date.now();
- 
--  exports.unstable_now = function () {
-+  unstable_now = function () {
-     return Date.now() - initialTime;
-   };
- 
-@@ -77,7 +77,7 @@ typeof MessageChannel !== 'function') {
+@@ -85,7 +88,7 @@ typeof MessageChannel !== 'function') {
      return false;
    };
  
@@ -195,24 +203,8 @@ index 077b597..59625c2 100644
 +  requestPaint = unstable_forceFrameRate = function () {};
  } else {
    // Capture local references to native APIs, in case a polyfill overrides them.
-   var performance = window.performance;
-@@ -104,13 +104,13 @@ typeof MessageChannel !== 'function') {
-   }
- 
-   if (typeof performance === 'object' && typeof performance.now === 'function') {
--    exports.unstable_now = function () {
-+    unstable_now = function () {
-       return performance.now();
-     };
-   } else {
-     var _initialTime = _Date.now();
- 
--    exports.unstable_now = function () {
-+    unstable_now = function () {
-       return _Date.now() - _initialTime;
-     };
-   }
-@@ -129,14 +129,14 @@ typeof MessageChannel !== 'function') {
+   var _setTimeout = window.setTimeout;
+@@ -123,14 +126,14 @@ typeof MessageChannel !== 'function') {
      // `isInputPending` is not available. Since we have no way of knowing if
      // there's pending input, always yield at the end of the frame.
      shouldYieldToHost = function () {
@@ -228,8 +220,8 @@ index 077b597..59625c2 100644
 +  unstable_forceFrameRate = function (fps) {
      if (fps < 0 || fps > 125) {
        // Using console['error'] to evade Babel and ESLint
-       console['error']('forceFrameRate takes a positive int between 0 and 125, ' + 'forcing framerates higher than 125 fps is not unsupported');
-@@ -153,7 +153,7 @@ typeof MessageChannel !== 'function') {
+       console['error']('forceFrameRate takes a positive int between 0 and 125, ' + 'forcing frame rates higher than 125 fps is not supported');
+@@ -147,7 +150,7 @@ typeof MessageChannel !== 'function') {
  
    var performWorkUntilDeadline = function () {
      if (scheduledHostCallback !== null) {
@@ -238,7 +230,7 @@ index 077b597..59625c2 100644
        // cycle. This means there's always time remaining at the beginning of
        // the message event.
  
-@@ -197,7 +197,7 @@ typeof MessageChannel !== 'function') {
+@@ -191,7 +194,7 @@ typeof MessageChannel !== 'function') {
  
    requestHostTimeout = function (callback, ms) {
      taskTimeoutID = _setTimeout(function () {
@@ -247,7 +239,7 @@ index 077b597..59625c2 100644
      }, ms);
    };
  
-@@ -552,7 +552,7 @@ function flushWork(hasTimeRemaining, initialTime) {
+@@ -546,7 +549,7 @@ function flushWork(hasTimeRemaining, initialTime) {
          return workLoop(hasTimeRemaining, initialTime);
        } catch (error) {
          if (currentTask !== null) {
@@ -256,7 +248,7 @@ index 077b597..59625c2 100644
            markTaskErrored(currentTask, currentTime);
            currentTask.isQueued = false;
          }
-@@ -569,7 +569,7 @@ function flushWork(hasTimeRemaining, initialTime) {
+@@ -563,7 +566,7 @@ function flushWork(hasTimeRemaining, initialTime) {
      isPerformingWork = false;
  
      {
@@ -265,7 +257,7 @@ index 077b597..59625c2 100644
  
        markSchedulerSuspended(_currentTime);
      }
-@@ -595,7 +595,7 @@ function workLoop(hasTimeRemaining, initialTime) {
+@@ -589,7 +592,7 @@ function workLoop(hasTimeRemaining, initialTime) {
        var didUserCallbackTimeout = currentTask.expirationTime <= currentTime;
        markTaskRun(currentTask, currentTime);
        var continuationCallback = callback(didUserCallbackTimeout);
@@ -274,16 +266,16 @@ index 077b597..59625c2 100644
  
        if (typeof continuationCallback === 'function') {
          currentTask.callback = continuationCallback;
-@@ -719,7 +719,7 @@ function timeoutForPriorityLevel(priorityLevel) {
+@@ -693,7 +696,7 @@ function unstable_wrapCallback(callback) {
  }
  
  function unstable_scheduleCallback(priorityLevel, callback, options) {
 -  var currentTime = exports.unstable_now();
 +  var currentTime = unstable_now();
    var startTime;
-   var timeout;
  
-@@ -807,7 +807,7 @@ function unstable_getFirstCallbackNode() {
+   if (typeof options === 'object' && options !== null) {
+@@ -802,7 +805,7 @@ function unstable_getFirstCallbackNode() {
  function unstable_cancelCallback(task) {
    {
      if (task.isQueued) {
@@ -292,7 +284,7 @@ index 077b597..59625c2 100644
        markTaskCanceled(task, currentTime);
        task.isQueued = false;
      }
-@@ -824,7 +824,7 @@ function unstable_getCurrentPriorityLevel() {
+@@ -819,7 +822,7 @@ function unstable_getCurrentPriorityLevel() {
  }
  
  function unstable_shouldYield() {
@@ -301,11 +293,10 @@ index 077b597..59625c2 100644
    advanceTimers(currentTime);
    var firstTask = peek(taskQueue);
    return firstTask !== currentTask && currentTask !== null && firstTask !== null && firstTask.callback !== null && firstTask.startTime <= currentTime && firstTask.expirationTime < currentTask.expirationTime || shouldYieldToHost();
-@@ -854,5 +854,4 @@ exports.unstable_runWithPriority = unstable_runWithPriority;
+@@ -849,5 +852,4 @@ exports.unstable_runWithPriority = unstable_runWithPriority;
  exports.unstable_scheduleCallback = unstable_scheduleCallback;
  exports.unstable_shouldYield = unstable_shouldYield;
  exports.unstable_wrapCallback = unstable_wrapCallback;
 -  })();
 -}
-+exports.unstable_now = unstable_now;
-\ No newline at end of file
++  
