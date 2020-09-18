@@ -1,28 +1,32 @@
 {
-  "_from": "react-router-dom@next",
-  "_id": "react-router-dom@6.0.0-alpha.5",
+  "_args": [
+    [
+      "react-router-dom@6.0.0-beta.0",
+      "/workspace"
+    ]
+  ],
+  "_from": "react-router-dom@6.0.0-beta.0",
+  "_id": "react-router-dom@6.0.0-beta.0",
   "_inBundle": false,
-  "_integrity": "sha512-xo3VM55aE563uyZBPoUplfCPOYKJmTP2oA8wamm0k4K07e/6T4x4DDunS5Gu2VIy+m2+5mZp8n0rT6S+tYCb6Q==",
+  "_integrity": "sha512-36yNNGMT8RB9FRPL9nKJi6HKDkgOakU+o/2hHpSzR6e37gN70MpOU6QQlmif4oAWWBwjyGc3ZNOMFCsFuHUY5w==",
   "_location": "/react-router-dom",
   "_phantomChildren": {},
   "_requested": {
-    "type": "tag",
+    "type": "version",
     "registry": true,
-    "raw": "react-router-dom@next",
+    "raw": "react-router-dom@6.0.0-beta.0",
     "name": "react-router-dom",
     "escapedName": "react-router-dom",
-    "rawSpec": "next",
+    "rawSpec": "6.0.0-beta.0",
     "saveSpec": null,
-    "fetchSpec": "next"
+    "fetchSpec": "6.0.0-beta.0"
   },
   "_requiredBy": [
-    "#USER",
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/react-router-dom/-/react-router-dom-6.0.0-alpha.5.tgz",
-  "_shasum": "3c3e22226ee610eb91042a351741ce3f53596323",
-  "_spec": "react-router-dom@next",
-  "_where": "/home/node/workspace",
+  "_resolved": "https://registry.npmjs.org/react-router-dom/-/react-router-dom-6.0.0-beta.0.tgz",
+  "_spec": "6.0.0-beta.0",
+  "_where": "/workspace",
   "author": {
     "name": "React Training",
     "email": "hello@reacttraining.com"
@@ -30,12 +34,10 @@
   "bugs": {
     "url": "https://github.com/ReactTraining/react-router/issues"
   },
-  "bundleDependencies": false,
   "dependencies": {
-    "history": "5.0.0-beta.9",
-    "prop-types": "^15.7.2"
+    "prop-types": "^15.7.2",
+    "react-router": "6.0.0-beta.0"
   },
-  "deprecated": false,
   "description": "Declarative routing for React web applications",
   "homepage": "https://github.com/ReactTraining/react-router#readme",
   "keywords": [
@@ -52,9 +54,9 @@
   "module": "index.js",
   "name": "react-router-dom",
   "peerDependencies": {
+    "history": ">=5",
     "react": ">=16.8",
-    "react-dom": ">=16.8",
-    "react-router": "6.0.0-alpha.5"
+    "react-dom": ">=16.8"
   },
   "repository": {
     "type": "git",
@@ -66,5 +68,5 @@
   "sideEffects": false,
   "types": "index.d.ts",
   "unpkg": "umd/react-router-dom.production.min.js",
-  "version": "6.0.0-alpha.5"
+  "version": "6.0.0-beta.0"
 }

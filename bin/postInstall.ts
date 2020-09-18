@@ -1,7 +1,8 @@
 // bin/postInstall.ts
-import { processModule } from './Utils/proceseNodeModule';
+// import { processModule } from './Utils/proceseNodeModule';
 import { cpFile } from './Utils/cpFile';
 
+/*
 const cjsFiles: string[] = [
   'react-dom/cjs/react-dom.development.js',
   'react-dom/cjs/react-dom.production.min.js',
@@ -9,9 +10,7 @@ const cjsFiles: string[] = [
   'react-is/cjs/react-is.development.js',
 ];
 
-console.log(`Processing module files: `, cjsFiles);
-
-await Promise.all(cjsFiles.map(processModule));
+console.log(`Processing module files: `, cjsFiles); */
 
 await Promise.all([
   cpFile('extras/history/package.json', 'node_modules/history/package.json'),
