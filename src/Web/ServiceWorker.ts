@@ -2,8 +2,6 @@
 const _self = (self as any) as ServiceWorkerGlobalScope;
 declare const clients: Clients;
 
-export {};
-
 importScripts(
   'https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js',
 );
