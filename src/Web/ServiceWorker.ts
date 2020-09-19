@@ -38,7 +38,7 @@ workbox.routing.registerRoute(
       if (queryResult.data.webModule) {
         response = new Response(queryResult.data.webModule.code);
       } else {
-        throw new Error('What?')
+        throw new Error('What?');
       }
     } else {
       console.log('Getting file: ', url, request, event, params);
