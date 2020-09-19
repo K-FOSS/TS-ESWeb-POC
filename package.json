@@ -56,7 +56,7 @@
     "@types/ws": "^7.2.4",
     "@typescript-eslint/eslint-plugin": "^4.1.1",
     "@typescript-eslint/parser": "^2.34.0",
-    "apollo-server-testing": "^2.15.0",
+    "apollo-server-testing": "^2.17.0",
     "eslint": "^7.9.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-config-standard": "^14.1.1",
