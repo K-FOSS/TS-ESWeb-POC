@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 // src/Modules/WebManifest/WebManifest.ts
 export interface Icon {
   src: string;

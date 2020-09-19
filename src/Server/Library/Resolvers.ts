@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 // src/Server/Library/Resolvers.ts
 import { buildSchema, NonEmptyArray } from 'type-graphql';
 import { findModuleFiles } from '../Utils/moduleFileFinder';

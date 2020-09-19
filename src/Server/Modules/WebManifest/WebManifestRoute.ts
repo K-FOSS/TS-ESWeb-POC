@@ -18,13 +18,8 @@ export default class ManifestRoute implements Route {
     return {
       name: 'TS-ESWeb',
       description: 'Proof of concept next generation web SSR framework',
-      // eslint-disable-next-line @typescript-eslint/camelcase
       short_name: 'TS-ESWeb',
-
-      // eslint-disable-next-line @typescript-eslint/camelcase
       start_url: '/',
-
-      // eslint-disable-next-line @typescript-eslint/camelcase
       background_color: '#FFF',
       display: DisplayMode.STANDALONE,
       icons: [

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 // src/Server/Modules/WebManifest/isWebManifest.ts
 import { WebManifest } from './WebManifet';
 

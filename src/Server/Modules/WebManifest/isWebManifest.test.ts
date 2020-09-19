@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/camelcase */
 // src/Server/Modules/WebManifest/isWebManifest.test.ts
 import { TestSuite } from '@k-foss/ts-estests';
 import { strictEqual } from 'assert';

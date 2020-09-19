@@ -1,57 +1,38 @@
 {
-    "parser": "@typescript-eslint/parser",
-    "parserOptions": {
-      "ecmaFeatures": {
-        "jsx": true
-      },
-      "project": [
-        "./tsconfig.json",
-        "*/tsconfig.json"
-      ]
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
     },
-    "env": {
-      "browser": true,
-      "node": true,
-      "serviceworker": true
-    },
-    "globals": {
-      "workbox": true
-    },
-    "plugins": [
-      "react",
-      "@typescript-eslint",
-      "prettier"
-    ],
-    "extends": [
-      "standard",
-      "plugin:react/recommended",
-      "plugin:@typescript-eslint/recommended",
-      "prettier/@typescript-eslint",
-      "plugin:prettier/recommended"
-    ],
-    "rules": {
-      "@typescript-eslint/no-unused-vars": [
-        "error",
-        {
-          "args": "none",
-          "varsIgnorePattern": "_.+"
-        }
-      ],
-      "@typescript-eslint/no-var-requires": "warn",
-      "@typescript-eslint/no-object-literal-type-assertion": "off",
-      "@typescript-eslint/explicit-function-return-type": "off",
-      "@typescript-eslint/no-explicit-any": "off",
-      "@typescript-eslint/no-non-null-assertion": "off",
-      "@typescript-eslint/explicit-member-accessibility": "off",
-      "no-unused-vars": "off",
-      "comma-dangle": [
-        "error",
-        "always-multiline"
-      ],
-      "semi": "off",
-      "@typescript-eslint/semi": [
-        "error"
-      ],
-      "prettier/prettier": "error"
-}
+    "project": ["./tsconfig.json", "*/tsconfig.json"]
+  },
+  "env": {
+    "browser": true,
+    "node": true,
+    "serviceworker": true
+  },
+  "globals": {
+    "workbox": true
+  },
+  "plugins": ["react", "@typescript-eslint", "prettier"],
+  "extends": [
+    "standard",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier/@typescript-eslint",
+    "plugin:prettier/recommended"
+  ],
+  "rules": {
+    "@typescript-eslint/no-var-requires": "warn",
+    "@typescript-eslint/no-object-literal-type-assertion": "off",
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/explicit-member-accessibility": "off",
+    "no-unused-vars": "off",
+    "comma-dangle": ["error", "always-multiline"],
+    "semi": "off",
+    "@typescript-eslint/semi": ["error"],
+    "prettier/prettier": "error"
+  }
 }

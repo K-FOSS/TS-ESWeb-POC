@@ -1,9 +1,11 @@
 // src/Server/Components/ModuleTable.tsx
-import React, { PropsWithChildren } from 'react';
+import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { webModuleController } from '../Modules/WebModule/WebModuleController';
 
-function TD({ children }: PropsWithChildren<{}>): React.ReactElement {
+function TD({
+  children,
+}: import('react').PropsWithChildren<any>): React.ReactElement {
   return <td style={{ border: '1px solid #333' }}>{children}</td>;
 }
 
