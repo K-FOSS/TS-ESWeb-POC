@@ -37,6 +37,8 @@ workbox.routing.registerRoute(
 
       if (queryResult.data.webModule) {
         response = new Response(queryResult.data.webModule.code);
+      } else {
+        throw new Error('What?')
       }
     } else {
       console.log('Getting file: ', url, request, event, params);
@@ -80,7 +82,7 @@ self.addEventListener('message', async (event: ServiceWorkerMessage) => {
     case 'CLIENTS_CLAIM':
       await workbox.core.clientsClaim();
 
-      this.clients.claim();
+      clients.claim();
       channel.postMessage({ type: 'READY' });
       // self.postMessage({
       //   type: 'DONE',
