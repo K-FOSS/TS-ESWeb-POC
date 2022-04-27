@@ -35,7 +35,7 @@
     "react": "0.0.0-experimental-94c0244ba",
     "react-dom": "0.0.0-experimental-94c0244ba",
     "react-is": "^16.13.1",
-    "react-refresh": "^0.8.3",
+    "react-refresh": "^0.13.0",
     "react-router": "^6.0.0-beta.0",
     "react-router-dom": "^6.0.0-beta.0",
     "reflect-metadata": "^0.1.13",
